@@ -17,51 +17,51 @@ st.markdown("""
 
   html, body, [class*="css"] { font-family: 'IBM Plex Sans', sans-serif; }
 
-  .main { background-color: #0d0d0d; }
+  .main { background-color: #f0f4f8; }
   .block-container { padding: 2rem 2.5rem 3rem; max-width: 1400px; }
 
   /* Hero */
-  .hero { background: #111; border: 1px solid #222; border-radius: 12px;
+  .hero { background: #fff; border: 1px solid #222; border-radius: 12px;
           padding: 2.5rem 2.5rem 2rem; margin-bottom: 2rem; }
   .hero-eyebrow { font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
-                  color: #e53935; margin-bottom: 8px; font-weight: 500; }
+                  color: #1a4480; margin-bottom: 8px; font-weight: 500; }
   .hero-title { font-size: clamp(28px, 4vw, 44px); font-weight: 600;
-                line-height: 1.15; color: #f5f5f5; margin: 0 0 16px; }
-  .hero-title span { color: #e53935; }
+                line-height: 1.15; color: #0f2b52; margin: 0 0 16px; }
+  .hero-title span { color: #1a4480; }
   .hero-sub { font-size: 15px; color: #999; line-height: 1.7; max-width: 780px; margin: 0; }
 
   /* KPI cards */
   .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
               margin-bottom: 1.5rem; }
-  .kpi { background: #111; border: 1px solid #222; border-radius: 10px; padding: 1.2rem; }
+  .kpi { background: #fff; border: 1px solid #222; border-radius: 10px; padding: 1.2rem; }
   .kpi-val { font-size: 28px; font-weight: 600; margin: 0 0 4px; font-family: 'IBM Plex Mono'; }
   .kpi-lbl { font-size: 12px; color: #888; margin: 0; }
   .kpi-note { font-size: 11px; color: #555; margin: 4px 0 0; }
-  .kpi-red .kpi-val { color: #ef5350; }
-  .kpi-blue .kpi-val { color: #42a5f5; }
-  .kpi-amber .kpi-val { color: #ffa726; }
+  .kpi-red .kpi-val { color: #b06200; }
+  .kpi-blue .kpi-val { color: #1b6ca8; }
+  .kpi-amber .kpi-val { color: #1a6b3c; }
 
   /* Callout boxes */
   .callout { border-radius: 8px; padding: 14px 16px;
              font-size: 13px; line-height: 1.65; margin: 1rem 0; }
-  .callout-red { background: #1a0a0a; border-left: 3px solid #e53935; color: #f5f5f5; }
-  .callout-blue { background: #0a0f1a; border-left: 3px solid #42a5f5; color: #f5f5f5; }
-  .callout-amber { background: #1a1200; border-left: 3px solid #ffa726; color: #f5f5f5; }
+  .callout-red { background: #fef7ee; border-left: 3px solid #b06200; color: #3d1f00; }
+  .callout-blue { background: #eef3fb; border-left: 3px solid #1a4480; color: #0f2b52; }
+  .callout-amber { background: #edfaf3; border-left: 3px solid #1a6b3c; color: #0a2d1a; }
   .callout b { color: #fff; }
 
   /* Section headers */
-  .sec-head { font-size: 16px; font-weight: 500; color: #f5f5f5;
+  .sec-head { font-size: 16px; font-weight: 500; color: #0f2b52;
               margin: 0 0 4px; padding: 0; }
   .sec-sub { font-size: 12px; color: #777; margin: 0 0 1rem; line-height: 1.6; }
 
   /* Finding boxes */
-  .finding { background: #111; border: 1px solid #1e1e1e; border-radius: 10px;
+  .finding { background: #fff; border: 1px solid #d0dcea; border-radius: 10px;
              padding: 1.25rem; margin-bottom: .75rem; }
-  .finding-num { font-size: 11px; color: #e53935; letter-spacing: .1em;
+  .finding-num { font-size: 11px; color: #1a4480; letter-spacing: .1em;
                  text-transform: uppercase; margin-bottom: 4px; font-weight: 500; }
-  .finding-title { font-size: 14px; font-weight: 500; color: #f5f5f5; margin-bottom: 6px; }
+  .finding-title { font-size: 14px; font-weight: 500; color: #0f2b52; margin-bottom: 6px; }
   .finding-body { font-size: 13px; color: #999; line-height: 1.65; margin: 0; }
-  .finding-body b { color: #f5f5f5; }
+  .finding-body b { color: #0f2b52; }
 
   /* Source footer */
   .src { font-size: 11px; color: #444; margin-top: 8px; line-height: 1.6; }
@@ -72,8 +72,8 @@ st.markdown("""
   .stTabs [data-baseweb="tab"] { background: transparent; border: none;
     padding: 8px 16px; font-size: 13px; color: #777;
     border-bottom: 2px solid transparent; }
-  .stTabs [aria-selected="true"] { color: #f5f5f5 !important;
-    border-bottom-color: #e53935 !important; }
+  .stTabs [aria-selected="true"] { color: #0f2b52 !important;
+    border-bottom-color: #1a4480 !important; }
   .stTabs [data-baseweb="tab-panel"] { padding: 1.5rem 0 0; }
   .stTabs [data-baseweb="tab-border"] { display: none; }
 
@@ -83,28 +83,28 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ── Plotly theme ──────────────────────────────────────────────────────────────
-PLOT_BG   = "#111111"
-PAPER_BG  = "#111111"
-GRID_CLR  = "rgba(255,255,255,0.06)"
-AXIS_CLR  = "#555555"
-FONT_CLR  = "#cccccc"
-RED       = "#ef5350"
-BLUE      = "#42a5f5"
-AMBER     = "#ffa726"
-GREEN     = "#66bb6a"
-GREY      = "#616161"
-TEAL      = "#26a69a"
+# ── Plotly theme (light — blues/greens) ───────────────────────────────────────
+PLOT_BG   = "#ffffff"
+PAPER_BG  = "#ffffff"
+GRID_CLR  = "#e8edf5"
+AXIS_CLR  = "#4a5e78"
+FONT_CLR  = "#0f2b52"
+RED       = "#b06200"   # amber/burnt-orange replaces red for disinvested parks
+BLUE      = "#1a4480"   # dark navy
+AMBER     = "#1a6b3c"   # deep green replaces amber
+GREEN     = "#2e9e60"   # medium green
+GREY      = "#7a90a8"   # blue-gray
+TEAL      = "#1b6ca8"   # medium blue
 
 def fig_defaults(fig, height=380):
     fig.update_layout(
         paper_bgcolor=PAPER_BG, plot_bgcolor=PLOT_BG,
         font=dict(family="IBM Plex Sans", color=FONT_CLR, size=12),
         height=height, margin=dict(l=10, r=10, t=30, b=10),
-        legend=dict(bgcolor="rgba(0,0,0,0)", font=dict(size=11)),
-        xaxis=dict(gridcolor=GRID_CLR, tickcolor=AXIS_CLR, linecolor=AXIS_CLR,
+        legend=dict(bgcolor="rgba(0,0,0,0.0)", font=dict(size=11, color=FONT_CLR)),
+        xaxis=dict(gridcolor=GRID_CLR, tickcolor=AXIS_CLR, linecolor=GRID_CLR,
                    tickfont=dict(color=AXIS_CLR)),
-        yaxis=dict(gridcolor=GRID_CLR, tickcolor=AXIS_CLR, linecolor=AXIS_CLR,
+        yaxis=dict(gridcolor=GRID_CLR, tickcolor=AXIS_CLR, linecolor=GRID_CLR,
                    tickfont=dict(color=AXIS_CLR)),
     )
     return fig
@@ -339,7 +339,7 @@ with tabs[0]:
                           height=320, margin=dict(l=10, r=60, t=10, b=10),
                           xaxis=dict(gridcolor=GRID_CLR, tickfont=dict(color=AXIS_CLR),
                                      title=dict(text="Total investment ($M)", font=dict(color=AXIS_CLR))),
-                          yaxis=dict(tickfont=dict(color="#ccc"), categoryorder="total ascending"))
+                          yaxis=dict(tickfont=dict(color="#4a5e78"), categoryorder="total ascending"))
         st.plotly_chart(fig, use_container_width=True)
 
     with c2:
@@ -366,7 +366,7 @@ with tabs[0]:
                                       tickangle=-30),
                            yaxis=dict(gridcolor=GRID_CLR, tickfont=dict(color=AXIS_CLR),
                                       title=dict(text="Avg per park ($M)", font=dict(color=AXIS_CLR))),
-                           legend=dict(bgcolor="rgba(0,0,0,0)", font=dict(size=10),
+                           legend=dict(bgcolor="rgba(255,255,255,0)", font=dict(size=10),
                                        orientation="h", yanchor="bottom", y=1.02))
         st.plotly_chart(fig2, use_container_width=True)
 
@@ -449,7 +449,7 @@ with tabs[1]:
         height=520, margin=dict(l=10, r=120, t=10, b=10),
         xaxis=dict(gridcolor=GRID_CLR, tickfont=dict(color=AXIS_CLR),
                    title=dict(text="Investment per acre ($)", font=dict(color=AXIS_CLR))),
-        yaxis=dict(tickfont=dict(color="#ccc")),
+        yaxis=dict(tickfont=dict(color="#4a5e78")),
     )
     st.plotly_chart(fig_ac, use_container_width=True)
 
@@ -478,13 +478,13 @@ with tabs[1]:
     st.markdown("""
     <div style="margin-top:.5rem">
       <span style="display:inline-flex;align-items:center;gap:6px;margin-right:16px;font-size:12px;color:#aaa;">
-        <span style="width:12px;height:12px;border-radius:3px;background:#ef5350;display:inline-block;"></span>
+        <span style="width:12px;height:12px;border-radius:3px;background:#b06200;display:inline-block;"></span>
         Black community</span>
       <span style="display:inline-flex;align-items:center;gap:6px;margin-right:16px;font-size:12px;color:#aaa;">
-        <span style="width:12px;height:12px;border-radius:3px;background:#ffa726;display:inline-block;"></span>
+        <span style="width:12px;height:12px;border-radius:3px;background:#1a6b3c;display:inline-block;"></span>
         Latino / mixed community</span>
       <span style="display:inline-flex;align-items:center;gap:6px;margin-right:16px;font-size:12px;color:#aaa;">
-        <span style="width:12px;height:12px;border-radius:3px;background:#42a5f5;display:inline-block;"></span>
+        <span style="width:12px;height:12px;border-radius:3px;background:#1b6ca8;display:inline-block;"></span>
         Downtown / tourist / white majority</span>
       <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#aaa;">
         <span style="width:12px;height:12px;border-radius:3px;background:#616161;display:inline-block;"></span>
@@ -540,7 +540,7 @@ with tabs[2]:
             "%{customdata[2]}"
             "<extra></extra>"
         ),
-        customdata=list(zip(lakefront.comm, lakefront.rank, lakefront.note)),
+        customdata=lakefront[["comm","rank","note"]].values,
     ))
     fig_lf.update_layout(
         paper_bgcolor=PLOT_BG, plot_bgcolor=PLOT_BG,
@@ -548,7 +548,7 @@ with tabs[2]:
         height=440, margin=dict(l=10, r=80, t=10, b=10),
         xaxis=dict(gridcolor=GRID_CLR, tickfont=dict(color=AXIS_CLR),
                    title=dict(text="Investment per sq ft ($)", font=dict(color=AXIS_CLR))),
-        yaxis=dict(tickfont=dict(color="#ccc")),
+        yaxis=dict(tickfont=dict(color="#4a5e78")),
     )
     st.plotly_chart(fig_lf, use_container_width=True)
 
@@ -719,7 +719,7 @@ with tabs[3]:
         name="Programs", x=areas, y=n4s2_prog,
         marker_color=n4s2_clr,
         text=[f"{v:,}", f"{v:,}"],
-        textposition="outside", textfont=dict(size=12, color="#fff"),
+        textposition="outside", textfont=dict(size=12, color="#0f2b52"),
         hovertemplate="<b>%{x}</b><br>%{y:,} programs<extra></extra>",
     ))
     fig_n4s2.add_annotation(
@@ -727,9 +727,9 @@ with tabs[3]:
         xref="paper", yref="y",
         text="<b>8.6× more programs in N4 than S2</b><br>(3× even after removing McFetridge's 3,300 privatized programs)",
         showarrow=False,
-        font=dict(color="#ffa726", size=12),
-        bgcolor="rgba(0,0,0,0.5)",
-        bordercolor="#ffa726",
+        font=dict(color="#0f2b52", size=12),
+        bgcolor="rgba(255,255,255,0.85)",
+        bordercolor="#b06200",
         borderwidth=1,
         borderpad=8,
     )
@@ -791,7 +791,7 @@ with tabs[3]:
         yaxis=dict(gridcolor=GRID_CLR, tickfont=dict(color=AXIS_CLR),
                    title=dict(text="FTEs", font=dict(color=AXIS_CLR))),
         xaxis=dict(tickfont=dict(color=AXIS_CLR), tickangle=-35),
-        legend=dict(bgcolor="rgba(0,0,0,0)", font=dict(size=11),
+        legend=dict(bgcolor="rgba(255,255,255,0)", font=dict(size=11),
                     orientation="h", yanchor="bottom", y=1.02),
     )
     st.plotly_chart(fig_arts, use_container_width=True)
@@ -848,7 +848,7 @@ with tabs[3]:
         yaxis=dict(gridcolor=GRID_CLR, tickfont=dict(color=AXIS_CLR),
                    title=dict(text="Contract cost ($M)", font=dict(color=AXIS_CLR))),
         xaxis=dict(tickfont=dict(color=AXIS_CLR), tickangle=-40),
-        legend=dict(bgcolor="rgba(0,0,0,0)", font=dict(size=11),
+        legend=dict(bgcolor="rgba(255,255,255,0)", font=dict(size=11),
                     orientation="h", yanchor="bottom", y=1.02),
     )
     st.plotly_chart(fig_priv, use_container_width=True)
@@ -889,13 +889,13 @@ with tabs[4]:
     def _color(r):
         name = r.park
         if "Park No. 566" in name or "Rainbow Beach" in name:
-            return "#ef5350"          # bright red — most disinvested lakefront
+            return "#b06200"          # bright red — most disinvested lakefront
         if "Grant Park" in name or "Burnham Park" in name:
-            return "#42a5f5"          # blue — downtown comparison
+            return "#1b6ca8"          # blue — downtown comparison
         if "Rogers Beach" in name:
             return "#29b6f6"          # lighter blue — N.Side lakefront comparison
         if r.demo == "Latino/Black":
-            return "#ffa726"          # amber — mixed Latino/Black
+            return "#b06200"          # amber — mixed Latino/Black
         return "#c62828"              # dark red — other disinvested (Black community)
 
     d_chart["color"] = d_chart.apply(_color, axis=1)
@@ -911,7 +911,7 @@ with tabs[4]:
         marker_line_width=0,
         text=["$" + f"{v:.2f}" for v in d_sorted.sqft_val],
         textposition="outside",
-        textfont=dict(size=11, color="#cccccc"),
+        textfont=dict(size=11, color=FONT_CLR),
         hovertemplate=(
             "<b>%{y}</b><br>"
             "<b>$%{x:.2f}/sq ft</b><br>"
@@ -950,10 +950,10 @@ with tabs[4]:
 
     # Reference line at $1.00
     fig_di.add_vline(
-        x=1.0, line_dash="dot", line_color="#ffa726", line_width=1,
+        x=1.0, line_dash="dot", line_color="#b06200", line_width=1,
         annotation_text="$1.00/sq ft threshold",
         annotation_position="top",
-        annotation_font=dict(color="#ffa726", size=10),
+        annotation_font=dict(color="#b06200", size=10),
     )
 
     fig_di.update_layout(
@@ -974,19 +974,19 @@ with tabs[4]:
     st.markdown("""
     <div style="display:flex;flex-wrap:wrap;gap:14px;margin:4px 0 1.25rem;font-size:12px;color:#888;">
       <span style="display:flex;align-items:center;gap:5px;">
-        <span style="width:12px;height:12px;border-radius:3px;background:#ef5350;display:inline-block;"></span>
+        <span style="width:12px;height:12px;border-radius:3px;background:#b06200;display:inline-block;"></span>
         Lakefront — S. Side (disinvested)</span>
       <span style="display:flex;align-items:center;gap:5px;">
         <span style="width:12px;height:12px;border-radius:3px;background:#c62828;display:inline-block;"></span>
         Neighborhood — Black community</span>
       <span style="display:flex;align-items:center;gap:5px;">
-        <span style="width:12px;height:12px;border-radius:3px;background:#ffa726;display:inline-block;"></span>
+        <span style="width:12px;height:12px;border-radius:3px;background:#1a6b3c;display:inline-block;"></span>
         Neighborhood — Latino/Black</span>
       <span style="display:flex;align-items:center;gap:5px;">
         <span style="width:12px;height:12px;border-radius:3px;background:#29b6f6;display:inline-block;"></span>
         Lakefront — N. Side (comparison)</span>
       <span style="display:flex;align-items:center;gap:5px;">
-        <span style="width:12px;height:12px;border-radius:3px;background:#42a5f5;display:inline-block;"></span>
+        <span style="width:12px;height:12px;border-radius:3px;background:#1b6ca8;display:inline-block;"></span>
         Lakefront — Downtown (comparison)</span>
     </div>
     """, unsafe_allow_html=True)
@@ -1126,7 +1126,7 @@ with tabs[5]:
 
 # ── Footer ────────────────────────────────────────────────────────────────────
 st.markdown("""
-<hr style="border:none;border-top:1px solid #1e1e1e;margin:2.5rem 0 1rem;">
+<hr style="border:none;border-top:1px solid #d0dcea;margin:2.5rem 0 1rem;">
 <p style="font-size:11px;color:#444;line-height:1.7;">
   Chicago Park District Equity Analysis · Data: CPD Capital Projects 2011–2024 (April 2024) ·
   Analysis methodology by Ana Marija Soković · Built with Streamlit + Plotly ·
