@@ -1129,8 +1129,7 @@ st.markdown("""
       This report was prepared by Ana Marija Soković, PhD, MBA
     </p>
     <p style="font-size:11px;color:#4a5e78;margin:0;line-height:1.6;">
-      Lead Computational Scientist, UIC ACER &nbsp;·&nbsp;
-      Civic accountability researcher, 7th Ward South Shore &nbsp;·&nbsp;
+      Lead Computational Scientist, University of Illinois Chicago &nbsp;·&nbsp;
       Chair, Chicago Women in High Performance Computing
     </p>
   </div>
