@@ -718,7 +718,7 @@ with tabs[3]:
     fig_n4s2.add_trace(go.Bar(
         name="Programs", x=areas, y=n4s2_prog,
         marker_color=n4s2_clr,
-        text=[f"{v:,}", f"{v:,}"],
+        text=[f"{p:,}" for p in n4s2_prog],
         textposition="outside", textfont=dict(size=12, color="#0f2b52"),
         hovertemplate="<b>%{x}</b><br>%{y:,} programs<extra></extra>",
     ))
@@ -889,14 +889,14 @@ with tabs[4]:
     def _color(r):
         name = r.park
         if "Park No. 566" in name or "Rainbow Beach" in name:
-            return "#b06200"          # bright red — most disinvested lakefront
+            return "#b06200"          # amber — most disinvested lakefront
         if "Grant Park" in name or "Burnham Park" in name:
-            return "#1b6ca8"          # blue — downtown comparison
+            return "#1a4480"          # navy — downtown comparison
         if "Rogers Beach" in name:
-            return "#29b6f6"          # lighter blue — N.Side lakefront comparison
+            return "#1b6ca8"          # medium blue — N.Side lakefront comparison
         if r.demo == "Latino/Black":
-            return "#b06200"          # amber — mixed Latino/Black
-        return "#c62828"              # dark red — other disinvested (Black community)
+            return "#5d8a3c"          # olive green — mixed Latino/Black
+        return "#2d6a4f"              # deep teal green — other disinvested parks
 
     d_chart["color"] = d_chart.apply(_color, axis=1)
     d_sorted = d_chart.sort_values("sqft_val", ascending=True).reset_index(drop=True)
@@ -922,13 +922,9 @@ with tabs[4]:
             "<i>%{customdata[4]}</i>"
             "<extra></extra>"
         ),
-        customdata=list(zip(
-            d_sorted.inv_M,
-            d_sorted.acres.apply(lambda a: f"{a:.1f}" if a < 10 else str(int(a))),
-            d_sorted.comm,
-            d_sorted.demo,
-            d_sorted.note,
-        )),
+        customdata=d_sorted.assign(
+            acres_fmt=d_sorted["acres"].apply(lambda a: f"{a:.1f}" if a < 10 else str(int(a)))
+        )[["inv_M","acres_fmt","comm","demo","note"]].values,
     ))
 
     # Annotations: mark Park 566 and Rainbow Beach explicitly
@@ -938,14 +934,14 @@ with tabs[4]:
                 x=row.sqft_val, y=row.park,
                 text="  ← #1 most disinvested lakefront park in Chicago",
                 xanchor="left", showarrow=False,
-                font=dict(color="#ef9a9a", size=10), xshift=45,
+                font=dict(color="#b06200", size=10), xshift=45,
             )
         elif "Rainbow Beach" in row.park:
             fig_di.add_annotation(
                 x=row.sqft_val, y=row.park,
                 text="  ← #2 most disinvested lakefront park in Chicago",
                 xanchor="left", showarrow=False,
-                font=dict(color="#ef9a9a", size=10), xshift=45,
+                font=dict(color="#b06200", size=10), xshift=45,
             )
 
     # Reference line at $1.00
