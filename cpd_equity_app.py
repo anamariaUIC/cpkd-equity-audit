@@ -35,7 +35,7 @@ st.markdown("""
               margin-bottom: 1.5rem; }
   .kpi { background: #fff; border: 1px solid #222; border-radius: 10px; padding: 1.2rem; }
   .kpi-val { font-size: 28px; font-weight: 600; margin: 0 0 4px; font-family: 'IBM Plex Mono'; }
-  .kpi-lbl { font-size: 12px; color: #888; margin: 0; }
+  .kpi-lbl { font-size: 12px; color: #4a5e78; margin: 0; }
   .kpi-note { font-size: 11px; color: #555; margin: 4px 0 0; }
   .kpi-red .kpi-val { color: #b06200; }
   .kpi-blue .kpi-val { color: #1b6ca8; }
@@ -962,24 +962,24 @@ with tabs[4]:
             title=dict(text="Investment per sq ft ($)", font=dict(color=AXIS_CLR)),
             range=[0, 12],
         ),
-        yaxis=dict(tickfont=dict(color="#dddddd", size=11)),
+        yaxis=dict(tickfont=dict(color="#1e3a52", size=11)),
     )
     st.plotly_chart(fig_di, width='stretch')
 
     # ── Legend ─────────────────────────────────────────────────────────────
     st.markdown("""
-    <div style="display:flex;flex-wrap:wrap;gap:14px;margin:4px 0 1.25rem;font-size:12px;color:#888;">
+    <div style="display:flex;flex-wrap:wrap;gap:14px;margin:4px 0 1.25rem;font-size:12px;color:#3d5166;">
       <span style="display:flex;align-items:center;gap:5px;">
         <span style="width:12px;height:12px;border-radius:3px;background:#b06200;display:inline-block;"></span>
         Lakefront — S. Side (disinvested)</span>
       <span style="display:flex;align-items:center;gap:5px;">
-        <span style="width:12px;height:12px;border-radius:3px;background:#c62828;display:inline-block;"></span>
+        <span style="width:12px;height:12px;border-radius:3px;background:#2d6a4f;display:inline-block;"></span>
         Neighborhood — Black community</span>
       <span style="display:flex;align-items:center;gap:5px;">
         <span style="width:12px;height:12px;border-radius:3px;background:#1a6b3c;display:inline-block;"></span>
         Neighborhood — Latino/Black</span>
       <span style="display:flex;align-items:center;gap:5px;">
-        <span style="width:12px;height:12px;border-radius:3px;background:#29b6f6;display:inline-block;"></span>
+        <span style="width:12px;height:12px;border-radius:3px;background:#1b6ca8;display:inline-block;"></span>
         Lakefront — N. Side (comparison)</span>
       <span style="display:flex;align-items:center;gap:5px;">
         <span style="width:12px;height:12px;border-radius:3px;background:#1b6ca8;display:inline-block;"></span>
@@ -1123,10 +1123,23 @@ with tabs[5]:
 # ── Footer ────────────────────────────────────────────────────────────────────
 st.markdown("""
 <hr style="border:none;border-top:1px solid #d0dcea;margin:2.5rem 0 1rem;">
-<p style="font-size:11px;color:#444;line-height:1.7;">
-  Chicago Park District Equity Analysis · Data: CPD Capital Projects 2011–2024 (April 2024) ·
-  Analysis methodology by Ana Marija Soković · Built with Streamlit + Plotly ·
-  Lakefront $/sq ft confirmed via GIS-normalized independent analysis ·
-  This report is for public information and advocacy purposes.
-</p>
+<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
+  <div>
+    <p style="font-size:13px;font-weight:600;color:#0f2b52;margin:0 0 3px;">
+      This report was prepared by Ana Marija Soković, PhD, MBA
+    </p>
+    <p style="font-size:11px;color:#4a5e78;margin:0;line-height:1.6;">
+      Lead Computational Scientist, UIC ACER &nbsp;·&nbsp;
+      Civic accountability researcher, 7th Ward South Shore &nbsp;·&nbsp;
+      Chair, Chicago Women in High Performance Computing
+    </p>
+  </div>
+  <p style="font-size:11px;color:#7a90a8;line-height:1.7;margin:0;text-align:right;">
+    Data: CPD Capital Projects 2011–2024 (April 2024) &nbsp;·&nbsp;
+    SEIU Local 73 State of the Parks 2025 &nbsp;·&nbsp;
+    Built with Streamlit + Plotly<br>
+    Lakefront $/sq ft confirmed via independent GIS-normalized analysis &nbsp;·&nbsp;
+    For public information and advocacy purposes
+  </p>
+</div>
 """, unsafe_allow_html=True)
