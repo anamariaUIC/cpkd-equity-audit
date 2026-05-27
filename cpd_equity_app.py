@@ -47,7 +47,7 @@ st.markdown("""
   .callout-red { background: #fef7ee; border-left: 3px solid #b06200; color: #3d1f00; }
   .callout-blue { background: #eef3fb; border-left: 3px solid #1a4480; color: #0f2b52; }
   .callout-amber { background: #edfaf3; border-left: 3px solid #1a6b3c; color: #0a2d1a; }
-  .callout b { color: #fff; }
+  .callout b { color: #0f2b52; font-weight: 600; }
 
   /* Section headers */
   .sec-head { font-size: 16px; font-weight: 500; color: #0f2b52;
@@ -340,7 +340,7 @@ with tabs[0]:
                           xaxis=dict(gridcolor=GRID_CLR, tickfont=dict(color=AXIS_CLR),
                                      title=dict(text="Total investment ($M)", font=dict(color=AXIS_CLR))),
                           yaxis=dict(tickfont=dict(color="#4a5e78"), categoryorder="total ascending"))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
 
     with c2:
         st.markdown('<p class="sec-head">Average investment per park by region ($M)</p>', unsafe_allow_html=True)
@@ -368,7 +368,7 @@ with tabs[0]:
                                       title=dict(text="Avg per park ($M)", font=dict(color=AXIS_CLR))),
                            legend=dict(bgcolor="rgba(255,255,255,0)", font=dict(size=10),
                                        orientation="h", yanchor="bottom", y=1.02))
-        st.plotly_chart(fig2, use_container_width=True)
+        st.plotly_chart(fig2, width='stretch')
 
     c3, c4 = st.columns(2)
     with c3:
@@ -388,7 +388,7 @@ with tabs[0]:
                                       tickfont=dict(color=AXIS_CLR),
                                       title=dict(text="% from outside sources", font=dict(color=AXIS_CLR))),
                            xaxis=dict(tickfont=dict(color=AXIS_CLR), tickangle=-30))
-        st.plotly_chart(fig3, use_container_width=True)
+        st.plotly_chart(fig3, width='stretch')
 
     with c4:
         st.markdown('<p class="sec-head">Unfunded identified needs — pending & pre-design projects</p>', unsafe_allow_html=True)
@@ -406,7 +406,7 @@ with tabs[0]:
                            yaxis=dict(gridcolor=GRID_CLR, tickfont=dict(color=AXIS_CLR),
                                       title=dict(text="Approx. unfunded projects", font=dict(color=AXIS_CLR))),
                            xaxis=dict(tickfont=dict(color=AXIS_CLR), tickangle=-30))
-        st.plotly_chart(fig4, use_container_width=True)
+        st.plotly_chart(fig4, width='stretch')
 
     st.markdown("""
     <div class="callout callout-amber">
@@ -451,7 +451,7 @@ with tabs[1]:
                    title=dict(text="Investment per acre ($)", font=dict(color=AXIS_CLR))),
         yaxis=dict(tickfont=dict(color="#4a5e78")),
     )
-    st.plotly_chart(fig_ac, use_container_width=True)
+    st.plotly_chart(fig_ac, width='stretch')
 
     ca, cb = st.columns(2)
     with ca:
@@ -550,7 +550,7 @@ with tabs[2]:
                    title=dict(text="Investment per sq ft ($)", font=dict(color=AXIS_CLR))),
         yaxis=dict(tickfont=dict(color="#4a5e78")),
     )
-    st.plotly_chart(fig_lf, use_container_width=True)
+    st.plotly_chart(fig_lf, width='stretch')
 
     c1, c2 = st.columns(2)
     with c1:
@@ -672,7 +672,7 @@ with tabs[3]:
                        title=dict(text="# Programs (2024)", font=dict(color=AXIS_CLR))),
             xaxis=dict(tickfont=dict(color=AXIS_CLR)),
         )
-        st.plotly_chart(fig_p1, use_container_width=True)
+        st.plotly_chart(fig_p1, width='stretch')
 
     with c2:
         st.markdown('<p class="sec-head">Enrollees by region, 2024</p>', unsafe_allow_html=True)
@@ -697,7 +697,7 @@ with tabs[3]:
                        title=dict(text="# Enrollees (2024)", font=dict(color=AXIS_CLR))),
             xaxis=dict(tickfont=dict(color=AXIS_CLR)),
         )
-        st.plotly_chart(fig_p2, use_container_width=True)
+        st.plotly_chart(fig_p2, width='stretch')
 
     # ── N4 vs S2 comparison ────────────────────────────────────────────────────
     st.markdown('<p class="sec-head" style="margin-top:1rem;">The sharpest comparison: N4 vs. S2 — comparable areas, 8.6× gap</p>', unsafe_allow_html=True)
@@ -742,7 +742,7 @@ with tabs[3]:
                    title=dict(text="# Programs (2024)", font=dict(color=AXIS_CLR))),
         xaxis=dict(tickfont=dict(color=AXIS_CLR)),
     )
-    st.plotly_chart(fig_n4s2, use_container_width=True)
+    st.plotly_chart(fig_n4s2, width='stretch')
 
     st.markdown("""
     <div class="callout callout-red">
@@ -794,7 +794,7 @@ with tabs[3]:
         legend=dict(bgcolor="rgba(255,255,255,0)", font=dict(size=11),
                     orientation="h", yanchor="bottom", y=1.02),
     )
-    st.plotly_chart(fig_arts, use_container_width=True)
+    st.plotly_chart(fig_arts, width='stretch')
 
     # FTE table
     display_arts = arts_data.copy()
@@ -807,7 +807,7 @@ with tabs[3]:
     })
     st.dataframe(
         display_arts[["Position","2010 FTEs","2025 FTEs","# Change","% Change"]],
-        use_container_width=True, hide_index=True,
+        width='stretch', hide_index=True,
     )
 
     # ── Privatization ─────────────────────────────────────────────────────────
@@ -851,7 +851,7 @@ with tabs[3]:
         legend=dict(bgcolor="rgba(255,255,255,0)", font=dict(size=11),
                     orientation="h", yanchor="bottom", y=1.02),
     )
-    st.plotly_chart(fig_priv, use_container_width=True)
+    st.plotly_chart(fig_priv, width='stretch')
 
     st.markdown("""
     <div class="callout callout-red">
@@ -968,7 +968,7 @@ with tabs[4]:
         ),
         yaxis=dict(tickfont=dict(color="#dddddd", size=11)),
     )
-    st.plotly_chart(fig_di, use_container_width=True)
+    st.plotly_chart(fig_di, width='stretch')
 
     # ── Legend ─────────────────────────────────────────────────────────────
     st.markdown("""
@@ -1038,7 +1038,7 @@ with tabs[4]:
     table_df = table_df.sort_values("$/sq ft").reset_index(drop=True)
     st.dataframe(
         table_df[["Park","Acres","Total ($M)","$/sq ft","Acreage source","Community","Demographics"]],
-        use_container_width=True, hide_index=True,
+        width='stretch', hide_index=True,
     )
 
     st.markdown("""
