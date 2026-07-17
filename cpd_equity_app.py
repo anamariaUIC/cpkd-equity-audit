@@ -169,7 +169,7 @@ lakefront = pd.DataFrame([
          note="Small North Side beach park"),
     dict(name="Rogers (Phillip) Beach",               inv_M=0.27, sqft=2.57, color=BLUE,
          comm="Rogers Park / North Side", rank="Comparison",
-         note="Confirmed $2.57/sq ft from CPD data"),
+         note="Confirmed $2.57/sq ft from CPkD data"),
     dict(name="Burnham / Museum\nCampus (N. portion)",inv_M=222,  sqft=4.12, color=BLUE,
          comm="Downtown / tourist", rank="Comparison",
          note="Harbor & CDOT bridges dominate"),
@@ -198,7 +198,7 @@ prog_kpis = pd.DataFrame([
 
 # ── Disinvested parks table ───────────────────────────────────────────────────
 # Lakefront parks (Park 566, Rainbow Beach, Rogers Beach) use GIS polygon area.
-# All others use CPD published acreage.
+# All others use CPkD published acreage.
 # Confirmed: Park 566=$0.20, Rainbow Beach=$0.40, Rogers Beach=$2.57 /sq ft
 disinvest = pd.DataFrame([
     dict(park="Park No. 566  (79th/USX lakefront)", acres=71,   inv_M=0.62,
@@ -212,39 +212,39 @@ disinvest = pd.DataFrame([
          note="GIS polygon; confirmed $2.57/sq ft"),
     dict(park="Marquette Park",                      acres=323,  inv_M=4.0,
          comm="SW Chicago",          demo="Black/Latino",  lakefront=False,
-         note="CPD acreage"),
+         note="CPkD acreage"),
     dict(park="Washington (George) Park",            acres=372,  inv_M=10.0,
          comm="Washington Park",     demo="Black",         lakefront=False,
-         note="CPD acreage"),
+         note="CPkD acreage"),
     dict(park="Humboldt Park",                       acres=219,  inv_M=9.0,
          comm="Humboldt Park",       demo="Latino/Black",  lakefront=False,
-         note="CPD acreage"),
+         note="CPkD acreage"),
     dict(park="Harold Washington Park",              acres=14,   inv_M=0.70,
          comm="Auburn Gresham",      demo="Black",         lakefront=False,
-         note="CPD acreage"),
+         note="CPkD acreage"),
     dict(park="Jackson Park",                        acres=543,  inv_M=30.0,
          comm="Woodlawn/S.Shore",    demo="Black",         lakefront=False,
-         note="CPD acreage; includes Olmsted restoration"),
+         note="CPkD acreage; includes Olmsted restoration"),
     dict(park="West Pullman Park",                   acres=65,   inv_M=6.0,
          comm="West Pullman",        demo="Black",         lakefront=False,
-         note="CPD acreage"),
+         note="CPkD acreage"),
     dict(park="Mann (James) Park",                   acres=35,   inv_M=5.0,
          comm="W. Englewood",        demo="Black",         lakefront=False,
-         note="CPD acreage"),
+         note="CPkD acreage"),
     dict(park="Grand Crossing Park",                 acres=18,   inv_M=2.6,
          comm="Grand Crossing",      demo="Black",         lakefront=False,
-         note="CPD acreage"),
+         note="CPkD acreage"),
     dict(park="West Chatham Park",                   acres=26,   inv_M=4.0,
          comm="Chatham",             demo="Black",         lakefront=False,
-         note="CPD acreage"),
+         note="CPkD acreage"),
     dict(park="── Comparison (downtown lakefront) ──", acres=0,  inv_M=0,
          comm="", demo="", lakefront=False, note=""),
     dict(park="Grant Park  (comparison)",            acres=319,  inv_M=112,
          comm="Downtown",            demo="Tourist/white", lakefront=True,
-         note="CPD acreage; Maggie Daley, Buckingham Fountain, Navy Pier Flyover"),
+         note="CPkD acreage; Maggie Daley, Buckingham Fountain, Navy Pier Flyover"),
     dict(park="Burnham Park  (comparison)",          acres=593,  inv_M=222,
          comm="Museum Campus",       demo="Tourist/white", lakefront=True,
-         note="CPD acreage; 31st St. Harbor ($100.7M) + CDOT bridges dominate"),
+         note="CPkD acreage; 31st St. Harbor ($100.7M) + CDOT bridges dominate"),
 ])
 disinvest["sqft_val"] = disinvest.apply(
     lambda r: round(r.inv_M*1e6/(r.acres*43560), 2) if r.acres > 0 else None, axis=1
@@ -260,8 +260,8 @@ st.markdown("""
   <p class="hero-sub">
     A data-driven audit of 14 years of Chicago Park District capital investment, programming
     allocation, and infrastructure spending — normalized per square foot and analyzed by
-    community demographics. Based on the official CPD Capital Projects report (April 2024,
-    ~3,000 line items) and CPD programming data.
+    community demographics. Based on the official CPkD Capital Projects report (April 2024,
+    ~3,000 line items) and CPkD programming data.
   </p>
 </div>
 """, unsafe_allow_html=True)
@@ -272,7 +272,7 @@ st.markdown("""
   <div class="kpi kpi-blue">
     <p class="kpi-val">$1.14B+</p>
     <p class="kpi-lbl">Total tracked investment, 2011–2024</p>
-    <p class="kpi-note">CPD capital plan, park district + outside funding</p>
+    <p class="kpi-note">CPkD capital plan, park district + outside funding</p>
   </div>
   <div class="kpi kpi-blue">
     <p class="kpi-val">$485M</p>
@@ -417,7 +417,7 @@ with tabs[0]:
       organization has been able to replicate at comparable scale. Capital inequality compounds
       through competitive grant processes that reward existing institutional capacity.
     </div>
-    <p class="src">Source: CPD Park Capital Projects 2011–2024 (April 2024). Regional groupings by community area. Outside funding includes federal (Army Corps, CDOT), philanthropic, and competitive grants.</p>
+    <p class="src">Source: CPkD Park Capital Projects 2011–2024 (April 2024). Regional groupings by community area. Outside funding includes federal (Army Corps, CDOT), philanthropic, and competitive grants.</p>
     """, unsafe_allow_html=True)
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -463,7 +463,7 @@ with tabs[1]:
           Marquette Park: 323 acres · $4M total → <b>$12,383/acre ($0.28/sq ft)</b><br>
           Grant Park: 319 acres · $112M total → <b>$351,097/acre ($8.07/sq ft)</b><br><br>
           Nearly identical park sizes. 8 miles apart. 29× investment gap per acre.
-          CPD's own public reporting never presents the data this way.
+          CPkD's own public reporting never presents the data this way.
         </div>
         """, unsafe_allow_html=True)
     with cb:
@@ -492,7 +492,7 @@ with tabs[1]:
         <span style="width:12px;height:12px;border-radius:3px;background:#616161;display:inline-block;"></span>
         Mixed / gentrifying</span>
     </div>
-    <p class="src">Source: CPD Capital Projects 2011–2024. Per-acre = total project cost ÷ park acreage (CPD published records). Hover bars for per-sq-ft figures.</p>
+    <p class="src">Source: CPkD Capital Projects 2011–2024. Per-acre = total project cost ÷ park acreage (CPkD published records). Hover bars for per-sq-ft figures.</p>
     """, unsafe_allow_html=True)
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -500,7 +500,7 @@ with tabs[1]:
 # ─────────────────────────────────────────────────────────────────────────────
 with tabs[2]:
     st.markdown('<p class="sec-head">Investment per sq ft — lakefront-facing parks only (2011–2024)</p>', unsafe_allow_html=True)
-    st.markdown('<p class="sec-sub">Restricting to lakefront-access parks eliminates the "infrastructure complexity" explanation. These parks share the same amenity class. The equity gap is purely political allocation. Figures confirmed from CPD capital data normalized by GIS polygon area.</p>', unsafe_allow_html=True)
+    st.markdown('<p class="sec-sub">Restricting to lakefront-access parks eliminates the "infrastructure complexity" explanation. These parks share the same amenity class. The equity gap is purely political allocation. Figures confirmed from CPkD capital data normalized by GIS polygon area.</p>', unsafe_allow_html=True)
 
     st.markdown("""
     <div class="kpi-grid">
@@ -587,7 +587,7 @@ with tabs[2]:
       complexity, or tourism demand. It reflects a political allocation choice made
       consistently for 14 years.
     </div>
-    <p class="src">Source: $/sq ft figures confirmed from CPD Capital Projects 2011–2024, normalized by GIS polygon area per independent analysis. Full dataset: drive.google.com/drive/u/0/folders/1o3XV3ABJcbLJeRQeJrwpfUkHnBJwewxm · Methodology: lakefront-facing parks only; GIS polygon area used rather than CPD published acreage to capture full park footprint including beach zones.</p>
+    <p class="src">Source: $/sq ft figures confirmed from CPkD Capital Projects 2011–2024, normalized by GIS polygon area per independent analysis. Full dataset: drive.google.com/drive/u/0/folders/1o3XV3ABJcbLJeRQeJrwpfUkHnBJwewxm · Methodology: lakefront-facing parks only; GIS polygon area used rather than CPkD published acreage to capture full park footprint including beach zones.</p>
     """, unsafe_allow_html=True)
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -595,14 +595,14 @@ with tabs[2]:
 # ─────────────────────────────────────────────────────────────────────────────
 with tabs[3]:
     # ── All data from SEIU Local 73 "State of the Parks Revisited: 2025 Update"
-    # ── (Dr. Molly Hudgens, PhD). FOIA 5844 & 5902, CPD Oct/Nov 2024.
+    # ── (Dr. Molly Hudgens, PhD). FOIA 5844 & 5902, CPkD Oct/Nov 2024.
 
     st.markdown("""
     <div class="callout callout-amber">
       <b>Data source:</b> All programming figures below come from
       <b>SEIU Local 73 "State of the Parks Revisited: 2025 Update"</b> (Dr. Molly Hudgens, PhD),
-      based on CPD data obtained via FOIA 5844 (October 11, 2024) and FOIA 5902 (November 20, 2024).
-      Figures exclude gymnastics, which CPD codes separately. The previous version of this dashboard
+      based on CPkD data obtained via FOIA 5844 (October 11, 2024) and FOIA 5902 (November 20, 2024).
+      Figures exclude gymnastics, which CPkD codes separately. The previous version of this dashboard
       used fabricated regional estimates — those have been fully replaced with verified data.
     </div>
     """, unsafe_allow_html=True)
@@ -636,8 +636,8 @@ with tabs[3]:
     # ── Note on regional structure ────────────────────────────────────────────
     st.markdown("""
     <div class="callout callout-blue">
-      <b>Note on CPD regions:</b> The Chicago Park District uses three regions — North, Central,
-      and South. There is no "West Region" in CPD's structure. The previous version of this
+      <b>Note on CPkD regions:</b> The Chicago Park District uses three regions — North, Central,
+      and South. There is no "West Region" in CPkD's structure. The previous version of this
       dashboard incorrectly showed a West Region — that was fabricated. South Region (8,177
       programs) is higher than Central (6,238) in raw count because it has more parks; the
       equity story is in the North-vs.-South per-park and per-area comparison below.
@@ -867,14 +867,14 @@ with tabs[3]:
     </div>
     <p class="src">Source: SEIU Local 73 "State of the Parks Revisited: 2025 Update" (Dr. Molly Hudgens, PhD).
     Programming data via FOIA 5844 (Oct 11, 2024) and FOIA 5902 (Nov 20, 2024).
-    Management contract data from CPD budgets 2010 and 2025. Culture & Arts FTE data from CPD staffing records.</p>
+    Management contract data from CPkD budgets 2010 and 2025. Culture & Arts FTE data from CPkD staffing records.</p>
     """, unsafe_allow_html=True)
 
 with tabs[4]:
     st.markdown('<p class="sec-head">Most disinvested parks — normalized per square foot, 2011–2024</p>', unsafe_allow_html=True)
     st.markdown(
         '<p class="sec-sub">Per-sq-ft normalization removes the "big park gets more dollars" illusion. '
-        '🌊 marks lakefront parks, which use GIS polygon acreage (confirmed). Other parks use CPD published acreage. '
+        '🌊 marks lakefront parks, which use GIS polygon acreage (confirmed). Other parks use CPkD published acreage. '
         '<b>Park No. 566 ($0.20/sq ft) and Rainbow Beach ($0.40/sq ft) are the #1 and #2 most disinvested '
         'lakefront parks in Chicago.</b> Rogers Beach (North Side, $2.57/sq ft) and the downtown parks are shown for comparison.</p>',
         unsafe_allow_html=True,
@@ -1020,7 +1020,7 @@ with tabs[4]:
         lambda r: round(r.inv_M * 1e6 / (r.acres * 43560), 2), axis=1
     )
     table_df["Acreage source"] = table_df.lakefront.apply(
-        lambda lf: "🌊 GIS polygon" if lf else "CPD published"
+        lambda lf: "🌊 GIS polygon" if lf else "CPkD published"
     )
     table_df = table_df.rename(columns={
         "park": "Park",
@@ -1041,13 +1041,13 @@ with tabs[4]:
 
     st.markdown("""
     <div class="callout callout-red" style="margin-top:1rem;">
-      <b>The large-park penalty:</b> CPD reporting of raw dollar totals without area normalization
+      <b>The large-park penalty:</b> CPkD reporting of raw dollar totals without area normalization
       systematically masks how severely large South/West Side parks are underserved.
       Marquette Park + Washington Park = 695 acres (2× Grant Park) received ~$14M combined
       vs. Grant Park's $112M. Reporting $14M as a significant investment without context is misleading.
     </div>
     <p class="src">🌊 Lakefront $/sq ft for Park 566, Rainbow Beach, Rogers Beach: confirmed from GIS polygon normalization
-    (independent analysis). All other parks: CPD published acreage. Source data: CPD Capital Projects 2011–2024 (April 2024).
+    (independent analysis). All other parks: CPkD published acreage. Source data: CPkD Capital Projects 2011–2024 (April 2024).
     Full dataset: drive.google.com/drive/u/0/folders/1o3XV3ABJcbLJeRQeJrwpfUkHnBJwewxm</p>
     """, unsafe_allow_html=True)
 
@@ -1064,6 +1064,10 @@ with tabs[5]:
       <b>Data source:</b> CPkD FOIA R-6663 (June 30, 2024 to May 7, 2026) — Metropolis Vision
       System daily revenue, vehicle quantity, and 15-minute grace period exits for all 10 gated
       CPkD parking lots. CPkD New Parking System Quick Facts (2026). Analysis: Ana Marija Soković, PhD, MBA.
+      <br><br>
+      <b>Methodological note:</b> The Metropolis system replaced a prior voluntary payment system.
+      Go-live dates range from November 2025 to January 2026. Revenue figures before each lot's
+      go-live date reflect the legacy system. Post-go-live figures are analyzed separately.
     </div>
     """, unsafe_allow_html=True)
 
@@ -1072,222 +1076,285 @@ with tabs[5]:
     <div class="kpi-grid">
       <div class="kpi kpi-red">
         <p class="kpi-val">86.6%</p>
-        <p class="kpi-lbl">Rainbow Beach North grace period rate</p>
-        <p class="kpi-note">5.8 free exits for every 1 paid visit — vs 0.28 at North Avenue Beach</p>
+        <p class="kpi-lbl">Rainbow Beach North grace-exit share</p>
+        <p class="kpi-note">6.46 free exits per paid transaction vs 0.28 at North Avenue Beach</p>
       </div>
       <div class="kpi kpi-red">
         <p class="kpi-val">-72.5%</p>
-        <p class="kpi-lbl">Foster Beach revenue collapse post-gate</p>
-        <p class="kpi-note">Year-over-year. Transactions fell 70.8%. Pattern, not anomaly.</p>
+        <p class="kpi-lbl">Foster Beach revenue year-over-year</p>
+        <p class="kpi-note">Same calendar window post-gate vs prior year. Transactions -70.8%.</p>
       </div>
       <div class="kpi kpi-amber">
         <p class="kpi-val">0.8%</p>
-        <p class="kpi-lbl">Rainbow Beach share of system revenue</p>
-        <p class="kpi-note">$38,485 of $5.09M total — community pays to subsidize other parks</p>
+        <p class="kpi-lbl">Rainbow Beach share of full-dataset revenue</p>
+        <p class="kpi-note">$38,485 of $5.09M total, June 2024 to May 2026 (both systems)</p>
       </div>
       <div class="kpi kpi-blue">
         <p class="kpi-val">+17.4%</p>
         <p class="kpi-lbl">MSI East revenue growth post-gate</p>
-        <p class="kpi-note">Tourist destinations grew. Community parks shrank. Same system.</p>
+        <p class="kpi-note">Museum-oriented lots grew. Community park lots diverged sharply.</p>
       </div>
     </div>
     """, unsafe_allow_html=True)
 
-    # ── FINDING 1: Grace period ───────────────────────────────────────────────
-    st.markdown('<p class="sec-head" style="margin-top:0.5rem;">Finding 1 — The grace period data exposes deterrence, not access</p>',
-                unsafe_allow_html=True)
+    # ── FINDING P1 ────────────────────────────────────────────────────────────
     st.markdown("""
-    <div class="callout callout-red">
-      At Rainbow Beach North, <b>86.6% of all recorded visits use the 15-minute free grace period
-      instead of paying</b> — 5.8 free exits for every 1 paid transaction. At North Avenue Beach,
-      that ratio is 0.28: paying users outnumber grace exits 3.5 to 1. This tells you what CPkD
-      cannot explain away: Rainbow Beach visitors are encountering the registration barrier
-      (smartphone, phone confirmation, vehicle details, payment info), and leaving within 15 minutes.
-      They are not having beach days. <b>The gate is not generating revenue. It is generating
-      deterrence.</b> The community bearing that deterrence is the one that can least afford to be
-      turned away from its only public lakefront space.
-    </div>
+    <p class="sec-head" style="margin-top:0.5rem;">
+      Finding P1 — Rainbow Beach records exceptionally high short-stay exit activity
+    </p>
     """, unsafe_allow_html=True)
 
-    # Grace period chart
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        st.markdown("""
+        <div class="finding">
+          <p class="finding-num">What the data show</p>
+          <p class="finding-body">At Rainbow Beach North, <b>86.6% of recorded observed visits
+          ended within the 15-minute grace period</b> — 6.46 free exits per paid transaction.
+          At North Avenue Beach: 21.8% grace share, 0.28 exits per paid transaction.
+          Rainbow Beach South: 82.7% grace share.</p>
+        </div>
+        """, unsafe_allow_html=True)
+    with c2:
+        st.markdown("""
+        <div class="finding">
+          <p class="finding-num">What this may indicate</p>
+          <p class="finding-body">The pattern is consistent with registration friction,
+          visitors deciding not to remain, pickup/drop-off use, or very short visits.
+          The available data does not distinguish among these explanations. All are
+          plausible given the neighborhood demographics and the registration requirements.</p>
+        </div>
+        """, unsafe_allow_html=True)
+    with c3:
+        st.markdown("""
+        <div class="finding">
+          <p class="finding-num">What remains unknown</p>
+          <p class="finding-body">CPkD has not disclosed registration-start vs completion
+          rates, abandoned registrations, payment failures, average dwell time for grace
+          exits, or customer service complaints by location. Those records are necessary
+          to establish why visitors are leaving within 15 minutes.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # Grace charts
     grace_data = pd.DataFrame([
         dict(lot="Rainbow Beach North",         grace_pct=86.6, ratio=6.46, side="7th Ward"),
         dict(lot="Rainbow Beach South",         grace_pct=82.7, ratio=4.78, side="7th Ward"),
         dict(lot="Foster",                      grace_pct=61.9, ratio=1.63, side="North Side"),
-        dict(lot="Oakwood Beach 39th St",       grace_pct=56.5, ratio=1.30, side="South Side"),
         dict(lot="MSI East",                    grace_pct=58.6, ratio=1.42, side="Museum Campus"),
-        dict(lot="MSI South",                   grace_pct=37.6, ratio=0.60, side="Museum Campus"),
-        dict(lot="Wilson",                      grace_pct=30.7, ratio=0.44, side="North Side"),
+        dict(lot="Oakwood Beach 39th St",       grace_pct=56.5, ratio=1.30, side="South Side"),
         dict(lot="Waveland",                    grace_pct=47.6, ratio=0.91, side="North Side"),
+        dict(lot="Wilson",                      grace_pct=30.7, ratio=0.44, side="North Side"),
+        dict(lot="MSI South",                   grace_pct=37.6, ratio=0.60, side="Museum Campus"),
         dict(lot="North Avenue Beach",          grace_pct=21.8, ratio=0.28, side="North Side"),
         dict(lot="55th St / South Shore Dr",    grace_pct=19.1, ratio=0.24, side="South Side"),
-    ]).sort_values('grace_pct', ascending=True)
+    ]).sort_values("grace_pct", ascending=True)
 
-    grace_colors = {
-        "7th Ward": RED, "North Side": BLUE,
-        "South Side": AMBER, "Museum Campus": TEAL
-    }
-    c1, c2 = st.columns([3, 2])
-    with c1:
-        st.markdown('<p class="sec-sub">% of all visits using free grace exit (higher = more deterrence)</p>',
+    grace_colors = {"7th Ward": RED, "North Side": BLUE, "South Side": AMBER, "Museum Campus": TEAL}
+
+    gc1, gc2 = st.columns(2)
+    with gc1:
+        st.markdown('<p class="sec-sub">Grace-period exits as % of total visits per lot</p>',
                     unsafe_allow_html=True)
-        fig_grace = go.Figure()
-        fig_grace.add_trace(go.Bar(
-            x=grace_data['grace_pct'],
-            y=grace_data['lot'],
-            orientation='h',
-            marker_color=[grace_colors[s] for s in grace_data['side']],
-            text=[f"{v:.1f}%" for v in grace_data['grace_pct']],
-            textposition='outside',
-            textfont=dict(size=10),
-            hovertemplate="<b>%{y}</b><br>Grace period: %{x:.1f}% of visits<extra></extra>",
+        fig_g1 = go.Figure()
+        fig_g1.add_trace(go.Bar(
+            x=grace_data["grace_pct"], y=grace_data["lot"], orientation="h",
+            marker_color=[grace_colors[s] for s in grace_data["side"]],
+            text=[f"{v:.1f}%" for v in grace_data["grace_pct"]],
+            textposition="outside", textfont=dict(size=10),
+            hovertemplate="<b>%{y}</b><br>Grace: %{x:.1f}%<extra></extra>",
         ))
-        fig_defaults(fig_grace, height=320)
-        fig_grace.update_layout(
-            xaxis=dict(title=dict(text="Grace period exits as % of total visits"), range=[0, 100],
-                       ticksuffix="%"),
+        fig_defaults(fig_g1, height=310)
+        fig_g1.update_layout(
+            xaxis=dict(title=dict(text="Grace exits as % of all visits"), ticksuffix="%", range=[0,100]),
             margin=dict(l=10, r=60, t=10, b=10),
         )
-        st.plotly_chart(fig_grace, width='stretch')
+        st.plotly_chart(fig_g1, width="stretch")
 
-    with c2:
-        st.markdown('<p class="sec-sub">Grace exits per 1 paid transaction</p>', unsafe_allow_html=True)
-        fig_ratio = go.Figure()
-        ratio_sorted = grace_data.sort_values('ratio', ascending=True)
-        fig_ratio.add_trace(go.Bar(
-            x=ratio_sorted['ratio'],
-            y=ratio_sorted['lot'],
-            orientation='h',
-            marker_color=[grace_colors[s] for s in ratio_sorted['side']],
-            text=[f"{v:.2f}x" for v in ratio_sorted['ratio']],
-            textposition='outside',
-            textfont=dict(size=10),
-            hovertemplate="<b>%{y}</b><br>%{x:.2f} grace exits per paid visit<extra></extra>",
+    with gc2:
+        st.markdown('<p class="sec-sub">Grace exits per 1 paid transaction</p>',
+                    unsafe_allow_html=True)
+        r_sorted = grace_data.sort_values("ratio", ascending=True)
+        fig_g2 = go.Figure()
+        fig_g2.add_trace(go.Bar(
+            x=r_sorted["ratio"], y=r_sorted["lot"], orientation="h",
+            marker_color=[grace_colors[s] for s in r_sorted["side"]],
+            text=[f"{v:.2f}x" for v in r_sorted["ratio"]],
+            textposition="outside", textfont=dict(size=10),
+            hovertemplate="<b>%{y}</b><br>%{x:.2f} grace per paid<extra></extra>",
         ))
-        fig_defaults(fig_ratio, height=320)
-        fig_ratio.update_layout(
+        fig_defaults(fig_g2, height=310)
+        fig_g2.update_layout(
             xaxis=dict(title=dict(text="Grace exits per paid visit")),
             margin=dict(l=10, r=60, t=10, b=10),
         )
-        st.plotly_chart(fig_ratio, width='stretch')
+        st.plotly_chart(fig_g2, width="stretch")
 
-    # ── FINDING 2: Year-over-year collapse ────────────────────────────────────
-    st.markdown('<p class="sec-head" style="margin-top:1rem;">Finding 2 — Post-gate revenue collapse: pattern, not anomaly</p>',
-                unsafe_allow_html=True)
+    # ── FINDING P2 ────────────────────────────────────────────────────────────
     st.markdown("""
-    <div class="callout callout-red">
-      <b>Foster Beach revenue collapsed 72.5% year-over-year</b> after gate installation — from
-      $9,976 to $2,747 in the same calendar window. Transactions fell 70.8%. Foster also carries
-      a 61.9% grace share. This is not an isolated Rainbow Beach phenomenon. South Side and
-      lower-revenue lots see dramatic access decline post-gate, while MSI East (a tourist
-      destination) grew 17.4% and MSI South grew 43.1%. Unbanked residents and seniors bear the cost of a system designed for smartphone users. The same system produces opposite
-      outcomes depending on who the park serves.
-    </div>
+    <p class="sec-head" style="margin-top:1rem;">
+      Finding P2 — Post-gate financial outcomes vary sharply by location
+    </p>
     """, unsafe_allow_html=True)
 
-    yoy_data = pd.DataFrame([
-        dict(lot="MSI South",                   rev_chg=43.1,  qty_chg=41.6,  side="Museum Campus"),
-        dict(lot="Oakwood Beach 39th St",        rev_chg=24.1,  qty_chg=37.6,  side="South Side"),
-        dict(lot="MSI East",                     rev_chg=17.4,  qty_chg=21.5,  side="Museum Campus"),
-        dict(lot="North Avenue Beach",           rev_chg=-4.1,  qty_chg=13.4,  side="North Side"),
-        dict(lot="Waveland",                     rev_chg=-3.6,  qty_chg=5.5,   side="North Side"),
-        dict(lot="Wilson",                       rev_chg=-19.4, qty_chg=-0.3,  side="North Side"),
-        dict(lot="55th St / South Shore Dr",     rev_chg=-30.9, qty_chg=-8.0,  side="South Side"),
-        dict(lot="Foster",                       rev_chg=-72.5, qty_chg=-70.8, side="North Side"),
-        dict(lot="Rainbow Beach North",          rev_chg=None,  qty_chg=None,  side="7th Ward"),
-        dict(lot="Rainbow Beach South",          rev_chg=None,  qty_chg=None,  side="7th Ward"),
-    ])
+    yc1, yc2, yc3 = st.columns(3)
+    with yc1:
+        st.markdown("""
+        <div class="finding">
+          <p class="finding-num">What the data show</p>
+          <p class="finding-body">Same-calendar-window year-over-year comparisons show revenue
+          declines at Foster (-72.5%), 55th/South Shore (-30.9%), and Wilson (-19.4%), while
+          MSI East (+17.4%), Oakwood (+24.1%), and MSI South (+43.1%) increased.
+          Foster transactions fell 70.8%.</p>
+        </div>
+        """, unsafe_allow_html=True)
+    with yc2:
+        st.markdown("""
+        <div class="finding">
+          <p class="finding-num">What this may indicate</p>
+          <p class="finding-body">The results do not support a uniform claim that Metropolis
+          increased revenue or compliance. They show materially different outcomes by location —
+          with museum-oriented lots growing and several community-serving lots declining.
+          The Foster result is severe and warrants investigation.</p>
+        </div>
+        """, unsafe_allow_html=True)
+    with yc3:
+        st.markdown("""
+        <div class="finding">
+          <p class="finding-num">What remains unknown</p>
+          <p class="finding-body">Weather variation, special events, nearby construction,
+          and operational differences must be evaluated before attributing results solely
+          to the parking system. CPkD has not provided visit-purpose data, visitor surveys,
+          or an equity impact assessment for any lot.</p>
+        </div>
+        """, unsafe_allow_html=True)
 
-    # Exclude Rainbow Beach from YoY (prior year had near-zero voluntary system data)
-    yoy_plot = yoy_data.dropna(subset=['rev_chg']).sort_values('rev_chg', ascending=True)
-    bar_cols_yoy = [RED if v < 0 else GREEN for v in yoy_plot['rev_chg']]
+    yoy_plot = pd.DataFrame([
+        dict(lot="MSI South",               rev_chg=43.1),
+        dict(lot="Oakwood Beach 39th St",   rev_chg=24.1),
+        dict(lot="MSI East",                rev_chg=17.4),
+        dict(lot="North Avenue Beach",      rev_chg=-4.1),
+        dict(lot="Waveland",                rev_chg=-3.6),
+        dict(lot="Wilson",                  rev_chg=-19.4),
+        dict(lot="55th St / South Shore Dr",rev_chg=-30.9),
+        dict(lot="Foster",                  rev_chg=-72.5),
+    ]).sort_values("rev_chg", ascending=True)
 
+    st.markdown('<p class="sec-sub">Year-over-year revenue change: post-gate period vs same calendar window '
+                'prior year. Rainbow Beach excluded — prior voluntary system had near-zero recorded revenue.</p>',
+                unsafe_allow_html=True)
     fig_yoy = go.Figure()
     fig_yoy.add_trace(go.Bar(
-        x=yoy_plot['rev_chg'],
-        y=yoy_plot['lot'],
-        orientation='h',
-        marker_color=bar_cols_yoy,
-        text=[f"{v:+.1f}%" for v in yoy_plot['rev_chg']],
-        textposition='outside',
-        textfont=dict(size=10),
-        hovertemplate="<b>%{y}</b><br>Revenue change: %{x:+.1f}%<extra></extra>",
+        x=yoy_plot["rev_chg"], y=yoy_plot["lot"], orientation="h",
+        marker_color=[RED if v < 0 else GREEN for v in yoy_plot["rev_chg"]],
+        text=[f"{v:+.1f}%" for v in yoy_plot["rev_chg"]],
+        textposition="outside", textfont=dict(size=10),
+        hovertemplate="<b>%{y}</b><br>%{x:+.1f}%<extra></extra>",
     ))
     fig_yoy.add_vline(x=0, line_color=GREY, line_width=1)
-    fig_defaults(fig_yoy, height=300)
+    fig_defaults(fig_yoy, height=280)
     fig_yoy.update_layout(
         xaxis=dict(title=dict(text="Year-over-year revenue change (%)"), ticksuffix="%"),
         margin=dict(l=10, r=70, t=10, b=10),
     )
-    st.markdown('<p class="sec-sub">Year-over-year revenue change: same calendar window, post-gate vs prior year. '
-                'Rainbow Beach excluded — prior-year voluntary system had near-zero recorded revenue.</p>',
-                unsafe_allow_html=True)
-    st.plotly_chart(fig_yoy, width='stretch')
+    st.plotly_chart(fig_yoy, width="stretch")
 
-    # ── FINDING 3: Digital registration barrier ───────────────────────────────
-    st.markdown('<p class="sec-head" style="margin-top:1rem;">Finding 3 — The digital registration barrier is an undocumented equity harm</p>',
+    # ── FINDING P3 ────────────────────────────────────────────────────────────
+    st.markdown("""
+    <p class="sec-head" style="margin-top:1rem;">
+      Finding P3 — Digital-only registration creates an unmeasured equity risk
+    </p>
+    """, unsafe_allow_html=True)
+
+    dc1, dc2, dc3 = st.columns(3)
+    with dc1:
+        st.markdown("""
+        <div class="finding">
+          <p class="finding-num">What the data show</p>
+          <p class="finding-body">Metropolis requires first-time users to complete
+          a phone-based registration: QR code scan, phone number confirmation,
+          vehicle information, and payment details. CPkD calls this "easy sign-up."
+          No cash alternative or non-smartphone pathway is described in the Fact Sheet.</p>
+        </div>
+        """, unsafe_allow_html=True)
+    with dc2:
+        st.markdown("""
+        <div class="finding">
+          <p class="finding-num">What this may indicate</p>
+          <p class="finding-body">The registration process creates plausible barriers for
+          residents without smartphones, without payment cards, with limited digital
+          proficiency, or who are seniors unfamiliar with QR-code flows. Rainbow Beach
+          serves a neighborhood where these conditions are more prevalent. The high grace
+          rate makes this an urgent question — but the data do not confirm who is leaving
+          or why.</p>
+        </div>
+        """, unsafe_allow_html=True)
+    with dc3:
+        st.markdown("""
+        <div class="finding">
+          <p class="finding-num">What CPkD has not disclosed</p>
+          <p class="finding-body">Registration starts vs completions · Failed or abandoned
+          registrations · Declined payments · Customer service complaints by location ·
+          Cash or non-smartphone alternatives · ADA and language-access assessments ·
+          Average dwell time for grace exits · Any equity impact assessment for the
+          Metropolis system.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # ── Revenue tables ────────────────────────────────────────────────────────
+    st.markdown('<p class="sec-head" style="margin-top:1rem;">Revenue by lot: full dataset vs post-Metropolis go-live</p>',
                 unsafe_allow_html=True)
     st.markdown("""
-    <div class="callout callout-red">
-      The Metropolis system requires a <b>smartphone, phone number confirmation, vehicle details,
-      and payment information</b> to register. CPkD's own fact sheet calls this "easy sign-up."
-      The grace period data says otherwise. In South Shore (60649): nearly 1 in 5 residents is
-      over 65, the neighborhood has one of the highest concentrations of Section 8 voucher holders
-      in the city, and median household income is approximately $40K. Unbanked residents, residents
-      without smartphones, and seniors unfamiliar with QR-code registration are being structurally
-      excluded — not by a policy that names them, but by a process that assumes they do not exist.
-      The 86.6% grace rate at Rainbow Beach North is the data signature of that exclusion.
+    <div class="callout callout-blue">
+      The full-dataset figures (June 2024 to May 2026) combine revenue from the prior voluntary
+      payment system and the Metropolis gate system. Most lots did not go live on Metropolis until
+      late 2025 or January 2026. Post-go-live figures show only the Metropolis period. Both are
+      shown below for transparency. CPkD states parking revenue supports districtwide programs
+      but has not provided location-level revenue allocation records showing where each lot's
+      revenue is spent.
     </div>
     """, unsafe_allow_html=True)
 
-    # Go-live timeline + revenue table
-    st.markdown('<p class="sec-head" style="margin-top:1rem;">All lots: go-live dates and revenue summary</p>',
-                unsafe_allow_html=True)
-
-    summary_tbl = pd.DataFrame([
-        dict(lot="North Avenue Beach",         golive="Nov 24, 2025", area="North Side",
-             total_rev=2007285, daily_avg=3046, vehicles=80396, grace_pct=21.8),
-        dict(lot="Waveland",                   golive="Dec 24, 2025", area="North Side",
-             total_rev=369854,  daily_avg=548,  vehicles=46137, grace_pct=47.6),
-        dict(lot="Wilson",                     golive="Jan 7, 2026",  area="North Side",
-             total_rev=304484,  daily_avg=474,  vehicles=35823, grace_pct=30.7),
-        dict(lot="Foster",                     golive="Jan 22, 2026", area="North Side",
-             total_rev=424173,  daily_avg=647,  vehicles=51439, grace_pct=61.9),
-        dict(lot="55th St / South Shore Dr",   golive="Dec 17, 2025", area="South Side",
-             total_rev=209075,  daily_avg=328,  vehicles=25985, grace_pct=19.1),
-        dict(lot="Oakwood Beach 39th St",      golive="Dec 18, 2025", area="South Side",
-             total_rev=238993,  daily_avg=354,  vehicles=38680, grace_pct=56.5),
-        dict(lot="MSI East",                   golive="Jan 7, 2026",  area="Museum Campus",
-             total_rev=1135272, daily_avg=1682, vehicles=51965, grace_pct=58.6),
-        dict(lot="MSI South",                  golive="Jan 7, 2026",  area="Museum Campus",
-             total_rev=366584,  daily_avg=550,  vehicles=44579, grace_pct=37.6),
-        dict(lot="Rainbow Beach North",        golive="Jan 28, 2026", area="7th Ward (South Shore)",
-             total_rev=21305,   daily_avg=42,   vehicles=2604,  grace_pct=86.6),
-        dict(lot="Rainbow Beach South",        golive="Jan 28, 2026", area="7th Ward (South Shore)",
-             total_rev=17180,   daily_avg=37,   vehicles=2105,  grace_pct=82.7),
+    rev_table = pd.DataFrame([
+        dict(lot="North Avenue Beach",       area="North Side",           golive="Nov 24 2025",
+             full_rev=2007285, post_rev=95418,  post_day=578,  grace_pct=21.8),
+        dict(lot="MSI East",                 area="Museum Campus",        golive="Jan 7 2026",
+             full_rev=1135272, post_rev=184103, post_day=1522, grace_pct=58.6),
+        dict(lot="Foster",                   area="North Side",           golive="Jan 22 2026",
+             full_rev=424173,  post_rev=2747,   post_day=26,   grace_pct=61.9),
+        dict(lot="Waveland",                 area="North Side",           golive="Dec 24 2025",
+             full_rev=369854,  post_rev=33111,  post_day=249,  grace_pct=47.6),
+        dict(lot="MSI South",                area="Museum Campus",        golive="Jan 7 2026",
+             full_rev=366584,  post_rev=71749,  post_day=593,  grace_pct=37.6),
+        dict(lot="Wilson",                   area="North Side",           golive="Jan 7 2026",
+             full_rev=304484,  post_rev=21345,  post_day=180,  grace_pct=30.7),
+        dict(lot="Oakwood Beach 39th St",    area="South Side",           golive="Dec 18 2025",
+             full_rev=238993,  post_rev=27807,  post_day=197,  grace_pct=56.5),
+        dict(lot="55th St / South Shore Dr", area="South Side",           golive="Dec 17 2025",
+             full_rev=209075,  post_rev=5667,   post_day=40,   grace_pct=19.1),
+        dict(lot="Rainbow Beach North",      area="7th Ward (S. Shore)",  golive="Jan 28 2026",
+             full_rev=21305,   post_rev=2692,   post_day=27,   grace_pct=86.6),
+        dict(lot="Rainbow Beach South",      area="7th Ward (S. Shore)",  golive="Jan 28 2026",
+             full_rev=17180,   post_rev=1627,   post_day=16,   grace_pct=82.7),
     ])
 
-    display_tbl = summary_tbl.copy()
-    display_tbl['total_rev'] = display_tbl['total_rev'].apply(lambda v: f"${v:,.0f}")
-    display_tbl['daily_avg'] = display_tbl['daily_avg'].apply(lambda v: f"${v:,.0f}")
-    display_tbl['vehicles']  = display_tbl['vehicles'].apply(lambda v: f"{v:,.0f}")
-    display_tbl['grace_pct'] = display_tbl['grace_pct'].apply(lambda v: f"{v:.1f}%")
-    display_tbl = display_tbl.rename(columns={
-        "lot":"Location","golive":"Go-Live","area":"Area",
-        "total_rev":"Total Revenue","daily_avg":"$/Day Avg",
-        "vehicles":"Vehicles","grace_pct":"Grace Period %"
+    disp = rev_table.copy()
+    disp["full_rev"] = disp["full_rev"].apply(lambda v: f"${v:,.0f}")
+    disp["post_rev"] = disp["post_rev"].apply(lambda v: f"${v:,.0f}")
+    disp["post_day"] = disp["post_day"].apply(lambda v: f"${v:,.0f}")
+    disp["grace_pct"]= disp["grace_pct"].apply(lambda v: f"{v:.1f}%")
+    disp = disp.rename(columns={
+        "lot":"Location","area":"Area","golive":"Metropolis Go-Live",
+        "full_rev":"Full Dataset Revenue (Jun 2024-May 2026)",
+        "post_rev":"Post-Go-Live Revenue","post_day":"Post-Go-Live $/Day",
+        "grace_pct":"Grace Exit %"
     })
-    st.dataframe(display_tbl, use_container_width=True, hide_index=True)
+    st.dataframe(disp, use_container_width=True, hide_index=True)
 
     st.markdown("""
-    <div class="callout callout-blue" style="margin-top:1rem;">
-      <b>Note on grace period data disclosure:</b> CPkD's FOIA response includes a "15m Grace Period"
-      sheet. Data is available from July 7, 2025 onward. The sheet was initially blank in early rows
-      before Metropolis go-live dates at each lot. Grace period tracking appears to have started at
-      system activation for each location. Rainbow Beach grace data covers 100 days post go-live.
-    </div>
-    <p class="src">Source: CPkD FOIA R-6663, filed by Ana Marija Soković. Data: June 30, 2024 to
-    May 7, 2026. Year-over-year compares equivalent post-go-live calendar windows.
+    <p class="src">Source: CPkD FOIA R-6663, filed by Ana Marija Soković.
+    Data period: June 30, 2024 to May 7, 2026.
+    Year-over-year compares equivalent post-go-live calendar windows.
     CPkD Parking Fact Sheet: New Parking System Quick Facts (2026).</p>
     """, unsafe_allow_html=True)
 
@@ -1295,7 +1362,7 @@ with tabs[5]:
 # ─────────────────────────────────────────────────────────────────────────────
 with tabs[6]:
     findings = [
-        ("Finding 1", "North Lakefront concentration is structurally extreme",
+        ("Finding 1", "Central lakefront and flagship-park investment concentration is structurally extreme",
          "Three parks — Grant, Lincoln, and Burnham — absorbed ~$485M over 14 years. "
          "Stripping out CDOT/Army Corps co-investments still leaves those three parks with "
          "more total park district spending than the entire South Side combined."),
@@ -1305,11 +1372,11 @@ with tabs[6]:
          "Rainbow Beach (South Shore, 7th Ward) receives <b>$0.40/sq ft</b>, second lowest. "
          "Rogers Beach (North Side) receives <b>$2.57/sq ft</b>. A 6.4× gap within the same "
          "amenity class: direct lakefront access."),
-        ("Finding 3", "The 29× Marquette–Grant gap is the clearest structural proof",
+        ("Finding 3", "The Marquette–Grant gap is the clearest illustration of the investment disparity",
          "Marquette Park (323 acres, Black/Latino SW community): $4M total = $0.28/sq ft. "
          "Grant Park (319 acres, downtown tourism): $112M total = $8.07/sq ft. "
          "Nearly identical park sizes. 8 miles apart. 29× investment gap per acre. "
-         "CPD's own public reporting never presents this comparison."),
+         "CPkD's own public reporting never presents this comparison."),
         ("Finding 4", "Pending-funding rate is highest on the South Side",
          "South Side parks carry the highest proportion of 'Pending Funding' and 'Pre-Design' "
          "line items — ~34 identified projects with $0 allocated. These are communities that "
@@ -1329,7 +1396,7 @@ with tabs[6]:
          "federal and philanthropic capital. South Side parks lack this institutional capacity. "
          "Competitive grant processes systematically advantage the already-advantaged. "
          "When South Side PAC leaders attempt to access small grants independently, "
-         "CPD institutional mechanisms suppress rather than support the effort."),
+         "CPkD institutional mechanisms suppress rather than support the effort."),
         ("Finding 8", "What would close the gap",
          "The South Side needs 2–3 Gately-scale investments ($40–60M each) in Englewood, "
          "Roseland, and Washington Heights over the next decade. The West Side needs the same "
@@ -1351,11 +1418,11 @@ with tabs[6]:
 
     st.markdown("""
     <div class="callout callout-blue" style="margin-top:1rem;">
-      <b>Data sources & methodology:</b> CPD Park Capital Projects 2011–2024 (April 2024 release,
+      <b>Data sources & methodology:</b> CPkD Park Capital Projects 2011–2024 (April 2024 release,
       79 pages, ~3,000 line items). Project costs represent combined park district + outside
-      funding totals. Per-acre normalization uses CPD published park acreage. Lakefront per-sq-ft
+      funding totals. Per-acre normalization uses CPkD published park acreage. Lakefront per-sq-ft
       figures use GIS polygon area to capture full beach/shoreline footprints.
-      Programming data: CPD program database; Friends of the Parks State of the Parks 2025;
+      Programming data: CPkD program database; Friends of the Parks State of the Parks 2025;
       CMAP community profiles. Full dataset:
       drive.google.com/drive/u/0/folders/1o3XV3ABJcbLJeRQeJrwpfUkHnBJwewxm
     </div>
@@ -1375,7 +1442,7 @@ st.markdown("""
     </p>
   </div>
   <p style="font-size:11px;color:#7a90a8;line-height:1.7;margin:0;text-align:right;">
-    Data: CPD Capital Projects 2011–2024 (April 2024) &nbsp;·&nbsp;
+    Data: CPkD Capital Projects 2011–2024 (April 2024) &nbsp;·&nbsp;
     SEIU Local 73 State of the Parks 2025 &nbsp;·&nbsp;
     Built with Streamlit + Plotly<br>
     Lakefront $/sq ft confirmed via independent GIS-normalized analysis &nbsp;·&nbsp;
