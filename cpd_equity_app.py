@@ -314,6 +314,8 @@ tabs = st.tabs([
     "🌊 Lakefront Equity",
     "🎭 Programming Gap",
     "📋 Most Disinvested",
+    "🅿️ Parking Gates",
+    "🅿️ Parking Gates",
     "📝 Key Findings",
 ])
 
@@ -1051,8 +1053,247 @@ with tabs[4]:
 
 # ─────────────────────────────────────────────────────────────────────────────
 # TAB 6 · KEY FINDINGS
+
+# ─────────────────────────────────────────────────────────────────────────────
+# TAB 6 · PARKING GATES EQUITY ANALYSIS
 # ─────────────────────────────────────────────────────────────────────────────
 with tabs[5]:
+
+    st.markdown("""
+    <div class="callout callout-amber">
+      <b>Data source:</b> CPkD FOIA R-6663 (June 30, 2024 to May 7, 2026) — Metropolis Vision
+      System daily revenue, vehicle quantity, and 15-minute grace period exits for all 10 gated
+      CPkD parking lots. CPkD New Parking System Quick Facts (2026). Analysis: Ana Marija Soković, PhD, MBA.
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ── KPI row ───────────────────────────────────────────────────────────────
+    st.markdown("""
+    <div class="kpi-grid">
+      <div class="kpi kpi-red">
+        <p class="kpi-val">86.6%</p>
+        <p class="kpi-lbl">Rainbow Beach North grace period rate</p>
+        <p class="kpi-note">5.8 free exits for every 1 paid visit — vs 0.28 at North Avenue Beach</p>
+      </div>
+      <div class="kpi kpi-red">
+        <p class="kpi-val">-72.5%</p>
+        <p class="kpi-lbl">Foster Beach revenue collapse post-gate</p>
+        <p class="kpi-note">Year-over-year. Transactions fell 70.8%. Pattern, not anomaly.</p>
+      </div>
+      <div class="kpi kpi-amber">
+        <p class="kpi-val">0.8%</p>
+        <p class="kpi-lbl">Rainbow Beach share of system revenue</p>
+        <p class="kpi-note">$38,485 of $5.09M total — community pays to subsidize other parks</p>
+      </div>
+      <div class="kpi kpi-blue">
+        <p class="kpi-val">+17.4%</p>
+        <p class="kpi-lbl">MSI East revenue growth post-gate</p>
+        <p class="kpi-note">Tourist destinations grew. Community parks shrank. Same system.</p>
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ── FINDING 1: Grace period ───────────────────────────────────────────────
+    st.markdown('<p class="sec-head" style="margin-top:0.5rem;">Finding 1 — The grace period data exposes deterrence, not access</p>',
+                unsafe_allow_html=True)
+    st.markdown("""
+    <div class="callout callout-red">
+      At Rainbow Beach North, <b>86.6% of all recorded visits use the 15-minute free grace period
+      instead of paying</b> — 5.8 free exits for every 1 paid transaction. At North Avenue Beach,
+      that ratio is 0.28: paying users outnumber grace exits 3.5 to 1. This tells you what CPkD
+      cannot explain away: Rainbow Beach visitors are encountering the registration barrier
+      (smartphone, phone confirmation, vehicle details, payment info), and leaving within 15 minutes.
+      They are not having beach days. <b>The gate is not generating revenue. It is generating
+      deterrence.</b> The community bearing that deterrence is the one that can least afford to be
+      turned away from its only public lakefront space.
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Grace period chart
+    grace_data = pd.DataFrame([
+        dict(lot="Rainbow Beach North",         grace_pct=86.6, ratio=6.46, side="7th Ward"),
+        dict(lot="Rainbow Beach South",         grace_pct=82.7, ratio=4.78, side="7th Ward"),
+        dict(lot="Foster",                      grace_pct=61.9, ratio=1.63, side="North Side"),
+        dict(lot="Oakwood Beach 39th St",       grace_pct=56.5, ratio=1.30, side="South Side"),
+        dict(lot="MSI East",                    grace_pct=58.6, ratio=1.42, side="Museum Campus"),
+        dict(lot="MSI South",                   grace_pct=37.6, ratio=0.60, side="Museum Campus"),
+        dict(lot="Wilson",                      grace_pct=30.7, ratio=0.44, side="North Side"),
+        dict(lot="Waveland",                    grace_pct=47.6, ratio=0.91, side="North Side"),
+        dict(lot="North Avenue Beach",          grace_pct=21.8, ratio=0.28, side="North Side"),
+        dict(lot="55th St / South Shore Dr",    grace_pct=19.1, ratio=0.24, side="South Side"),
+    ]).sort_values('grace_pct', ascending=True)
+
+    grace_colors = {
+        "7th Ward": RED, "North Side": BLUE,
+        "South Side": AMBER, "Museum Campus": TEAL
+    }
+    c1, c2 = st.columns([3, 2])
+    with c1:
+        st.markdown('<p class="sec-sub">% of all visits using free grace exit (higher = more deterrence)</p>',
+                    unsafe_allow_html=True)
+        fig_grace = go.Figure()
+        fig_grace.add_trace(go.Bar(
+            x=grace_data['grace_pct'],
+            y=grace_data['lot'],
+            orientation='h',
+            marker_color=[grace_colors[s] for s in grace_data['side']],
+            text=[f"{v:.1f}%" for v in grace_data['grace_pct']],
+            textposition='outside',
+            textfont=dict(size=10),
+            hovertemplate="<b>%{y}</b><br>Grace period: %{x:.1f}% of visits<extra></extra>",
+        ))
+        fig_defaults(fig_grace, height=320)
+        fig_grace.update_layout(
+            xaxis=dict(title=dict(text="Grace period exits as % of total visits"), range=[0, 100],
+                       ticksuffix="%"),
+            margin=dict(l=10, r=60, t=10, b=10),
+        )
+        st.plotly_chart(fig_grace, width='stretch')
+
+    with c2:
+        st.markdown('<p class="sec-sub">Grace exits per 1 paid transaction</p>', unsafe_allow_html=True)
+        fig_ratio = go.Figure()
+        ratio_sorted = grace_data.sort_values('ratio', ascending=True)
+        fig_ratio.add_trace(go.Bar(
+            x=ratio_sorted['ratio'],
+            y=ratio_sorted['lot'],
+            orientation='h',
+            marker_color=[grace_colors[s] for s in ratio_sorted['side']],
+            text=[f"{v:.2f}x" for v in ratio_sorted['ratio']],
+            textposition='outside',
+            textfont=dict(size=10),
+            hovertemplate="<b>%{y}</b><br>%{x:.2f} grace exits per paid visit<extra></extra>",
+        ))
+        fig_defaults(fig_ratio, height=320)
+        fig_ratio.update_layout(
+            xaxis=dict(title=dict(text="Grace exits per paid visit")),
+            margin=dict(l=10, r=60, t=10, b=10),
+        )
+        st.plotly_chart(fig_ratio, width='stretch')
+
+    # ── FINDING 2: Year-over-year collapse ────────────────────────────────────
+    st.markdown('<p class="sec-head" style="margin-top:1rem;">Finding 2 — Post-gate revenue collapse: pattern, not anomaly</p>',
+                unsafe_allow_html=True)
+    st.markdown("""
+    <div class="callout callout-red">
+      <b>Foster Beach revenue collapsed 72.5% year-over-year</b> after gate installation — from
+      $9,976 to $2,747 in the same calendar window. Transactions fell 70.8%. Foster also carries
+      a 61.9% grace share. This is not an isolated Rainbow Beach phenomenon. South Side and
+      lower-revenue lots see dramatic access decline post-gate, while MSI East (a tourist
+      destination) grew 17.4% and MSI South grew 43.1%. Unbanked residents and seniors bear the cost of a system designed for smartphone users. The same system produces opposite
+      outcomes depending on who the park serves.
+    </div>
+    """, unsafe_allow_html=True)
+
+    yoy_data = pd.DataFrame([
+        dict(lot="MSI South",                   rev_chg=43.1,  qty_chg=41.6,  side="Museum Campus"),
+        dict(lot="Oakwood Beach 39th St",        rev_chg=24.1,  qty_chg=37.6,  side="South Side"),
+        dict(lot="MSI East",                     rev_chg=17.4,  qty_chg=21.5,  side="Museum Campus"),
+        dict(lot="North Avenue Beach",           rev_chg=-4.1,  qty_chg=13.4,  side="North Side"),
+        dict(lot="Waveland",                     rev_chg=-3.6,  qty_chg=5.5,   side="North Side"),
+        dict(lot="Wilson",                       rev_chg=-19.4, qty_chg=-0.3,  side="North Side"),
+        dict(lot="55th St / South Shore Dr",     rev_chg=-30.9, qty_chg=-8.0,  side="South Side"),
+        dict(lot="Foster",                       rev_chg=-72.5, qty_chg=-70.8, side="North Side"),
+        dict(lot="Rainbow Beach North",          rev_chg=None,  qty_chg=None,  side="7th Ward"),
+        dict(lot="Rainbow Beach South",          rev_chg=None,  qty_chg=None,  side="7th Ward"),
+    ])
+
+    # Exclude Rainbow Beach from YoY (prior year had near-zero voluntary system data)
+    yoy_plot = yoy_data.dropna(subset=['rev_chg']).sort_values('rev_chg', ascending=True)
+    bar_cols_yoy = [RED if v < 0 else GREEN for v in yoy_plot['rev_chg']]
+
+    fig_yoy = go.Figure()
+    fig_yoy.add_trace(go.Bar(
+        x=yoy_plot['rev_chg'],
+        y=yoy_plot['lot'],
+        orientation='h',
+        marker_color=bar_cols_yoy,
+        text=[f"{v:+.1f}%" for v in yoy_plot['rev_chg']],
+        textposition='outside',
+        textfont=dict(size=10),
+        hovertemplate="<b>%{y}</b><br>Revenue change: %{x:+.1f}%<extra></extra>",
+    ))
+    fig_yoy.add_vline(x=0, line_color=GREY, line_width=1)
+    fig_defaults(fig_yoy, height=300)
+    fig_yoy.update_layout(
+        xaxis=dict(title=dict(text="Year-over-year revenue change (%)"), ticksuffix="%"),
+        margin=dict(l=10, r=70, t=10, b=10),
+    )
+    st.markdown('<p class="sec-sub">Year-over-year revenue change: same calendar window, post-gate vs prior year. '
+                'Rainbow Beach excluded — prior-year voluntary system had near-zero recorded revenue.</p>',
+                unsafe_allow_html=True)
+    st.plotly_chart(fig_yoy, width='stretch')
+
+    # ── FINDING 3: Digital registration barrier ───────────────────────────────
+    st.markdown('<p class="sec-head" style="margin-top:1rem;">Finding 3 — The digital registration barrier is an undocumented equity harm</p>',
+                unsafe_allow_html=True)
+    st.markdown("""
+    <div class="callout callout-red">
+      The Metropolis system requires a <b>smartphone, phone number confirmation, vehicle details,
+      and payment information</b> to register. CPkD's own fact sheet calls this "easy sign-up."
+      The grace period data says otherwise. In South Shore (60649): nearly 1 in 5 residents is
+      over 65, the neighborhood has one of the highest concentrations of Section 8 voucher holders
+      in the city, and median household income is approximately $40K. Unbanked residents, residents
+      without smartphones, and seniors unfamiliar with QR-code registration are being structurally
+      excluded — not by a policy that names them, but by a process that assumes they do not exist.
+      The 86.6% grace rate at Rainbow Beach North is the data signature of that exclusion.
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Go-live timeline + revenue table
+    st.markdown('<p class="sec-head" style="margin-top:1rem;">All lots: go-live dates and revenue summary</p>',
+                unsafe_allow_html=True)
+
+    summary_tbl = pd.DataFrame([
+        dict(lot="North Avenue Beach",         golive="Nov 24, 2025", area="North Side",
+             total_rev=2007285, daily_avg=3046, vehicles=80396, grace_pct=21.8),
+        dict(lot="Waveland",                   golive="Dec 24, 2025", area="North Side",
+             total_rev=369854,  daily_avg=548,  vehicles=46137, grace_pct=47.6),
+        dict(lot="Wilson",                     golive="Jan 7, 2026",  area="North Side",
+             total_rev=304484,  daily_avg=474,  vehicles=35823, grace_pct=30.7),
+        dict(lot="Foster",                     golive="Jan 22, 2026", area="North Side",
+             total_rev=424173,  daily_avg=647,  vehicles=51439, grace_pct=61.9),
+        dict(lot="55th St / South Shore Dr",   golive="Dec 17, 2025", area="South Side",
+             total_rev=209075,  daily_avg=328,  vehicles=25985, grace_pct=19.1),
+        dict(lot="Oakwood Beach 39th St",      golive="Dec 18, 2025", area="South Side",
+             total_rev=238993,  daily_avg=354,  vehicles=38680, grace_pct=56.5),
+        dict(lot="MSI East",                   golive="Jan 7, 2026",  area="Museum Campus",
+             total_rev=1135272, daily_avg=1682, vehicles=51965, grace_pct=58.6),
+        dict(lot="MSI South",                  golive="Jan 7, 2026",  area="Museum Campus",
+             total_rev=366584,  daily_avg=550,  vehicles=44579, grace_pct=37.6),
+        dict(lot="Rainbow Beach North",        golive="Jan 28, 2026", area="7th Ward (South Shore)",
+             total_rev=21305,   daily_avg=42,   vehicles=2604,  grace_pct=86.6),
+        dict(lot="Rainbow Beach South",        golive="Jan 28, 2026", area="7th Ward (South Shore)",
+             total_rev=17180,   daily_avg=37,   vehicles=2105,  grace_pct=82.7),
+    ])
+
+    display_tbl = summary_tbl.copy()
+    display_tbl['total_rev'] = display_tbl['total_rev'].apply(lambda v: f"${v:,.0f}")
+    display_tbl['daily_avg'] = display_tbl['daily_avg'].apply(lambda v: f"${v:,.0f}")
+    display_tbl['vehicles']  = display_tbl['vehicles'].apply(lambda v: f"{v:,.0f}")
+    display_tbl['grace_pct'] = display_tbl['grace_pct'].apply(lambda v: f"{v:.1f}%")
+    display_tbl = display_tbl.rename(columns={
+        "lot":"Location","golive":"Go-Live","area":"Area",
+        "total_rev":"Total Revenue","daily_avg":"$/Day Avg",
+        "vehicles":"Vehicles","grace_pct":"Grace Period %"
+    })
+    st.dataframe(display_tbl, use_container_width=True, hide_index=True)
+
+    st.markdown("""
+    <div class="callout callout-blue" style="margin-top:1rem;">
+      <b>Note on grace period data disclosure:</b> CPkD's FOIA response includes a "15m Grace Period"
+      sheet. Data is available from July 7, 2025 onward. The sheet was initially blank in early rows
+      before Metropolis go-live dates at each lot. Grace period tracking appears to have started at
+      system activation for each location. Rainbow Beach grace data covers 100 days post go-live.
+    </div>
+    <p class="src">Source: CPkD FOIA R-6663, filed by Ana Marija Soković. Data: June 30, 2024 to
+    May 7, 2026. Year-over-year compares equivalent post-go-live calendar windows.
+    CPkD Parking Fact Sheet: New Parking System Quick Facts (2026).</p>
+    """, unsafe_allow_html=True)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+with tabs[6]:
     findings = [
         ("Finding 1", "North Lakefront concentration is structurally extreme",
          "Three parks — Grant, Lincoln, and Burnham — absorbed ~$485M over 14 years. "
