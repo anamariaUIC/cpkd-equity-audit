@@ -1371,7 +1371,304 @@ with tabs[5]:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────────────────
+# TAB 7 · PARKING GATES FINDINGS (ADVANCED ANALYSIS)
+# ─────────────────────────────────────────────────────────────────────────────
 with tabs[6]:
+
+    st.markdown("""
+    <div class="callout callout-amber">
+      Advanced analysis of Metropolis parking data from CPkD FOIA R-6663.
+      All metrics use post-Metropolis-go-live data only. Quadrant and performance
+      analyses are descriptive — they identify patterns that warrant further investigation
+      rather than establishing causal explanations.
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ── 1. Quadrant plot ──────────────────────────────────────────────────────
+    st.markdown('<p class="sec-head">Quadrant analysis: revenue/day vs grace-exit rate</p>',
+                unsafe_allow_html=True)
+    st.markdown("""
+    <div class="callout callout-blue">
+      <b>How to read this:</b> Each lot is plotted by its average daily post-Metropolis revenue
+      (Y-axis) and grace-period exit rate (X-axis). Lots in the lower-right quadrant generate
+      low revenue and show high grace-period activity — the combination most consistent with
+      access friction or low visitor dwell time. Quadrant boundaries are set at system medians
+      ($188/day revenue, 52.1% grace rate).
+    </div>
+    """, unsafe_allow_html=True)
+
+    quad_data = pd.DataFrame([
+        dict(label="North Ave Beach",  rev_day=582,  grace=21.8, quad="High rev / Low grace",  color=BLUE),
+        dict(label="MSI East",         rev_day=1534, grace=58.6, quad="High rev / High grace", color=TEAL),
+        dict(label="MSI South",        rev_day=598,  grace=37.6, quad="High rev / Low grace",  color=TEAL),
+        dict(label="Waveland",         rev_day=247,  grace=47.6, quad="High rev / Low grace",  color=BLUE),
+        dict(label="Oakwood Beach",    rev_day=199,  grace=56.5, quad="High rev / High grace", color=AMBER),
+        dict(label="Wilson",           rev_day=178,  grace=30.7, quad="Low rev / Low grace",   color=BLUE),
+        dict(label="55th/S.Shore Dr",  rev_day=40,   grace=13.4, quad="Low rev / Low grace",   color=AMBER),
+        dict(label="Foster",           rev_day=26,   grace=61.9, quad="Low rev / High grace",  color=BLUE),
+        dict(label="Rainbow N",        rev_day=27,   grace=86.6, quad="Low rev / High grace",  color=RED),
+        dict(label="Rainbow S",        rev_day=16,   grace=82.7, quad="Low rev / High grace",  color=RED),
+    ])
+
+    fig_quad = go.Figure()
+
+    # Quadrant shading
+    fig_quad.add_shape(type="rect", x0=52.1, x1=100, y0=0,   y1=188,
+                       fillcolor="rgba(176,98,0,0.07)", line=dict(width=0))
+    fig_quad.add_shape(type="rect", x0=0,    x1=52.1, y0=0,   y1=188,
+                       fillcolor="rgba(26,68,128,0.04)", line=dict(width=0))
+    fig_quad.add_shape(type="rect", x0=0,    x1=52.1, y0=188, y1=1700,
+                       fillcolor="rgba(26,107,60,0.05)", line=dict(width=0))
+    fig_quad.add_shape(type="rect", x0=52.1, x1=100, y0=188, y1=1700,
+                       fillcolor="rgba(27,108,168,0.05)", line=dict(width=0))
+
+    # Median lines
+    fig_quad.add_vline(x=52.1, line_dash="dash", line_color=GREY, line_width=1,
+                       annotation_text="Median grace 52.1%", annotation_position="top right",
+                       annotation_font=dict(size=9, color=GREY))
+    fig_quad.add_hline(y=188, line_dash="dash", line_color=GREY, line_width=1,
+                       annotation_text="Median $188/day", annotation_position="right",
+                       annotation_font=dict(size=9, color=GREY))
+
+    # Scatter
+    for _, row in quad_data.iterrows():
+        fig_quad.add_trace(go.Scatter(
+            x=[row['grace']], y=[row['rev_day']],
+            mode='markers+text',
+            marker=dict(size=14 if 'Rainbow' in row['label'] else 10,
+                       color=row['color'], opacity=0.85,
+                       line=dict(width=1.5, color='white')),
+            text=[row['label']],
+            textposition='top center',
+            textfont=dict(size=9, color=row['color']),
+            name=row['label'],
+            hovertemplate=f"<b>{row['label']}</b><br>Grace: {row['grace']:.1f}%<br>Rev/day: ${row['rev_day']:,.0f}<br>{row['quad']}<extra></extra>",
+            showlegend=False,
+        ))
+
+    # Quadrant labels
+    for txt, x, y in [("High rev / Low grace", 26, 1500), ("High rev / High grace", 75, 1500),
+                       ("Low rev / Low grace", 26, 50),   ("Low rev / High grace", 75, 50)]:
+        fig_quad.add_annotation(x=x, y=y, text=txt, showarrow=False,
+                                font=dict(size=9, color=GREY), opacity=0.6)
+
+    fig_defaults(fig_quad, height=420)
+    fig_quad.update_layout(
+        xaxis=dict(title=dict(text="Grace-exit rate (% of observed visits)"),
+                   ticksuffix="%", range=[0, 100]),
+        yaxis=dict(title=dict(text="Post-Metropolis avg revenue/day ($)"),
+                   tickprefix="$"),
+        margin=dict(l=10, r=10, t=10, b=10),
+    )
+    st.plotly_chart(fig_quad, width='stretch')
+
+    # ── 2. Performance scorecard ──────────────────────────────────────────────
+    st.markdown('<p class="sec-head" style="margin-top:1rem;">Performance scorecard — all 10 lots ranked</p>',
+                unsafe_allow_html=True)
+    st.markdown('<p class="sec-sub">Score = revenue/day percentile (40%) + revenue/transaction '
+                'percentile (30%) − grace-exit percentile (30%). Higher = better performing lot. '
+                'Percentiles computed within this 10-lot Metropolis system only.</p>',
+                unsafe_allow_html=True)
+
+    scorecard_raw = [
+        dict(label="MSI East",        rev_day=1534, rev_txn=21.37, grace=58.6),
+        dict(label="MSI South",       rev_day=598,  rev_txn=7.35,  grace=37.6),
+        dict(label="North Ave Beach", rev_day=582,  rev_txn=17.30, grace=21.8),
+        dict(label="Waveland",        rev_day=247,  rev_txn=7.13,  grace=47.6),
+        dict(label="Oakwood Beach",   rev_day=199,  rev_txn=5.19,  grace=56.5),
+        dict(label="Wilson",          rev_day=178,  rev_txn=7.06,  grace=30.7),
+        dict(label="55th/S.Shore Dr", rev_day=40,   rev_txn=5.98,  grace=13.4),
+        dict(label="Foster",          rev_day=26,   rev_txn=6.26,  grace=61.9),
+        dict(label="Rainbow N",       rev_day=27,   rev_txn=5.46,  grace=86.6),
+        dict(label="Rainbow S",       rev_day=16,   rev_txn=5.10,  grace=82.7),
+    ]
+    sc_df = pd.DataFrame(scorecard_raw)
+
+    import numpy as np
+    def pct_rank(series):
+        return series.rank(pct=True) * 100
+
+    sc_df['rev_day_pct']  = pct_rank(sc_df['rev_day'])
+    sc_df['rev_txn_pct']  = pct_rank(sc_df['rev_txn'])
+    sc_df['grace_pct_inv']= pct_rank(sc_df['grace'].max() - sc_df['grace'])  # invert: lower grace = better
+    sc_df['score'] = (sc_df['rev_day_pct']*0.40 + sc_df['rev_txn_pct']*0.30 + sc_df['grace_pct_inv']*0.30).round(1)
+    sc_df = sc_df.sort_values('score', ascending=False).reset_index(drop=True)
+    sc_df['rank'] = range(1, len(sc_df)+1)
+
+    def stars(score):
+        s = score/100*5
+        full = int(s)
+        return "★" * full + "☆" * (5 - full)
+
+    sc_df['stars'] = sc_df['score'].apply(stars)
+    sc_df['classification'] = sc_df.apply(lambda r: (
+        "High-performing" if r['score'] >= 70 else
+        "Above average" if r['score'] >= 50 else
+        "Below average" if r['score'] >= 30 else
+        "High friction / low revenue"
+    ), axis=1)
+
+    disp_sc = sc_df[['rank','label','score','stars','classification','rev_day','rev_txn','grace']].copy()
+    disp_sc.columns = ['Rank','Location','Score (0-100)','Rating','Classification',
+                        'Rev/Day ($)','Rev/Transaction ($)','Grace Exit %']
+    disp_sc['Rev/Day ($)'] = disp_sc['Rev/Day ($)'].apply(lambda v: f"${v:,.0f}")
+    disp_sc['Rev/Transaction ($)'] = disp_sc['Rev/Transaction ($)'].apply(lambda v: f"${v:.2f}")
+    disp_sc['Grace Exit %'] = disp_sc['Grace Exit %'].apply(lambda v: f"{v:.1f}%")
+    st.dataframe(disp_sc, use_container_width=True, hide_index=True)
+
+    # ── 3. Pareto / revenue concentration ─────────────────────────────────────
+    st.markdown('<p class="sec-head" style="margin-top:1rem;">Revenue concentration — Pareto analysis</p>',
+                unsafe_allow_html=True)
+    st.markdown('<p class="sec-sub">Post-Metropolis revenue by lot, cumulative. '
+                'The top 3 lots account for 78.7% of all system revenue.</p>',
+                unsafe_allow_html=True)
+
+    pareto_data = pd.DataFrame([
+        dict(label="MSI East",        rev=184103),
+        dict(label="North Ave Beach", rev=95418),
+        dict(label="MSI South",       rev=71749),
+        dict(label="Waveland",        rev=33111),
+        dict(label="Oakwood Beach",   rev=27807),
+        dict(label="Wilson",          rev=21345),
+        dict(label="55th/S.Shore Dr", rev=5667),
+        dict(label="Foster",          rev=2747),
+        dict(label="Rainbow N",       rev=2692),
+        dict(label="Rainbow S",       rev=1627),
+    ]).sort_values('rev', ascending=False).reset_index(drop=True)
+    total_rev = pareto_data['rev'].sum()
+    pareto_data['cum_pct'] = pareto_data['rev'].cumsum() / total_rev * 100
+    pareto_data['rev_pct'] = pareto_data['rev'] / total_rev * 100
+    lot_colors_p = [TEAL if 'MSI' in l else BLUE if l in ['North Ave Beach','Waveland','Wilson','Foster']
+                    else RED if 'Rainbow' in l else AMBER for l in pareto_data['label']]
+
+    fig_pareto = go.Figure()
+    fig_pareto.add_trace(go.Bar(
+        x=pareto_data['label'], y=pareto_data['rev_pct'],
+        marker_color=lot_colors_p,
+        name="% of total revenue",
+        text=[f"{v:.1f}%" for v in pareto_data['rev_pct']],
+        textposition='outside', textfont=dict(size=9),
+        hovertemplate="<b>%{x}</b><br>%{y:.1f}% of system revenue<extra></extra>",
+        yaxis='y',
+    ))
+    fig_pareto.add_trace(go.Scatter(
+        x=pareto_data['label'], y=pareto_data['cum_pct'],
+        mode='lines+markers',
+        line=dict(color=BLUE, width=2),
+        marker=dict(size=6, color=BLUE),
+        name="Cumulative %",
+        hovertemplate="<b>%{x}</b><br>Cumulative: %{y:.1f}%<extra></extra>",
+        yaxis='y2',
+    ))
+    fig_pareto.add_hline(y=80, line_dash="dash", line_color=GREY, line_width=1, yref='y2',
+                         annotation_text="80%", annotation_position="right",
+                         annotation_font=dict(size=9, color=GREY))
+    fig_defaults(fig_pareto, height=340)
+    fig_pareto.update_layout(
+        yaxis=dict(title=dict(text="Share of total revenue (%)"), ticksuffix="%"),
+        yaxis2=dict(title=dict(text="Cumulative share (%)"), overlaying='y',
+                    side='right', ticksuffix="%", range=[0, 105]),
+        legend=dict(orientation='h', yanchor='bottom', y=1.02),
+        margin=dict(l=10, r=60, t=20, b=60),
+        barmode='group',
+    )
+    st.plotly_chart(fig_pareto, width='stretch')
+
+    st.markdown("""
+    <div class="callout callout-red">
+      <b>Revenue concentration finding:</b> The top 3 lots (MSI East, North Avenue Beach,
+      MSI South) account for 78.7% of all post-Metropolis system revenue. The bottom 4 lots
+      — Foster, 55th/South Shore, Rainbow North, and Rainbow South — account for 2.9%
+      combined. Two of those four lots are at Rainbow Beach in the 7th Ward.
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ── 4. Weekday vs weekend ─────────────────────────────────────────────────
+    st.markdown('<p class="sec-head" style="margin-top:1rem;">Weekday vs weekend revenue — post-Metropolis</p>',
+                unsafe_allow_html=True)
+    st.markdown('<p class="sec-sub">Weekend lift (how much more revenue a lot generates on weekends vs weekdays) '
+                'varies dramatically by location. Rainbow Beach shows minimal weekend lift, '
+                'suggesting it is not functioning as a weekend destination park.</p>',
+                unsafe_allow_html=True)
+
+    wkday_data = pd.DataFrame([
+        dict(label="MSI East",        wkday=1188, wkend=2375),
+        dict(label="MSI South",       wkday=317,  wkend=1299),
+        dict(label="North Ave Beach", wkday=416,  wkend=999),
+        dict(label="Waveland",        wkday=179,  wkend=414),
+        dict(label="Oakwood Beach",   wkday=163,  wkend=284),
+        dict(label="Wilson",          wkday=161,  wkend=217),
+        dict(label="55th/S.Shore Dr", wkday=32,   wkend=60),
+        dict(label="Foster",          wkday=24,   wkend=30),
+        dict(label="Rainbow N",       wkday=25,   wkend=32),
+        dict(label="Rainbow S",       wkday=16,   wkend=17),
+    ]).sort_values('wkend', ascending=True)
+    wkday_data['lift'] = (wkday_data['wkend'] - wkday_data['wkday']) / wkday_data['wkday'] * 100
+
+    fig_wk = go.Figure()
+    fig_wk.add_trace(go.Bar(
+        name="Weekday avg", x=wkday_data['wkday'], y=wkday_data['label'],
+        orientation='h', marker_color=GREY, opacity=0.7,
+        hovertemplate="<b>%{y}</b><br>Weekday: $%{x:,.0f}<extra></extra>",
+    ))
+    fig_wk.add_trace(go.Bar(
+        name="Weekend avg", x=wkday_data['wkend'], y=wkday_data['label'],
+        orientation='h', marker_color=BLUE, opacity=0.85,
+        hovertemplate="<b>%{y}</b><br>Weekend: $%{x:,.0f}<br>Lift: %{customdata:.0f}%<extra></extra>",
+        customdata=wkday_data['lift'],
+    ))
+    fig_defaults(fig_wk, height=340)
+    fig_wk.update_layout(
+        barmode='overlay',
+        xaxis=dict(title=dict(text="Average daily revenue ($)"), tickprefix="$"),
+        legend=dict(orientation='h', yanchor='bottom', y=1.02),
+        margin=dict(l=10, r=10, t=20, b=10),
+    )
+    st.plotly_chart(fig_wk, width='stretch')
+
+    # ── 5. Seasonality ────────────────────────────────────────────────────────
+    st.markdown('<p class="sec-head" style="margin-top:1rem;">Rainbow Beach monthly revenue since Metropolis go-live</p>',
+                unsafe_allow_html=True)
+    st.markdown('<p class="sec-sub">Rainbow Beach North post-go-live (January 28, 2026 onward). '
+                'Spring months show some growth but absolute revenue remains minimal.</p>',
+                unsafe_allow_html=True)
+
+    rb_monthly = pd.DataFrame([
+        dict(month="Feb 2026", rev=307.51),
+        dict(month="Mar 2026", rev=994.65),
+        dict(month="Apr 2026", rev=954.01),
+        dict(month="May 2026", rev=416.86),  # partial month through May 7
+    ])
+    fig_sea = go.Figure()
+    fig_sea.add_trace(go.Bar(
+        x=rb_monthly['month'], y=rb_monthly['rev'],
+        marker_color=[RED, RED, RED, AMBER],
+        text=[f"${v:,.0f}" for v in rb_monthly['rev']],
+        textposition='outside', textfont=dict(size=11),
+        hovertemplate="<b>%{x}</b><br>$%{y:,.0f}<extra></extra>",
+    ))
+    fig_defaults(fig_sea, height=260)
+    fig_sea.update_layout(
+        yaxis=dict(title=dict(text="Monthly revenue ($)"), tickprefix="$"),
+        margin=dict(l=10, r=10, t=10, b=10),
+        annotations=[dict(
+            x=3, y=450, text="May 2026 partial (data through May 7)",
+            showarrow=False, font=dict(size=9, color=GREY)
+        )]
+    )
+    st.plotly_chart(fig_sea, width='stretch')
+
+    st.markdown("""
+    <p class="src">All analyses use post-Metropolis-go-live data from CPkD FOIA R-6663.
+    Performance scores are relative rankings within this 10-lot system only and should not
+    be compared to other parking systems. Quadrant medians: $188/day revenue, 52.1% grace rate.
+    Seasonality data covers Rainbow Beach North only (January 28 to May 7, 2026).
+    Analysis: Ana Marija Soković, PhD, MBA.</p>
+    """, unsafe_allow_html=True)
+
+
+with tabs[7]:
     findings = [
         ("Finding 1",
          "Central lakefront and flagship-park investment concentration is structurally extreme",
