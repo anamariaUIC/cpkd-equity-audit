@@ -315,7 +315,7 @@ tabs = st.tabs([
     "🎭 Programming Gap",
     "📋 Most Disinvested",
     "🅿️ Parking Gates",
-    "🅿️ Parking Gates",
+    "📊 Parking Gates Findings",
     "📝 Key Findings",
 ])
 
