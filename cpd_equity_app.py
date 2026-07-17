@@ -1082,16 +1082,16 @@ with tabs[5]:
       <div class="kpi kpi-red">
         <p class="kpi-val">-72.5%</p>
         <p class="kpi-lbl">Foster Beach revenue year-over-year</p>
-        <p class="kpi-note">Same calendar window post-gate vs prior year. Transactions -70.8%.</p>
+        <p class="kpi-note">Same calendar window post-Metropolis vs prior year. Transactions -70.8%.</p>
       </div>
       <div class="kpi kpi-amber">
-        <p class="kpi-val">0.8%</p>
-        <p class="kpi-lbl">Rainbow Beach share of full-dataset revenue</p>
-        <p class="kpi-note">$38,485 of $5.09M total, June 2024 to May 2026 (both systems)</p>
+        <p class="kpi-val">0.8% / 1.0%</p>
+        <p class="kpi-lbl">Rainbow Beach share of revenue</p>
+        <p class="kpi-note">Full dataset (both systems): $38,485 of $5.09M · Post-Metropolis only: $4,319 of $446K</p>
       </div>
       <div class="kpi kpi-blue">
         <p class="kpi-val">+17.4%</p>
-        <p class="kpi-lbl">MSI East revenue growth post-gate</p>
+        <p class="kpi-lbl">MSI East revenue growth post-Metropolis</p>
         <p class="kpi-note">Museum-oriented lots grew. Community park lots diverged sharply.</p>
       </div>
     </div>
@@ -1147,7 +1147,7 @@ with tabs[5]:
         dict(lot="Wilson",                      grace_pct=30.7, ratio=0.44, side="North Side"),
         dict(lot="MSI South",                   grace_pct=37.6, ratio=0.60, side="Museum Campus"),
         dict(lot="North Avenue Beach",          grace_pct=21.8, ratio=0.28, side="North Side"),
-        dict(lot="55th St / South Shore Dr",    grace_pct=19.1, ratio=0.24, side="South Side"),
+        dict(lot="55th St / South Shore Dr",    grace_pct=13.4, ratio=0.24, side="South Side"),
     ]).sort_values("grace_pct", ascending=True)
 
     grace_colors = {"7th Ward": RED, "North Side": BLUE, "South Side": AMBER, "Museum Campus": TEAL}
@@ -1190,10 +1190,19 @@ with tabs[5]:
         )
         st.plotly_chart(fig_g2, width="stretch")
 
+    st.markdown("""
+    <div class="callout callout-blue" style="margin-top:0.5rem;">
+      <b>Note on observed visits:</b> "Observed visits" in this analysis = paid transactions +
+      recorded 15-minute grace-period exits. This may not capture every vehicle movement or
+      transaction category recorded by Metropolis. CPkD has not disclosed whether these two
+      sheets represent exhaustive categories of all lot activity.
+    </div>
+    """, unsafe_allow_html=True)
+
     # ── FINDING P2 ────────────────────────────────────────────────────────────
     st.markdown("""
     <p class="sec-head" style="margin-top:1rem;">
-      Finding P2 — Post-gate financial outcomes vary sharply by location
+      Finding P2 — Financial outcomes after Metropolis go-live vary sharply by location
     </p>
     """, unsafe_allow_html=True)
 
@@ -1212,10 +1221,11 @@ with tabs[5]:
         st.markdown("""
         <div class="finding">
           <p class="finding-num">What this may indicate</p>
-          <p class="finding-body">The results do not support a uniform claim that Metropolis
-          increased revenue or compliance. They show materially different outcomes by location —
-          with museum-oriented lots growing and several community-serving lots declining.
-          The Foster result is severe and warrants investigation.</p>
+          <p class="finding-body">The results vary materially by location. Both MSI lots and
+          Oakwood increased, while Foster, 55th/South Shore, and Wilson declined substantially.
+          North Avenue and Waveland were approximately flat. The pattern does not align neatly
+          with a simple North–South division. The Foster result is severe and warrants
+          investigation.</p>
         </div>
         """, unsafe_allow_html=True)
     with yc3:
@@ -1240,7 +1250,7 @@ with tabs[5]:
         dict(lot="Foster",                  rev_chg=-72.5),
     ]).sort_values("rev_chg", ascending=True)
 
-    st.markdown('<p class="sec-sub">Year-over-year revenue change: post-gate period vs same calendar window '
+    st.markdown('<p class="sec-sub">Year-over-year revenue change: post-Metropolis period vs same calendar window '
                 'prior year. Rainbow Beach excluded — prior voluntary system had near-zero recorded revenue.</p>',
                 unsafe_allow_html=True)
     fig_yoy = go.Figure()
@@ -1284,9 +1294,10 @@ with tabs[5]:
           <p class="finding-body">The registration process creates plausible barriers for
           residents without smartphones, without payment cards, with limited digital
           proficiency, or who are seniors unfamiliar with QR-code flows. Rainbow Beach
-          serves a neighborhood where these conditions are more prevalent. The high grace
-          rate makes this an urgent question — but the data do not confirm who is leaving
-          or why.</p>
+          serves a community with a lower median household income (approximately $40K, ACS 2023)
+          and a substantial older-adult population — making these access questions particularly
+          important. The high grace-exit rate makes this an urgent question, but the available
+          data do not confirm who is leaving or why.</p>
         </div>
         """, unsafe_allow_html=True)
     with dc3:
@@ -1331,7 +1342,7 @@ with tabs[5]:
         dict(lot="Oakwood Beach 39th St",    area="South Side",           golive="Dec 18 2025",
              full_rev=238993,  post_rev=27807,  post_day=197,  grace_pct=56.5),
         dict(lot="55th St / South Shore Dr", area="South Side",           golive="Dec 17 2025",
-             full_rev=209075,  post_rev=5667,   post_day=40,   grace_pct=19.1),
+             full_rev=209075,  post_rev=5667,   post_day=40,   grace_pct=13.4),
         dict(lot="Rainbow Beach North",      area="7th Ward (S. Shore)",  golive="Jan 28 2026",
              full_rev=21305,   post_rev=2692,   post_day=27,   grace_pct=86.6),
         dict(lot="Rainbow Beach South",      area="7th Ward (S. Shore)",  golive="Jan 28 2026",
@@ -1362,71 +1373,120 @@ with tabs[5]:
 # ─────────────────────────────────────────────────────────────────────────────
 with tabs[6]:
     findings = [
-        ("Finding 1", "Central lakefront and flagship-park investment concentration is structurally extreme",
-         "Three parks — Grant, Lincoln, and Burnham — absorbed ~$485M over 14 years. "
-         "Stripping out CDOT/Army Corps co-investments still leaves those three parks with "
-         "more total park district spending than the entire South Side combined."),
-        ("Finding 2", "Park 566 and Rainbow Beach: the most disinvested lakefront parks in Chicago",
-         "Confirmed via GIS-normalized analysis of lakefront-facing parks only. Park No. 566 "
-         "(79th/USX, Far SE Side) receives <b>$0.20/sq ft</b> — the lowest in the city. "
-         "Rainbow Beach (South Shore, 7th Ward) receives <b>$0.40/sq ft</b>, second lowest. "
-         "Rogers Beach (North Side) receives <b>$2.57/sq ft</b>. A 6.4× gap within the same "
-         "amenity class: direct lakefront access."),
-        ("Finding 3", "The Marquette–Grant gap is the clearest illustration of the investment disparity",
-         "Marquette Park (323 acres, Black/Latino SW community): $4M total = $0.28/sq ft. "
-         "Grant Park (319 acres, downtown tourism): $112M total = $8.07/sq ft. "
-         "Nearly identical park sizes. 8 miles apart. 29× investment gap per acre. "
-         "CPkD's own public reporting never presents this comparison."),
-        ("Finding 4", "Pending-funding rate is highest on the South Side",
-         "South Side parks carry the highest proportion of 'Pending Funding' and 'Pre-Design' "
-         "line items — ~34 identified projects with $0 allocated. These are communities that "
-         "have been told their parks need work and then deprioritized for 14+ consecutive years."),
-        ("Finding 5", "The 606 is a NW Side anomaly, not equity investment",
-         "The 606 trail pulled $91M (95% outside funding) serving neighborhoods that were already "
-         "gentrifying or actively gentrifying at time of investment. This is a real community asset "
-         "but does not constitute South/West Side equity investment. It demonstrates that the "
-         "outside-funding pipeline exists — it is simply not accessible to communities that need it most."),
-        ("Finding 6", "Programming gap compounds capital inequity",
-         "South Region has 24% fewer programs and 38% fewer enrollees than North Region. "
-         "Gap is sharpest in arts/cultural programming (South at ~56 indexed to North=100) "
-         "and aquatics access (South at 63). System-wide loss of 30%+ arts/music teaching "
-         "positions since 2010 fell disproportionately on South and West Side parks."),
-        ("Finding 7", "Outside funding dependency creates a capacity trap",
-         "Parks in wealthier communities leverage sophisticated nonprofit structures to access "
-         "federal and philanthropic capital. South Side parks lack this institutional capacity. "
-         "Competitive grant processes systematically advantage the already-advantaged. "
-         "When South Side PAC leaders attempt to access small grants independently, "
-         "CPkD institutional mechanisms suppress rather than support the effort."),
-        ("Finding 8", "What would close the gap",
-         "The South Side needs 2–3 Gately-scale investments ($40–60M each) in Englewood, "
-         "Roseland, and Washington Heights over the next decade. The West Side needs the same "
-         "for Humboldt and Douglas Parks. Marquette Park (323 acres, $0.28/sq ft) should be a "
-         "named capital priority. Programming equity requires a staffing investment strategy "
-         "explicitly tied to South and West Side parks — buildings without instructors don't serve communities. "
-         "PACs in disinvested communities need access to a dedicated grant pool that does not "
-         "require competing against parks with professional grant-writing staff."),
+        ("Finding 1",
+         "Central lakefront and flagship-park investment concentration is structurally extreme",
+         "Three parks — Grant, Lincoln, and Burnham — accounted for approximately $485M in "
+         "reported project investment from 2011-2024, including major CDOT, Army Corps, and "
+         "other outside-funded projects. Even after excluding identified transportation and "
+         "shoreline co-investments, reported CPkD-controlled investment in these three parks "
+         "exceeded the combined total for all South Region parks. The dataset does not "
+         "consistently identify funding source for every line item; figures should be "
+         "understood as total reported project cost, not solely CPkD discretionary spending."),
+
+        ("Finding 2",
+         "Park 566 and Rainbow Beach: the lowest-funded properties in the lakefront-facing comparison universe",
+         "Within the defined universe of lakefront-facing CPkD parks analyzed using GIS polygon "
+         "acreage, Park No. 566 (79th/USX, Far SE Side) received <b>$0.20/sq ft</b> and Rainbow "
+         "Beach (South Shore, 7th Ward) received <b>$0.40/sq ft</b> in reported capital project "
+         "investment from 2011-2024. Rogers Beach (North Side) received <b>$2.57/sq ft</b> — a "
+         "6.4× gap within the same lakefront-access comparison class. These are reported "
+         "capital-project dollars divided by GIS polygon area, not an annual operating-budget measure."),
+
+        ("Finding 3",
+         "The Marquette–Grant comparison is the clearest illustration of the investment disparity",
+         "Marquette Park (323 acres, Southwest Side): $4M total = $0.28/sq ft. "
+         "Grant Park (319 acres, downtown): $112M total = $8.07/sq ft. "
+         "Nearly identical acreage. A <b>29× investment-density gap</b> per square foot. "
+         "Both parks serve as major public anchors, but they carry different asset inventories, "
+         "visitor volumes, and infrastructure obligations. The comparison illustrates the scale "
+         "of disparity without claiming the parks are functionally identical."),
+
+        ("Finding 4",
+         "South Region parks carry the highest share of zero-funded pending projects",
+         "South Region parks contain the largest identified share of projects labeled "
+         "'Pending Funding' or 'Pre-Design,' including approximately 34 line items showing "
+         "no allocated project cost. The dataset does not consistently disclose how long each "
+         "project has remained pending — making project-age and prioritization records an "
+         "important next disclosure. These communities have formally identified infrastructure "
+         "needs that have not advanced to funded status."),
+
+        ("Finding 5",
+         "The 606 demonstrates the power — and uneven geography — of outside funding",
+         "The 606 received approximately $91M, about 95% from outside sources including "
+         "federal grants and philanthropic capital assembled through established nonprofit "
+         "partnerships. It is a significant public asset, and the surrounding neighborhoods "
+         "include historically disinvested Latino communities alongside areas experiencing "
+         "rapid gentrification. It should not be presented as evidence that South and West Side "
+         "park-capital inequities have been resolved. It demonstrates that large outside-funding "
+         "pipelines can be assembled when sufficient institutional and political capacity exists — "
+         "a capacity that is not evenly distributed across the park system."),
+
+        ("Finding 6",
+         "Programming gap compounds capital inequity",
+         "South Region recorded 24% fewer programs and 38% fewer enrollments than North Region "
+         "in the 2024 dataset (CPkD FOIA 5844 and 5902). Arts and cultural offerings indexed at "
+         "approximately 56 relative to North=100; aquatics at approximately 63. These totals "
+         "indicate a significant regional service gap, though per-capita, facility-adjusted, "
+         "and wait-list analyses are needed to fully distinguish supply differences from "
+         "population and infrastructure effects. System-wide loss of 30%+ arts and music "
+         "teaching positions since 2010 (CPkD staffing records, SEIU 73 2025 report) "
+         "fell disproportionately on South and West Side parks."),
+
+        ("Finding 7",
+         "Outside-funding dependency appears to create a capacity trap",
+         "Parks supported by established conservancies, professional fundraising organizations, "
+         "and institutional partners are better positioned to access federal and philanthropic "
+         "capital. Many South Side PACs operate without comparable staff, fiscal sponsors, or "
+         "grant-writing infrastructure. The resulting competitive system may reward existing "
+         "organizational capacity rather than community need — though quantified comparison "
+         "of external dollars won per park by region remains an important next analysis. "
+         "Questions about whether CPkD's grant-approval and PAC-governance processes support "
+         "or inhibit independent fundraising in disinvested communities are documented "
+         "separately and remain under FOIA review."),
+
+        ("Policy priorities capable of narrowing the gap",
+         "Findings point toward several high-leverage interventions",
+         "A transparent, needs-based capital plan prioritizing the highest-disparity parks "
+         "would be a meaningful first step. A reasonable benchmark would be two or three "
+         "major South Side investments comparable in scale to Gately Park's approximately "
+         "$40-60M redevelopment. Candidate areas identified by the combined capital, "
+         "programming, facility-condition, and population analysis include Englewood, "
+         "Roseland, Washington Heights, Humboldt Park, and Douglas — though any final "
+         "prioritization should be based on a published, community-validated scoring "
+         "methodology, not a single dataset."),
+
+        ("Finding 9",
+         "CPkD reports expenditures but not a transparent prioritization methodology",
+         "CPkD's public capital records show what projects received money, but they do not "
+         "consistently disclose the comparative scoring, unmet-needs ranking, approval chain, "
+         "funding-source strategy, or equity criteria used to decide which projects advanced. "
+         "The recurring difficulty obtaining these records through FOIA is itself an "
+         "accountability issue: the public can observe the outcomes but cannot readily "
+         "reconstruct the decision rule. This applies to capital allocation, parking-gate "
+         "rollout decisions, PAC governance, and shoreline planning alike."),
     ]
 
-    for num, title, body in findings:
-        st.markdown(f"""
-        <div class="finding">
-          <p class="finding-num">{num}</p>
-          <p class="finding-title">{title}</p>
-          <p class="finding-body">{body}</p>
-        </div>
-        """, unsafe_allow_html=True)
+    c1, c2 = st.columns(2)
+    for i, (num, title, body) in enumerate(findings):
+        col = c1 if i % 2 == 0 else c2
+        with col:
+            st.markdown(f"""
+            <div class="finding">
+              <p class="finding-num">{num}</p>
+              <p class="finding-title">{title}</p>
+              <p class="finding-body">{body}</p>
+            </div>
+            """, unsafe_allow_html=True)
 
     st.markdown("""
-    <div class="callout callout-blue" style="margin-top:1rem;">
-      <b>Data sources & methodology:</b> CPkD Park Capital Projects 2011–2024 (April 2024 release,
-      79 pages, ~3,000 line items). Project costs represent combined park district + outside
-      funding totals. Per-acre normalization uses CPkD published park acreage. Lakefront per-sq-ft
-      figures use GIS polygon area to capture full beach/shoreline footprints.
-      Programming data: CPkD program database; Friends of the Parks State of the Parks 2025;
-      CMAP community profiles. Full dataset:
-      drive.google.com/drive/u/0/folders/1o3XV3ABJcbLJeRQeJrwpfUkHnBJwewxm
-    </div>
+    <p class="src">Capital data: CPkD Park Capital Projects 2011-2024 (April 2024).
+    Per-sq-ft figures use GIS polygon acreage for lakefront parks, CPkD published acreage elsewhere.
+    Programming data: SEIU Local 73 State of the Parks Revisited 2025 (Dr. Molly Hudgens, PhD),
+    via CPkD FOIA 5844 and 5902 (Oct-Nov 2024).
+    Parking data: CPkD FOIA R-6663 (Jun 2024-May 2026).
+    Analysis: Ana Marija Soković, PhD, MBA.</p>
     """, unsafe_allow_html=True)
+
 
 # ── Footer ────────────────────────────────────────────────────────────────────
 st.markdown("""
