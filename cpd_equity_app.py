@@ -316,6 +316,7 @@ tabs = st.tabs([
     "📋 Most Disinvested",
     "🅿️ Parking Gates",
     "📊 Parking Gates Findings",
+    "⏱️ Before & After Metropolis",
     "📝 Key Findings",
 ])
 
@@ -1572,7 +1573,323 @@ with tabs[6]:
     """, unsafe_allow_html=True)
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# TAB 8 · BEFORE & AFTER METROPOLIS
+# ─────────────────────────────────────────────────────────────────────────────
 with tabs[7]:
+
+    st.markdown("""
+    <div class="callout callout-blue">
+      <b>Research question:</b> How did paid parking activity change following implementation
+      of the Metropolis parking system across CPkD parking lots, and were those changes
+      consistent across locations?
+      <br><br>
+      <b>Methodology:</b> For each lot, average daily paid transactions and revenue were calculated
+      for the pre-Metropolis period (matched equivalent duration immediately before go-live)
+      and the post-Metropolis period (go-live through May 7, 2026). Equivalent calendar-window
+      comparisons minimize seasonal effects. Unlike revenue, which can change due to pricing or
+      visitor behavior, the number of paid transactions provides a more direct measure of how
+      many vehicles actually paid to park.
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="kpi-grid">
+      <div class="kpi kpi-red">
+        <p class="kpi-val">-84.2%</p>
+        <p class="kpi-lbl">North Ave Beach paid transactions</p>
+        <p class="kpi-note">211/day before Metropolis → 33/day after. CPkD said Metropolis would improve compliance.</p>
+      </div>
+      <div class="kpi kpi-red">
+        <p class="kpi-val">-83.7%</p>
+        <p class="kpi-lbl">55th/South Shore paid transactions</p>
+        <p class="kpi-note">41/day before → 6.7/day after. Largest South Side lot decline.</p>
+      </div>
+      <div class="kpi kpi-blue">
+        <p class="kpi-val">+214%</p>
+        <p class="kpi-lbl">MSI South paid transactions</p>
+        <p class="kpi-note">25.6/day before → 80.6/day after. Museum lots grew substantially.</p>
+      </div>
+      <div class="kpi kpi-amber">
+        <p class="kpi-val">7 of 10</p>
+        <p class="kpi-lbl">Lots where revenue/transaction declined</p>
+        <p class="kpi-note">Average ticket fell at most lots after Metropolis activation.</p>
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Finding 1: Paid transaction change
+    st.markdown('<p class="sec-head" style="margin-top:0.5rem;">Finding 1 — Change in average daily paid transactions after Metropolis</p>',
+                unsafe_allow_html=True)
+    st.markdown("""
+    <div class="callout callout-amber">
+      <b>Important note on Rainbow Beach:</b> Rainbow Beach North showed +1,777% and South +2,329%
+      in paid transactions — but these figures reflect a near-zero baseline under the prior
+      voluntary system (0.3 and 0.1 transactions/day respectively). In absolute terms, Rainbow
+      Beach went from essentially no recorded paid parking to 4.9 and 3.2 paid transactions/day —
+      still the lowest in the system. The percentage change is technically accurate but misleading
+      as a measure of Metropolis impact.
+    </div>
+    """, unsafe_allow_html=True)
+
+    txn_data = pd.DataFrame([
+        dict(label="North Ave Beach",  pre=211.2, post=33.4,  chg=-84.2, area="North Side"),
+        dict(label="55th/S.Shore Dr",  pre=41.0,  post=6.7,   chg=-83.7, area="South Side"),
+        dict(label="Foster",           pre=8.6,   post=4.1,   chg=-51.6, area="North Side"),
+        dict(label="Waveland",         pre=64.5,  post=34.4,  chg=-46.6, area="North Side"),
+        dict(label="Oakwood Beach",    pre=56.8,  post=38.0,  chg=-33.0, area="South Side"),
+        dict(label="Wilson",           pre=22.1,  post=25.0,  chg=+13.1, area="North Side"),
+        dict(label="MSI East",         pre=42.8,  post=71.2,  chg=+66.4, area="Museum Campus"),
+        dict(label="MSI South",        pre=25.6,  post=80.6,  chg=+214.4,area="Museum Campus"),
+    ]).sort_values("chg", ascending=True)
+
+    area_colors = {"North Side": BLUE, "South Side": AMBER, "Museum Campus": TEAL, "7th Ward": RED}
+
+    t1c, t2c = st.columns([2, 1])
+    with t1c:
+        st.markdown('<p class="sec-sub">% change in avg daily paid transactions '
+                    '(pre vs post-Metropolis equivalent period). Rainbow Beach excluded '
+                    '— near-zero baseline makes % change misleading.</p>',
+                    unsafe_allow_html=True)
+        fig_txn = go.Figure()
+        fig_txn.add_trace(go.Bar(
+            x=txn_data["chg"], y=txn_data["label"], orientation="h",
+            marker_color=[RED if v < 0 else GREEN for v in txn_data["chg"]],
+            text=[f"{v:+.1f}%" for v in txn_data["chg"]],
+            textposition="outside", textfont=dict(size=10),
+            hovertemplate="<b>%{y}</b><br>Transaction change: %{x:+.1f}%<extra></extra>",
+        ))
+        fig_txn.add_vline(x=0, line_color=GREY, line_width=1)
+        fig_defaults(fig_txn, height=280)
+        fig_txn.update_layout(
+            xaxis=dict(title=dict(text="% change in avg daily paid transactions"), ticksuffix="%"),
+            margin=dict(l=10, r=70, t=10, b=10),
+        )
+        st.plotly_chart(fig_txn, width="stretch")
+
+    with t2c:
+        st.markdown('<p class="sec-sub">Absolute daily averages before and after Metropolis</p>',
+                    unsafe_allow_html=True)
+        abs_data = pd.DataFrame([
+            dict(label="North Ave Beach",  pre=211.2, post=33.4),
+            dict(label="55th/S.Shore Dr",  pre=41.0,  post=6.7),
+            dict(label="Foster",           pre=8.6,   post=4.1),
+            dict(label="Waveland",         pre=64.5,  post=34.4),
+            dict(label="Oakwood Beach",    pre=56.8,  post=38.0),
+            dict(label="Wilson",           pre=22.1,  post=25.0),
+            dict(label="MSI East",         pre=42.8,  post=71.2),
+            dict(label="MSI South",        pre=25.6,  post=80.6),
+            dict(label="Rainbow N",        pre=0.3,   post=4.9),
+            dict(label="Rainbow S",        pre=0.1,   post=3.2),
+        ]).sort_values("post", ascending=True)
+        fig_abs = go.Figure()
+        fig_abs.add_trace(go.Bar(
+            name="Before", x=abs_data["pre"], y=abs_data["label"], orientation="h",
+            marker_color=GREY, opacity=0.6,
+            hovertemplate="<b>%{y}</b><br>Before: %{x:.1f}/day<extra></extra>",
+        ))
+        fig_abs.add_trace(go.Bar(
+            name="After", x=abs_data["post"], y=abs_data["label"], orientation="h",
+            marker_color=BLUE, opacity=0.85,
+            hovertemplate="<b>%{y}</b><br>After: %{x:.1f}/day<extra></extra>",
+        ))
+        fig_defaults(fig_abs, height=320)
+        fig_abs.update_layout(
+            barmode="overlay",
+            xaxis=dict(title=dict(text="Avg paid transactions/day")),
+            legend=dict(orientation="h", yanchor="bottom", y=1.02),
+            margin=dict(l=10, r=10, t=20, b=10),
+        )
+        st.plotly_chart(fig_abs, width="stretch")
+
+    # Finding 2: Revenue change
+    st.markdown('<p class="sec-head" style="margin-top:1rem;">Finding 2 — Change in average daily revenue mirrors transaction decline</p>',
+                unsafe_allow_html=True)
+    st.markdown('<p class="sec-sub">Revenue declined at most lots following Metropolis go-live, '
+                'consistent with the transaction declines in Finding 1. Where revenue declined '
+                'proportionally more than transactions, the average ticket size also fell.</p>',
+                unsafe_allow_html=True)
+
+    rev_chg_data = pd.DataFrame([
+        dict(label="North Ave Beach",  txn_chg=-84.2, rev_chg=-89.8),
+        dict(label="55th/S.Shore Dr",  txn_chg=-83.7, rev_chg=-89.5),
+        dict(label="Foster",           txn_chg=-51.6, rev_chg=-60.1),
+        dict(label="Waveland",         txn_chg=-46.6, rev_chg=-60.4),
+        dict(label="Oakwood Beach",    txn_chg=-33.0, rev_chg=-50.7),
+        dict(label="Wilson",           txn_chg=+13.1, rev_chg=-13.2),
+        dict(label="MSI East",         txn_chg=+66.4, rev_chg=+55.5),
+        dict(label="MSI South",        txn_chg=+214.4,rev_chg=+155.0),
+    ]).sort_values("txn_chg", ascending=True)
+
+    fig_rev2 = go.Figure()
+    fig_rev2.add_trace(go.Scatter(
+        x=rev_chg_data["txn_chg"], y=rev_chg_data["rev_chg"],
+        mode="markers+text",
+        marker=dict(size=[14 if v < -50 else 10 for v in rev_chg_data["txn_chg"]],
+                   color=[RED if v < 0 else GREEN for v in rev_chg_data["txn_chg"]],
+                   opacity=0.85, line=dict(width=1, color="white")),
+        text=rev_chg_data["label"],
+        textposition="top center",
+        textfont=dict(size=9),
+        hovertemplate="<b>%{text}</b><br>Transactions: %{x:+.1f}%<br>Revenue: %{y:+.1f}%<extra></extra>",
+    ))
+    # Reference line y=x (perfect correlation)
+    fig_rev2.add_trace(go.Scatter(
+        x=[-100, 250], y=[-100, 250], mode="lines",
+        line=dict(color=GREY, width=1, dash="dash"),
+        showlegend=False, name="Perfect correlation",
+        hoverinfo="skip",
+    ))
+    fig_rev2.add_annotation(x=150, y=130, text="If above line: revenue fell<br>more than transactions",
+                            showarrow=False, font=dict(size=9, color=GREY))
+    fig_defaults(fig_rev2, height=360)
+    fig_rev2.update_layout(
+        xaxis=dict(title=dict(text="Change in paid transactions (%)"), ticksuffix="%"),
+        yaxis=dict(title=dict(text="Change in revenue (%)"), ticksuffix="%"),
+        showlegend=False,
+        margin=dict(l=10, r=10, t=10, b=10),
+    )
+    st.plotly_chart(fig_rev2, width="stretch")
+
+    # Finding 3: Revenue per transaction
+    st.markdown('<p class="sec-head" style="margin-top:1rem;">Finding 3 — Revenue per transaction declined at most lots</p>',
+                unsafe_allow_html=True)
+    st.markdown('<p class="sec-sub">Average ticket size before and after Metropolis. '
+                'A decline suggests either pricing changes, shorter stays, or a shift in visitor '
+                'type. Only MSI East maintained a high average ticket ($21.37 after).</p>',
+                unsafe_allow_html=True)
+
+    rpt_data = pd.DataFrame([
+        dict(label="North Ave Beach",  pre_rpt=26.94, post_rpt=17.30, color=BLUE),
+        dict(label="MSI East",         pre_rpt=22.88, post_rpt=21.37, color=TEAL),
+        dict(label="Wilson",           pre_rpt=9.20,  post_rpt=7.06,  color=BLUE),
+        dict(label="Waveland",         pre_rpt=9.59,  post_rpt=7.13,  color=BLUE),
+        dict(label="MSI South",        pre_rpt=9.07,  post_rpt=7.35,  color=TEAL),
+        dict(label="55th/S.Shore Dr",  pre_rpt=9.25,  post_rpt=5.98,  color=AMBER),
+        dict(label="Foster",           pre_rpt=7.59,  post_rpt=6.26,  color=BLUE),
+        dict(label="Oakwood Beach",    pre_rpt=7.04,  post_rpt=5.19,  color=AMBER),
+        dict(label="Rainbow S",        pre_rpt=7.13,  post_rpt=5.10,  color=RED),
+        dict(label="Rainbow N",        pre_rpt=5.05,  post_rpt=5.46,  color=RED),
+    ]).sort_values("pre_rpt", ascending=True)
+
+    fig_rpt = go.Figure()
+    fig_rpt.add_trace(go.Bar(
+        name="Before Metropolis", x=rpt_data["pre_rpt"], y=rpt_data["label"],
+        orientation="h", marker_color=GREY, opacity=0.7,
+        hovertemplate="<b>%{y}</b><br>Before: $%{x:.2f}<extra></extra>",
+    ))
+    fig_rpt.add_trace(go.Bar(
+        name="After Metropolis", x=rpt_data["post_rpt"], y=rpt_data["label"],
+        orientation="h", marker_color=BLUE, opacity=0.85,
+        hovertemplate="<b>%{y}</b><br>After: $%{x:.2f}<extra></extra>",
+    ))
+    fig_defaults(fig_rpt, height=320)
+    fig_rpt.update_layout(
+        barmode="overlay",
+        xaxis=dict(title=dict(text="Revenue per paid transaction ($)"), tickprefix="$"),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02),
+        margin=dict(l=10, r=10, t=20, b=10),
+    )
+    st.plotly_chart(fig_rpt, width="stretch")
+
+    # Finding 4: Summary table
+    st.markdown('<p class="sec-head" style="margin-top:1rem;">Finding 4 — Full before/after comparison: all 10 lots</p>',
+                unsafe_allow_html=True)
+
+    summary_ba = pd.DataFrame([
+        dict(lot="North Ave Beach",  pre_txn=211.2,post_txn=33.4, txn_chg=-84.2,
+             pre_rev=5689.4,post_rev=578.3,rev_chg=-89.8,pre_rpt=26.94,post_rpt=17.30),
+        dict(lot="55th/S.Shore Dr",  pre_txn=41.0, post_txn=6.7,  txn_chg=-83.7,
+             pre_rev=379.3, post_rev=39.9, rev_chg=-89.5,pre_rpt=9.25, post_rpt=5.98),
+        dict(lot="Foster",           pre_txn=8.6,  post_txn=4.1,  txn_chg=-51.6,
+             pre_rev=65.0,  post_rev=25.9, rev_chg=-60.1,pre_rpt=7.59, post_rpt=6.26),
+        dict(lot="Waveland",         pre_txn=64.5, post_txn=34.4, txn_chg=-46.6,
+             pre_rev=618.7, post_rev=245.3,rev_chg=-60.4,pre_rpt=9.59, post_rpt=7.13),
+        dict(lot="Oakwood Beach",    pre_txn=56.8, post_txn=38.0, txn_chg=-33.0,
+             pre_rev=399.7, post_rev=197.2,rev_chg=-50.7,pre_rpt=7.04, post_rpt=5.19),
+        dict(lot="Wilson",           pre_txn=22.1, post_txn=25.0, txn_chg=+13.1,
+             pre_rev=203.3, post_rev=176.4,rev_chg=-13.2,pre_rpt=9.20, post_rpt=7.06),
+        dict(lot="MSI East",         pre_txn=42.8, post_txn=71.2, txn_chg=+66.4,
+             pre_rev=978.6, post_rev=1521.5,rev_chg=+55.5,pre_rpt=22.88,post_rpt=21.37),
+        dict(lot="MSI South",        pre_txn=25.6, post_txn=80.6, txn_chg=+214.4,
+             pre_rev=232.5, post_rev=593.0,rev_chg=+155.0,pre_rpt=9.07,post_rpt=7.35),
+        dict(lot="Rainbow N",        pre_txn=0.3,  post_txn=4.9,  txn_chg=None,
+             pre_rev=1.3,   post_rev=26.9, rev_chg=None,  pre_rpt=5.05, post_rpt=5.46),
+        dict(lot="Rainbow S",        pre_txn=0.1,  post_txn=3.2,  txn_chg=None,
+             pre_rev=0.9,   post_rev=16.3, rev_chg=None,  pre_rpt=7.13, post_rpt=5.10),
+    ])
+
+    disp_ba = summary_ba.copy()
+    disp_ba["pre_txn"]  = disp_ba["pre_txn"].apply(lambda v: f"{v:.1f}")
+    disp_ba["post_txn"] = disp_ba["post_txn"].apply(lambda v: f"{v:.1f}")
+    disp_ba["txn_chg"]  = disp_ba["txn_chg"].apply(lambda v: f"{v:+.1f}%" if v is not None else "† near-zero base")
+    disp_ba["pre_rev"]  = disp_ba["pre_rev"].apply(lambda v: f"${v:,.0f}")
+    disp_ba["post_rev"] = disp_ba["post_rev"].apply(lambda v: f"${v:,.0f}")
+    disp_ba["rev_chg"]  = disp_ba["rev_chg"].apply(lambda v: f"{v:+.1f}%" if v is not None else "† near-zero base")
+    disp_ba["pre_rpt"]  = disp_ba["pre_rpt"].apply(lambda v: f"${v:.2f}")
+    disp_ba["post_rpt"] = disp_ba["post_rpt"].apply(lambda v: f"${v:.2f}")
+    disp_ba = disp_ba.rename(columns={
+        "lot":"Location","pre_txn":"Pre Txn/Day","post_txn":"Post Txn/Day","txn_chg":"Txn Change",
+        "pre_rev":"Pre Rev/Day","post_rev":"Post Rev/Day","rev_chg":"Rev Change",
+        "pre_rpt":"Pre $/Txn","post_rpt":"Post $/Txn"
+    })
+    st.dataframe(disp_ba, use_container_width=True, hide_index=True)
+    st.markdown('<p class="src">† Rainbow Beach near-zero base: prior voluntary system recorded '
+                '0.3 and 0.1 paid transactions/day. Percentage change is technically accurate '
+                'but misleading as a measure of Metropolis impact.</p>', unsafe_allow_html=True)
+
+    # What we can and cannot conclude
+    cc1, cc2 = st.columns(2)
+    with cc1:
+        st.markdown("""
+        <div class="finding" style="margin-top:1rem;">
+          <p class="finding-num">What this analysis can conclude</p>
+          <p class="finding-body">Paid parking activity declined substantially at 5 of 8 comparable
+          lots after Metropolis go-live — including North Avenue Beach (-84.2%) and 55th/South Shore
+          (-83.7%). Two museum-oriented lots grew substantially. Revenue per transaction declined at
+          7 of 10 lots. The system produced highly uneven outcomes across locations. CPkD deployed
+          Metropolis to improve "low compliance with voluntary payment systems" — at most community
+          lots, paid transactions fell rather than rose.</p>
+        </div>
+        """, unsafe_allow_html=True)
+    with cc2:
+        st.markdown("""
+        <div class="finding" style="margin-top:1rem;">
+          <p class="finding-num">What this analysis cannot conclude</p>
+          <p class="finding-body">This analysis measures changes in paid parking activity,
+          not total park visitation. Visitors may have arrived by transit, bicycle, or on foot;
+          been dropped off; parked elsewhere; used the grace period; or changed behavior in other
+          ways. A decline in paid transactions does not necessarily mean fewer people visited the
+          park. Determining whether overall visitation changed requires total vehicle-entry counts
+          or visitor records that are not in the current dataset.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # Future FOIA
+    st.markdown('<p class="sec-head" style="margin-top:1rem;">Future FOIA requests to complete this analysis</p>',
+                unsafe_allow_html=True)
+    st.markdown("""
+    <div class="callout callout-blue">
+      To determine whether changes in paid parking activity reflect changes in actual park
+      visitation, the following records are needed from CPkD. None have been disclosed to date.
+      <br><br>
+      <b>Total vehicle entries and exits by lot</b> · <b>License plate recognition (LPR) entry counts</b> ·
+      <b>Completed vs abandoned registration attempts</b> · <b>Failed payment transactions</b> ·
+      <b>Customer complaints by location</b> · <b>Average dwell time before exiting</b> ·
+      <b>Accessibility and equity evaluations</b> · <b>Enforcement and citation records</b> ·
+      <b>Visitor surveys</b> · <b>Internal performance assessments</b>
+      <br><br>
+      Together, these records would allow researchers to distinguish between changes in
+      paid parking behavior and changes in actual park visitation — providing a more
+      complete evaluation of the Metropolis system.
+    </div>
+    <p class="src">Data: CPkD FOIA R-6663 (June 30, 2024 to May 7, 2026).
+    Pre/post periods matched by equivalent duration immediately before and after each lot's
+    Metropolis go-live date. Analysis: Ana Marija Soković, PhD, MBA.</p>
+    """, unsafe_allow_html=True)
+
+
+with tabs[8]:
     findings = [
         ("Finding 1",
          "Central lakefront and flagship-park investment concentration is structurally extreme",
