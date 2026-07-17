@@ -1055,29 +1055,29 @@ with tabs[4]:
 # TAB 6 · KEY FINDINGS
 
 # ─────────────────────────────────────────────────────────────────────────────
-# TAB 6 · PARKING GATES EQUITY ANALYSIS
+# TAB 6 · PARKING GATES — EVIDENCE
 # ─────────────────────────────────────────────────────────────────────────────
 with tabs[5]:
 
     st.markdown("""
     <div class="callout callout-amber">
-      <b>Data source:</b> CPkD FOIA R-6663 (June 30, 2024 to May 7, 2026) — Metropolis Vision
-      System daily revenue, vehicle quantity, and 15-minute grace period exits for all 10 gated
-      CPkD parking lots. CPkD New Parking System Quick Facts (2026). Analysis: Ana Marija Soković, PhD, MBA.
+      <b>Data:</b> CPkD FOIA R-6663 (June 30, 2024 to May 7, 2026) — Metropolis Vision System
+      daily revenue, vehicle quantity, and 15-minute grace-period exits for all 10 gated CPkD
+      parking lots. CPkD New Parking System Quick Facts (2026). Analysis: Ana Marija Soković, PhD, MBA.
       <br><br>
-      <b>Methodological note:</b> The Metropolis system replaced a prior voluntary payment system.
-      Go-live dates range from November 2025 to January 2026. Revenue figures before each lot's
-      go-live date reflect the legacy system. Post-go-live figures are analyzed separately.
+      <b>Methodological note:</b> The Metropolis license-plate-recognition system replaced a prior
+      voluntary payment system at each lot. Go-live dates range from November 24, 2025 to
+      January 28, 2026. Revenue figures before each lot's go-live date reflect the legacy system.
+      This tab presents raw evidence. Interpretation is in the Parking Gates Findings tab.
     </div>
     """, unsafe_allow_html=True)
 
-    # ── KPI row ───────────────────────────────────────────────────────────────
     st.markdown("""
     <div class="kpi-grid">
       <div class="kpi kpi-red">
         <p class="kpi-val">86.6%</p>
         <p class="kpi-lbl">Rainbow Beach North grace-exit share</p>
-        <p class="kpi-note">6.46 free exits per paid transaction vs 0.28 at North Avenue Beach</p>
+        <p class="kpi-note">6.46 grace exits per paid transaction vs 0.28 at North Avenue Beach</p>
       </div>
       <div class="kpi kpi-red">
         <p class="kpi-val">-72.5%</p>
@@ -1086,57 +1086,93 @@ with tabs[5]:
       </div>
       <div class="kpi kpi-amber">
         <p class="kpi-val">0.8% / 1.0%</p>
-        <p class="kpi-lbl">Rainbow Beach share of revenue</p>
-        <p class="kpi-note">Full dataset (both systems): $38,485 of $5.09M · Post-Metropolis only: $4,319 of $446K</p>
+        <p class="kpi-lbl">Rainbow Beach revenue share</p>
+        <p class="kpi-note">Full dataset: $38,485 of $5.09M · Post-Metropolis only: $4,319 of $446K</p>
       </div>
       <div class="kpi kpi-blue">
-        <p class="kpi-val">+17.4%</p>
-        <p class="kpi-lbl">MSI East revenue growth post-Metropolis</p>
-        <p class="kpi-note">Museum-oriented lots grew. Community park lots diverged sharply.</p>
+        <p class="kpi-val">78.7%</p>
+        <p class="kpi-lbl">Revenue share — top 3 lots</p>
+        <p class="kpi-note">MSI East, North Avenue Beach, MSI South post-Metropolis</p>
       </div>
     </div>
     """, unsafe_allow_html=True)
 
-    # ── FINDING P1 ────────────────────────────────────────────────────────────
+    # Revenue table
+    st.markdown('<p class="sec-head" style="margin-top:0.5rem;">Revenue by lot: full dataset vs post-Metropolis go-live</p>',
+                unsafe_allow_html=True)
     st.markdown("""
-    <p class="sec-head" style="margin-top:0.5rem;">
-      Finding P1 — Rainbow Beach records exceptionally high short-stay exit activity
-    </p>
+    <div class="callout callout-blue">
+      Full-dataset figures (June 2024 to May 2026) combine prior voluntary system and Metropolis.
+      Post-Metropolis figures show only the Metropolis period. CPkD states parking revenue supports
+      districtwide programs but has not provided location-level allocation records.
+    </div>
     """, unsafe_allow_html=True)
 
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        st.markdown("""
-        <div class="finding">
-          <p class="finding-num">What the data show</p>
-          <p class="finding-body">At Rainbow Beach North, <b>86.6% of recorded observed visits
-          ended within the 15-minute grace period</b> — 6.46 free exits per paid transaction.
-          At North Avenue Beach: 21.8% grace share, 0.28 exits per paid transaction.
-          Rainbow Beach South: 82.7% grace share.</p>
-        </div>
-        """, unsafe_allow_html=True)
-    with c2:
-        st.markdown("""
-        <div class="finding">
-          <p class="finding-num">What this may indicate</p>
-          <p class="finding-body">The pattern is consistent with registration friction,
-          visitors deciding not to remain, pickup/drop-off use, or very short visits.
-          The available data does not distinguish among these explanations. All are
-          plausible given the neighborhood demographics and the registration requirements.</p>
-        </div>
-        """, unsafe_allow_html=True)
-    with c3:
-        st.markdown("""
-        <div class="finding">
-          <p class="finding-num">What remains unknown</p>
-          <p class="finding-body">CPkD has not disclosed registration-start vs completion
-          rates, abandoned registrations, payment failures, average dwell time for grace
-          exits, or customer service complaints by location. Those records are necessary
-          to establish why visitors are leaving within 15 minutes.</p>
-        </div>
-        """, unsafe_allow_html=True)
+    rev_tbl = pd.DataFrame([
+        dict(lot="North Avenue Beach",       area="North Side",          golive="Nov 24 2025",
+             full_rev=2007285, post_rev=95418,  post_day=582,  grace_pct=21.8, vehicles=80396),
+        dict(lot="MSI East",                 area="Museum Campus",       golive="Jan 7 2026",
+             full_rev=1135272, post_rev=184103, post_day=1534, grace_pct=58.6, vehicles=51965),
+        dict(lot="MSI South",                area="Museum Campus",       golive="Jan 7 2026",
+             full_rev=366584,  post_rev=71749,  post_day=598,  grace_pct=37.6, vehicles=44579),
+        dict(lot="Foster",                   area="North Side",          golive="Jan 22 2026",
+             full_rev=424173,  post_rev=2747,   post_day=26,   grace_pct=61.9, vehicles=51439),
+        dict(lot="Waveland",                 area="North Side",          golive="Dec 24 2025",
+             full_rev=369854,  post_rev=33111,  post_day=247,  grace_pct=47.6, vehicles=46137),
+        dict(lot="Wilson",                   area="North Side",          golive="Jan 7 2026",
+             full_rev=304484,  post_rev=21345,  post_day=178,  grace_pct=30.7, vehicles=35823),
+        dict(lot="Oakwood Beach 39th St",    area="South Side",          golive="Dec 18 2025",
+             full_rev=238993,  post_rev=27807,  post_day=199,  grace_pct=56.5, vehicles=38680),
+        dict(lot="55th St / South Shore Dr", area="South Side",          golive="Dec 17 2025",
+             full_rev=209075,  post_rev=5667,   post_day=40,   grace_pct=13.4, vehicles=25985),
+        dict(lot="Rainbow Beach North",      area="7th Ward (S. Shore)", golive="Jan 28 2026",
+             full_rev=21305,   post_rev=2692,   post_day=27,   grace_pct=86.6, vehicles=2604),
+        dict(lot="Rainbow Beach South",      area="7th Ward (S. Shore)", golive="Jan 28 2026",
+             full_rev=17180,   post_rev=1627,   post_day=16,   grace_pct=82.7, vehicles=2105),
+    ])
 
-    # Grace charts
+    disp_rt = rev_tbl.copy()
+    for col in ['full_rev','post_rev']:
+        disp_rt[col] = disp_rt[col].apply(lambda v: f"${v:,.0f}")
+    disp_rt['post_day'] = disp_rt['post_day'].apply(lambda v: f"${v:,.0f}")
+    disp_rt['grace_pct'] = disp_rt['grace_pct'].apply(lambda v: f"{v:.1f}%")
+    disp_rt['vehicles'] = disp_rt['vehicles'].apply(lambda v: f"{v:,.0f}")
+    disp_rt = disp_rt.rename(columns={
+        "lot":"Location","area":"Area","golive":"Go-Live",
+        "full_rev":"Full Dataset Revenue","post_rev":"Post-Metropolis Revenue",
+        "post_day":"Post-Metro $/Day","grace_pct":"Grace Exit %","vehicles":"Total Vehicles"
+    })
+    st.dataframe(disp_rt, use_container_width=True, hide_index=True)
+
+    st.markdown("""
+    <div class="callout callout-blue" style="margin-top:0.75rem;">
+      <b>Note on observed visits:</b> "Observed visits" = paid transactions + recorded 15-minute
+      grace-period exits. This may not capture every vehicle movement or transaction category
+      recorded by Metropolis. CPkD has not confirmed these are exhaustive categories.
+    </div>
+    <p class="src">Source: CPkD FOIA R-6663, filed by Ana Marija Soković.
+    Data period: June 30, 2024 to May 7, 2026.</p>
+    """, unsafe_allow_html=True)
+
+# ─────────────────────────────────────────────────────────────────────────────
+# TAB 7 · PARKING GATES FINDINGS — RESEARCH NARRATIVE
+# ─────────────────────────────────────────────────────────────────────────────
+with tabs[6]:
+
+    st.markdown("""
+    <div class="callout callout-blue">
+      <b>Research question:</b> How did the Metropolis parking system perform across CPkD lots
+      after implementation, and do outcomes differ systematically by location or community context?
+      <br><br>
+      This tab presents findings in sequence — each with what the data show, what they may
+      indicate, and what remains unknown. All analyses use post-Metropolis-go-live data only.
+    </div>
+    """, unsafe_allow_html=True)
+
+    # F1: Grace exits
+    st.markdown('<p class="sec-head" style="margin-top:0.5rem;">Finding 1 — Rainbow Beach records exceptionally high short-stay exit activity</p>',
+                unsafe_allow_html=True)
+
     grace_data = pd.DataFrame([
         dict(lot="Rainbow Beach North",         grace_pct=86.6, ratio=6.46, side="7th Ward"),
         dict(lot="Rainbow Beach South",         grace_pct=82.7, ratio=4.78, side="7th Ward"),
@@ -1144,337 +1180,324 @@ with tabs[5]:
         dict(lot="MSI East",                    grace_pct=58.6, ratio=1.42, side="Museum Campus"),
         dict(lot="Oakwood Beach 39th St",       grace_pct=56.5, ratio=1.30, side="South Side"),
         dict(lot="Waveland",                    grace_pct=47.6, ratio=0.91, side="North Side"),
-        dict(lot="Wilson",                      grace_pct=30.7, ratio=0.44, side="North Side"),
         dict(lot="MSI South",                   grace_pct=37.6, ratio=0.60, side="Museum Campus"),
+        dict(lot="Wilson",                      grace_pct=30.7, ratio=0.44, side="North Side"),
         dict(lot="North Avenue Beach",          grace_pct=21.8, ratio=0.28, side="North Side"),
         dict(lot="55th St / South Shore Dr",    grace_pct=13.4, ratio=0.24, side="South Side"),
     ]).sort_values("grace_pct", ascending=True)
 
     grace_colors = {"7th Ward": RED, "North Side": BLUE, "South Side": AMBER, "Museum Campus": TEAL}
 
-    gc1, gc2 = st.columns(2)
-    with gc1:
-        st.markdown('<p class="sec-sub">Grace-period exits as % of total visits per lot</p>',
-                    unsafe_allow_html=True)
-        fig_g1 = go.Figure()
-        fig_g1.add_trace(go.Bar(
-            x=grace_data["grace_pct"], y=grace_data["lot"], orientation="h",
-            marker_color=[grace_colors[s] for s in grace_data["side"]],
-            text=[f"{v:.1f}%" for v in grace_data["grace_pct"]],
-            textposition="outside", textfont=dict(size=10),
-            hovertemplate="<b>%{y}</b><br>Grace: %{x:.1f}%<extra></extra>",
-        ))
-        fig_defaults(fig_g1, height=310)
-        fig_g1.update_layout(
-            xaxis=dict(title=dict(text="Grace exits as % of all visits"), ticksuffix="%", range=[0,100]),
-            margin=dict(l=10, r=60, t=10, b=10),
-        )
-        st.plotly_chart(fig_g1, width="stretch")
+    fig_g = go.Figure()
+    fig_g.add_trace(go.Bar(
+        x=grace_data["grace_pct"], y=grace_data["lot"], orientation="h",
+        marker_color=[grace_colors[s] for s in grace_data["side"]],
+        text=[f"{v:.1f}%" for v in grace_data["grace_pct"]],
+        textposition="outside", textfont=dict(size=10),
+        hovertemplate="<b>%{y}</b><br>Grace: %{x:.1f}%<extra></extra>",
+    ))
+    fig_defaults(fig_g, height=300)
+    fig_g.update_layout(
+        xaxis=dict(title=dict(text="Grace exits as % of observed visits"), ticksuffix="%", range=[0,100]),
+        margin=dict(l=10, r=60, t=10, b=10),
+    )
+    st.plotly_chart(fig_g, width="stretch")
 
-    with gc2:
-        st.markdown('<p class="sec-sub">Grace exits per 1 paid transaction</p>',
-                    unsafe_allow_html=True)
-        r_sorted = grace_data.sort_values("ratio", ascending=True)
-        fig_g2 = go.Figure()
-        fig_g2.add_trace(go.Bar(
-            x=r_sorted["ratio"], y=r_sorted["lot"], orientation="h",
-            marker_color=[grace_colors[s] for s in r_sorted["side"]],
-            text=[f"{v:.2f}x" for v in r_sorted["ratio"]],
-            textposition="outside", textfont=dict(size=10),
-            hovertemplate="<b>%{y}</b><br>%{x:.2f} grace per paid<extra></extra>",
-        ))
-        fig_defaults(fig_g2, height=310)
-        fig_g2.update_layout(
-            xaxis=dict(title=dict(text="Grace exits per paid visit")),
-            margin=dict(l=10, r=60, t=10, b=10),
-        )
-        st.plotly_chart(fig_g2, width="stretch")
+    f1c1, f1c2, f1c3 = st.columns(3)
+    with f1c1:
+        st.markdown("""<div class="finding"><p class="finding-num">What the data show</p>
+        <p class="finding-body">At Rainbow Beach North, <b>86.6% of observed visits ended
+        within the 15-minute grace period</b> — 6.46 free exits per paid transaction.
+        At North Avenue Beach: 21.8% grace share, 0.28 per paid. Rainbow South: 82.7%.</p>
+        </div>""", unsafe_allow_html=True)
+    with f1c2:
+        st.markdown("""<div class="finding"><p class="finding-num">What this may indicate</p>
+        <p class="finding-body">Consistent with registration friction, visitors deciding not
+        to remain, pickup/drop-off use, or very short visits. The data do not distinguish
+        among these explanations.</p></div>""", unsafe_allow_html=True)
+    with f1c3:
+        st.markdown("""<div class="finding"><p class="finding-num">What remains unknown</p>
+        <p class="finding-body">CPkD has not disclosed registration start vs completion rates,
+        abandoned registrations, payment failures, average dwell time for grace exits, or
+        customer service complaints by location.</p></div>""", unsafe_allow_html=True)
 
-    st.markdown("""
-    <div class="callout callout-blue" style="margin-top:0.5rem;">
-      <b>Note on observed visits:</b> "Observed visits" in this analysis = paid transactions +
-      recorded 15-minute grace-period exits. This may not capture every vehicle movement or
-      transaction category recorded by Metropolis. CPkD has not disclosed whether these two
-      sheets represent exhaustive categories of all lot activity.
-    </div>
-    """, unsafe_allow_html=True)
+    # F2: Revenue outcomes
+    st.markdown('<p class="sec-head" style="margin-top:1rem;">Finding 2 — Financial outcomes after Metropolis go-live vary sharply by location</p>',
+                unsafe_allow_html=True)
 
-    # ── FINDING P2 ────────────────────────────────────────────────────────────
-    st.markdown("""
-    <p class="sec-head" style="margin-top:1rem;">
-      Finding P2 — Financial outcomes after Metropolis go-live vary sharply by location
-    </p>
-    """, unsafe_allow_html=True)
-
-    yc1, yc2, yc3 = st.columns(3)
-    with yc1:
-        st.markdown("""
-        <div class="finding">
-          <p class="finding-num">What the data show</p>
-          <p class="finding-body">Same-calendar-window year-over-year comparisons show revenue
-          declines at Foster (-72.5%), 55th/South Shore (-30.9%), and Wilson (-19.4%), while
-          MSI East (+17.4%), Oakwood (+24.1%), and MSI South (+43.1%) increased.
-          Foster transactions fell 70.8%.</p>
-        </div>
-        """, unsafe_allow_html=True)
-    with yc2:
-        st.markdown("""
-        <div class="finding">
-          <p class="finding-num">What this may indicate</p>
-          <p class="finding-body">The results vary materially by location. Both MSI lots and
-          Oakwood increased, while Foster, 55th/South Shore, and Wilson declined substantially.
-          North Avenue and Waveland were approximately flat. The pattern does not align neatly
-          with a simple North–South division. The Foster result is severe and warrants
-          investigation.</p>
-        </div>
-        """, unsafe_allow_html=True)
-    with yc3:
-        st.markdown("""
-        <div class="finding">
-          <p class="finding-num">What remains unknown</p>
-          <p class="finding-body">Weather variation, special events, nearby construction,
-          and operational differences must be evaluated before attributing results solely
-          to the parking system. CPkD has not provided visit-purpose data, visitor surveys,
-          or an equity impact assessment for any lot.</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-    yoy_plot = pd.DataFrame([
-        dict(lot="MSI South",               rev_chg=43.1),
-        dict(lot="Oakwood Beach 39th St",   rev_chg=24.1),
-        dict(lot="MSI East",                rev_chg=17.4),
-        dict(lot="North Avenue Beach",      rev_chg=-4.1),
-        dict(lot="Waveland",                rev_chg=-3.6),
-        dict(lot="Wilson",                  rev_chg=-19.4),
-        dict(lot="55th St / South Shore Dr",rev_chg=-30.9),
-        dict(lot="Foster",                  rev_chg=-72.5),
+    yoy_data = pd.DataFrame([
+        dict(lot="MSI South",                rev_chg=43.1),
+        dict(lot="Oakwood Beach",            rev_chg=24.1),
+        dict(lot="MSI East",                 rev_chg=17.4),
+        dict(lot="North Avenue Beach",       rev_chg=-4.1),
+        dict(lot="Waveland",                 rev_chg=-3.6),
+        dict(lot="Wilson",                   rev_chg=-19.4),
+        dict(lot="55th St / South Shore Dr", rev_chg=-30.9),
+        dict(lot="Foster",                   rev_chg=-72.5),
     ]).sort_values("rev_chg", ascending=True)
 
-    st.markdown('<p class="sec-sub">Year-over-year revenue change: post-Metropolis period vs same calendar window '
-                'prior year. Rainbow Beach excluded — prior voluntary system had near-zero recorded revenue.</p>',
-                unsafe_allow_html=True)
     fig_yoy = go.Figure()
     fig_yoy.add_trace(go.Bar(
-        x=yoy_plot["rev_chg"], y=yoy_plot["lot"], orientation="h",
-        marker_color=[RED if v < 0 else GREEN for v in yoy_plot["rev_chg"]],
-        text=[f"{v:+.1f}%" for v in yoy_plot["rev_chg"]],
+        x=yoy_data["rev_chg"], y=yoy_data["lot"], orientation="h",
+        marker_color=[RED if v < 0 else GREEN for v in yoy_data["rev_chg"]],
+        text=[f"{v:+.1f}%" for v in yoy_data["rev_chg"]],
         textposition="outside", textfont=dict(size=10),
         hovertemplate="<b>%{y}</b><br>%{x:+.1f}%<extra></extra>",
     ))
     fig_yoy.add_vline(x=0, line_color=GREY, line_width=1)
-    fig_defaults(fig_yoy, height=280)
+    fig_defaults(fig_yoy, height=270)
     fig_yoy.update_layout(
         xaxis=dict(title=dict(text="Year-over-year revenue change (%)"), ticksuffix="%"),
         margin=dict(l=10, r=70, t=10, b=10),
     )
+    st.markdown('<p class="sec-sub">Year-over-year: same calendar window post-Metropolis vs prior year. '
+                'Rainbow Beach excluded — prior voluntary system had near-zero recorded revenue.</p>',
+                unsafe_allow_html=True)
     st.plotly_chart(fig_yoy, width="stretch")
 
-    # ── FINDING P3 ────────────────────────────────────────────────────────────
-    st.markdown("""
-    <p class="sec-head" style="margin-top:1rem;">
-      Finding P3 — Digital-only registration creates an unmeasured equity risk
-    </p>
-    """, unsafe_allow_html=True)
+    f2c1, f2c2, f2c3 = st.columns(3)
+    with f2c1:
+        st.markdown("""<div class="finding"><p class="finding-num">What the data show</p>
+        <p class="finding-body">MSI South (+43.1%), Oakwood (+24.1%), MSI East (+17.4%) grew.
+        Foster (-72.5%), 55th/South Shore (-30.9%), Wilson (-19.4%) declined. North Avenue and
+        Waveland were approximately flat. Foster transactions fell 70.8%.</p></div>""",
+        unsafe_allow_html=True)
+    with f2c2:
+        st.markdown("""<div class="finding"><p class="finding-num">What this may indicate</p>
+        <p class="finding-body">Results vary materially by location. The pattern does not align
+        neatly with a North–South division — Oakwood (South Side) grew while Foster (North Side)
+        collapsed. Museum-oriented lots with distinct entry behavior outperformed community lots.</p>
+        </div>""", unsafe_allow_html=True)
+    with f2c3:
+        st.markdown("""<div class="finding"><p class="finding-num">What remains unknown</p>
+        <p class="finding-body">Weather variation, nearby construction, special events, and
+        operational differences must be evaluated before attributing results solely to the
+        parking system. CPkD has not provided an equity impact assessment for any lot.</p>
+        </div>""", unsafe_allow_html=True)
 
-    dc1, dc2, dc3 = st.columns(3)
-    with dc1:
-        st.markdown("""
-        <div class="finding">
-          <p class="finding-num">What the data show</p>
-          <p class="finding-body">Metropolis requires first-time users to complete
-          a phone-based registration: QR code scan, phone number confirmation,
-          vehicle information, and payment details. CPkD calls this "easy sign-up."
-          No cash alternative or non-smartphone pathway is described in the Fact Sheet.</p>
-        </div>
-        """, unsafe_allow_html=True)
-    with dc2:
-        st.markdown("""
-        <div class="finding">
-          <p class="finding-num">What this may indicate</p>
-          <p class="finding-body">The registration process creates plausible barriers for
-          residents without smartphones, without payment cards, with limited digital
-          proficiency, or who are seniors unfamiliar with QR-code flows. Rainbow Beach
-          serves a community with a lower median household income (approximately $40K, ACS 2023)
-          and a substantial older-adult population — making these access questions particularly
-          important. The high grace-exit rate makes this an urgent question, but the available
-          data do not confirm who is leaving or why.</p>
-        </div>
-        """, unsafe_allow_html=True)
-    with dc3:
-        st.markdown("""
-        <div class="finding">
-          <p class="finding-num">What CPkD has not disclosed</p>
-          <p class="finding-body">Registration starts vs completions · Failed or abandoned
-          registrations · Declined payments · Customer service complaints by location ·
-          Cash or non-smartphone alternatives · ADA and language-access assessments ·
-          Average dwell time for grace exits · Any equity impact assessment for the
-          Metropolis system.</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-    # ── Revenue tables ────────────────────────────────────────────────────────
-    st.markdown('<p class="sec-head" style="margin-top:1rem;">Revenue by lot: full dataset vs post-Metropolis go-live</p>',
+    # F3: Digital registration
+    st.markdown('<p class="sec-head" style="margin-top:1rem;">Finding 3 — Digital-only registration creates an unmeasured equity risk</p>',
                 unsafe_allow_html=True)
-    st.markdown("""
-    <div class="callout callout-blue">
-      The full-dataset figures (June 2024 to May 2026) combine revenue from the prior voluntary
-      payment system and the Metropolis gate system. Most lots did not go live on Metropolis until
-      late 2025 or January 2026. Post-go-live figures show only the Metropolis period. Both are
-      shown below for transparency. CPkD states parking revenue supports districtwide programs
-      but has not provided location-level revenue allocation records showing where each lot's
-      revenue is spent.
-    </div>
-    """, unsafe_allow_html=True)
 
-    rev_table = pd.DataFrame([
-        dict(lot="North Avenue Beach",       area="North Side",           golive="Nov 24 2025",
-             full_rev=2007285, post_rev=95418,  post_day=578,  grace_pct=21.8),
-        dict(lot="MSI East",                 area="Museum Campus",        golive="Jan 7 2026",
-             full_rev=1135272, post_rev=184103, post_day=1522, grace_pct=58.6),
-        dict(lot="Foster",                   area="North Side",           golive="Jan 22 2026",
-             full_rev=424173,  post_rev=2747,   post_day=26,   grace_pct=61.9),
-        dict(lot="Waveland",                 area="North Side",           golive="Dec 24 2025",
-             full_rev=369854,  post_rev=33111,  post_day=249,  grace_pct=47.6),
-        dict(lot="MSI South",                area="Museum Campus",        golive="Jan 7 2026",
-             full_rev=366584,  post_rev=71749,  post_day=593,  grace_pct=37.6),
-        dict(lot="Wilson",                   area="North Side",           golive="Jan 7 2026",
-             full_rev=304484,  post_rev=21345,  post_day=180,  grace_pct=30.7),
-        dict(lot="Oakwood Beach 39th St",    area="South Side",           golive="Dec 18 2025",
-             full_rev=238993,  post_rev=27807,  post_day=197,  grace_pct=56.5),
-        dict(lot="55th St / South Shore Dr", area="South Side",           golive="Dec 17 2025",
-             full_rev=209075,  post_rev=5667,   post_day=40,   grace_pct=13.4),
-        dict(lot="Rainbow Beach North",      area="7th Ward (S. Shore)",  golive="Jan 28 2026",
-             full_rev=21305,   post_rev=2692,   post_day=27,   grace_pct=86.6),
-        dict(lot="Rainbow Beach South",      area="7th Ward (S. Shore)",  golive="Jan 28 2026",
-             full_rev=17180,   post_rev=1627,   post_day=16,   grace_pct=82.7),
-    ])
+    f3c1, f3c2, f3c3 = st.columns(3)
+    with f3c1:
+        st.markdown("""<div class="finding"><p class="finding-num">What the data show</p>
+        <p class="finding-body">Metropolis requires: QR code scan, phone number confirmation,
+        vehicle information, and payment details. CPkD calls this "easy sign-up." No cash
+        alternative or non-smartphone pathway is described in the Fact Sheet.</p></div>""",
+        unsafe_allow_html=True)
+    with f3c2:
+        st.markdown("""<div class="finding"><p class="finding-num">What this may indicate</p>
+        <p class="finding-body">Plausible barriers exist for residents without smartphones,
+        without payment cards, with limited digital proficiency, or who are seniors unfamiliar
+        with QR-code flows. Rainbow Beach serves a community with lower median income (~$40K,
+        ACS 2023) and a substantial older-adult population.</p></div>""",
+        unsafe_allow_html=True)
+    with f3c3:
+        st.markdown("""<div class="finding"><p class="finding-num">What CPkD has not disclosed</p>
+        <p class="finding-body">Registration starts vs completions · Failed or abandoned
+        registrations · Declined payments · Customer service complaints by location ·
+        Cash or non-smartphone alternatives · ADA and language-access assessments ·
+        Average dwell time for grace exits · Any equity impact assessment.</p></div>""",
+        unsafe_allow_html=True)
 
-    disp = rev_table.copy()
-    disp["full_rev"] = disp["full_rev"].apply(lambda v: f"${v:,.0f}")
-    disp["post_rev"] = disp["post_rev"].apply(lambda v: f"${v:,.0f}")
-    disp["post_day"] = disp["post_day"].apply(lambda v: f"${v:,.0f}")
-    disp["grace_pct"]= disp["grace_pct"].apply(lambda v: f"{v:.1f}%")
-    disp = disp.rename(columns={
-        "lot":"Location","area":"Area","golive":"Metropolis Go-Live",
-        "full_rev":"Full Dataset Revenue (Jun 2024-May 2026)",
-        "post_rev":"Post-Go-Live Revenue","post_day":"Post-Go-Live $/Day",
-        "grace_pct":"Grace Exit %"
-    })
-    st.dataframe(disp, use_container_width=True, hide_index=True)
-
-    st.markdown("""
-    <p class="src">Source: CPkD FOIA R-6663, filed by Ana Marija Soković.
-    Data period: June 30, 2024 to May 7, 2026.
-    Year-over-year compares equivalent post-go-live calendar windows.
-    CPkD Parking Fact Sheet: New Parking System Quick Facts (2026).</p>
-    """, unsafe_allow_html=True)
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# ─────────────────────────────────────────────────────────────────────────────
-# TAB 7 · PARKING GATES FINDINGS (ADVANCED ANALYSIS)
-# ─────────────────────────────────────────────────────────────────────────────
-with tabs[6]:
-
-    st.markdown("""
-    <div class="callout callout-amber">
-      Advanced analysis of Metropolis parking data from CPkD FOIA R-6663.
-      All metrics use post-Metropolis-go-live data only. Quadrant and performance
-      analyses are descriptive — they identify patterns that warrant further investigation
-      rather than establishing causal explanations.
-    </div>
-    """, unsafe_allow_html=True)
-
-    # ── 1. Quadrant plot ──────────────────────────────────────────────────────
-    st.markdown('<p class="sec-head">Quadrant analysis: revenue/day vs grace-exit rate</p>',
+    # F4: Quadrant — CENTERPIECE
+    st.markdown('<p class="sec-head" style="margin-top:1rem;">Finding 4 — Performance clusters: revenue vs grace-exit rate</p>',
                 unsafe_allow_html=True)
-    st.markdown("""
-    <div class="callout callout-blue">
-      <b>How to read this:</b> Each lot is plotted by its average daily post-Metropolis revenue
-      (Y-axis) and grace-period exit rate (X-axis). Lots in the lower-right quadrant generate
-      low revenue and show high grace-period activity — the combination most consistent with
-      access friction or low visitor dwell time. Quadrant boundaries are set at system medians
-      ($188/day revenue, 52.1% grace rate).
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown('<p class="sec-sub">Each lot plotted by post-Metropolis average revenue/day (Y) '
+                'and grace-exit rate (X). Quadrant boundaries at system medians ($188/day, 52.1% grace). '
+                'Rainbow Beach is the clearest outlier: lowest revenue, highest grace rate.</p>',
+                unsafe_allow_html=True)
 
     quad_data = pd.DataFrame([
-        dict(label="North Ave Beach",  rev_day=582,  grace=21.8, quad="High rev / Low grace",  color=BLUE),
-        dict(label="MSI East",         rev_day=1534, grace=58.6, quad="High rev / High grace", color=TEAL),
-        dict(label="MSI South",        rev_day=598,  grace=37.6, quad="High rev / Low grace",  color=TEAL),
-        dict(label="Waveland",         rev_day=247,  grace=47.6, quad="High rev / Low grace",  color=BLUE),
-        dict(label="Oakwood Beach",    rev_day=199,  grace=56.5, quad="High rev / High grace", color=AMBER),
-        dict(label="Wilson",           rev_day=178,  grace=30.7, quad="Low rev / Low grace",   color=BLUE),
-        dict(label="55th/S.Shore Dr",  rev_day=40,   grace=13.4, quad="Low rev / Low grace",   color=AMBER),
-        dict(label="Foster",           rev_day=26,   grace=61.9, quad="Low rev / High grace",  color=BLUE),
-        dict(label="Rainbow N",        rev_day=27,   grace=86.6, quad="Low rev / High grace",  color=RED),
-        dict(label="Rainbow S",        rev_day=16,   grace=82.7, quad="Low rev / High grace",  color=RED),
+        dict(label="North Ave Beach",  rev_day=582,  grace=21.8, color=BLUE),
+        dict(label="MSI East",         rev_day=1534, grace=58.6, color=TEAL),
+        dict(label="MSI South",        rev_day=598,  grace=37.6, color=TEAL),
+        dict(label="Waveland",         rev_day=247,  grace=47.6, color=BLUE),
+        dict(label="Oakwood Beach",    rev_day=199,  grace=56.5, color=AMBER),
+        dict(label="Wilson",           rev_day=178,  grace=30.7, color=BLUE),
+        dict(label="55th/S.Shore Dr",  rev_day=40,   grace=13.4, color=AMBER),
+        dict(label="Foster",           rev_day=26,   grace=61.9, color=BLUE),
+        dict(label="Rainbow N",        rev_day=27,   grace=86.6, color=RED),
+        dict(label="Rainbow S",        rev_day=16,   grace=82.7, color=RED),
     ])
 
     fig_quad = go.Figure()
-
-    # Quadrant shading
-    fig_quad.add_shape(type="rect", x0=52.1, x1=100, y0=0,   y1=188,
-                       fillcolor="rgba(176,98,0,0.07)", line=dict(width=0))
-    fig_quad.add_shape(type="rect", x0=0,    x1=52.1, y0=0,   y1=188,
-                       fillcolor="rgba(26,68,128,0.04)", line=dict(width=0))
-    fig_quad.add_shape(type="rect", x0=0,    x1=52.1, y0=188, y1=1700,
-                       fillcolor="rgba(26,107,60,0.05)", line=dict(width=0))
-    fig_quad.add_shape(type="rect", x0=52.1, x1=100, y0=188, y1=1700,
-                       fillcolor="rgba(27,108,168,0.05)", line=dict(width=0))
-
-    # Median lines
-    fig_quad.add_vline(x=52.1, line_dash="dash", line_color=GREY, line_width=1,
-                       annotation_text="Median grace 52.1%", annotation_position="top right",
-                       annotation_font=dict(size=9, color=GREY))
-    fig_quad.add_hline(y=188, line_dash="dash", line_color=GREY, line_width=1,
-                       annotation_text="Median $188/day", annotation_position="right",
-                       annotation_font=dict(size=9, color=GREY))
-
-    # Scatter
+    fig_quad.add_shape(type="rect", x0=52.1, x1=100, y0=0,   y1=188,   fillcolor="rgba(176,98,0,0.06)",  line=dict(width=0))
+    fig_quad.add_shape(type="rect", x0=0,    x1=52.1, y0=0,  y1=188,   fillcolor="rgba(26,68,128,0.04)", line=dict(width=0))
+    fig_quad.add_shape(type="rect", x0=0,    x1=52.1, y0=188, y1=1700, fillcolor="rgba(26,107,60,0.05)", line=dict(width=0))
+    fig_quad.add_shape(type="rect", x0=52.1, x1=100, y0=188, y1=1700,  fillcolor="rgba(27,108,168,0.05)",line=dict(width=0))
+    fig_quad.add_vline(x=52.1, line_dash="dash", line_color=GREY, line_width=1)
+    fig_quad.add_hline(y=188,  line_dash="dash", line_color=GREY, line_width=1)
     for _, row in quad_data.iterrows():
+        is_rb = "Rainbow" in row["label"]
         fig_quad.add_trace(go.Scatter(
-            x=[row['grace']], y=[row['rev_day']],
-            mode='markers+text',
-            marker=dict(size=14 if 'Rainbow' in row['label'] else 10,
-                       color=row['color'], opacity=0.85,
-                       line=dict(width=1.5, color='white')),
-            text=[row['label']],
-            textposition='top center',
-            textfont=dict(size=9, color=row['color']),
-            name=row['label'],
-            hovertemplate=f"<b>{row['label']}</b><br>Grace: {row['grace']:.1f}%<br>Rev/day: ${row['rev_day']:,.0f}<br>{row['quad']}<extra></extra>",
+            x=[row["grace"]], y=[row["rev_day"]],
+            mode="markers+text",
+            marker=dict(size=16 if is_rb else 11, color=row["color"], opacity=0.9,
+                       line=dict(width=2 if is_rb else 1, color="white")),
+            text=[row["label"]],
+            textposition="top center",
+            textfont=dict(size=9 if not is_rb else 10, color=row["color"]),
+            hovertemplate=f"<b>{row['label']}</b><br>Grace: {row['grace']:.1f}%<br>Rev/day: ${row['rev_day']:,.0f}<extra></extra>",
             showlegend=False,
         ))
-
-    # Quadrant labels
-    for txt, x, y in [("High rev / Low grace", 26, 1500), ("High rev / High grace", 75, 1500),
-                       ("Low rev / Low grace", 26, 50),   ("Low rev / High grace", 75, 50)]:
+    for txt, x, y in [("High rev\nLow grace", 26, 1550), ("High rev\nHigh grace", 75, 1550),
+                       ("Low rev\nLow grace", 26, 10),   ("Low rev\nHigh grace", 75, 10)]:
         fig_quad.add_annotation(x=x, y=y, text=txt, showarrow=False,
-                                font=dict(size=9, color=GREY), opacity=0.6)
-
-    fig_defaults(fig_quad, height=420)
+                                font=dict(size=9, color=GREY), opacity=0.55)
+    fig_defaults(fig_quad, height=460)
     fig_quad.update_layout(
-        xaxis=dict(title=dict(text="Grace-exit rate (% of observed visits)"),
-                   ticksuffix="%", range=[0, 100]),
-        yaxis=dict(title=dict(text="Post-Metropolis avg revenue/day ($)"),
-                   tickprefix="$"),
+        xaxis=dict(title=dict(text="Grace-exit rate (% of observed visits)"), ticksuffix="%", range=[0,100]),
+        yaxis=dict(title=dict(text="Post-Metropolis avg revenue/day ($)"), tickprefix="$"),
         margin=dict(l=10, r=10, t=10, b=10),
     )
-    st.plotly_chart(fig_quad, width='stretch')
+    st.plotly_chart(fig_quad, width="stretch")
 
-    # ── 2. Performance scorecard ──────────────────────────────────────────────
-    st.markdown('<p class="sec-head" style="margin-top:1rem;">Performance scorecard — all 10 lots ranked</p>',
-                unsafe_allow_html=True)
-    st.markdown('<p class="sec-sub">Score = revenue/day percentile (40%) + revenue/transaction '
-                'percentile (30%) − grace-exit percentile (30%). Higher = better performing lot. '
-                'Percentiles computed within this 10-lot Metropolis system only.</p>',
+    # F5: Pareto — elevated
+    st.markdown('<p class="sec-head" style="margin-top:1rem;">Finding 5 — Revenue is highly concentrated: top 3 lots = 78.7% of system total</p>',
                 unsafe_allow_html=True)
 
-    scorecard_raw = [
+    pareto_data = pd.DataFrame([
+        dict(label="MSI East",        rev=184103, area="Museum"),
+        dict(label="North Ave Beach", rev=95418,  area="North Side"),
+        dict(label="MSI South",       rev=71749,  area="Museum"),
+        dict(label="Waveland",        rev=33111,  area="North Side"),
+        dict(label="Oakwood Beach",   rev=27807,  area="South Side"),
+        dict(label="Wilson",          rev=21345,  area="North Side"),
+        dict(label="55th/S.Shore Dr", rev=5667,   area="South Side"),
+        dict(label="Foster",          rev=2747,   area="North Side"),
+        dict(label="Rainbow N",       rev=2692,   area="7th Ward"),
+        dict(label="Rainbow S",       rev=1627,   area="7th Ward"),
+    ]).sort_values("rev", ascending=False).reset_index(drop=True)
+    total_rv = pareto_data["rev"].sum()
+    pareto_data["cum_pct"] = pareto_data["rev"].cumsum() / total_rv * 100
+    pareto_data["rev_pct"] = pareto_data["rev"] / total_rv * 100
+    pcols = [TEAL if "Museum" in a else RED if "7th" in a else BLUE if "North" in a else AMBER
+             for a in pareto_data["area"]]
+
+    fig_par = go.Figure()
+    fig_par.add_trace(go.Bar(x=pareto_data["label"], y=pareto_data["rev_pct"],
+                             marker_color=pcols, name="% of system revenue",
+                             text=[f"{v:.1f}%" for v in pareto_data["rev_pct"]],
+                             textposition="outside", textfont=dict(size=9), yaxis="y"))
+    fig_par.add_trace(go.Scatter(x=pareto_data["label"], y=pareto_data["cum_pct"],
+                                 mode="lines+markers", line=dict(color=BLUE, width=2),
+                                 marker=dict(size=6), name="Cumulative %", yaxis="y2"))
+    fig_par.add_hline(y=80, line_dash="dash", line_color=GREY, line_width=1, yref="y2",
+                      annotation_text="80%", annotation_position="right",
+                      annotation_font=dict(size=9, color=GREY))
+    fig_defaults(fig_par, height=310)
+    fig_par.update_layout(
+        yaxis=dict(title=dict(text="Share of revenue (%)"), ticksuffix="%"),
+        yaxis2=dict(overlaying="y", side="right", ticksuffix="%", range=[0,105],
+                    title=dict(text="Cumulative %")),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02),
+        margin=dict(l=10, r=60, t=20, b=60),
+    )
+    st.plotly_chart(fig_par, width="stretch")
+    st.markdown("""
+    <div class="callout callout-red">
+      The bottom 4 lots — Foster, 55th/South Shore, Rainbow North, and Rainbow South —
+      account for 2.9% of post-Metropolis system revenue combined. Two of those four are
+      at Rainbow Beach in the 7th Ward. The system was installed uniformly but generates
+      revenue highly unevenly.
+    </div>
+    """, unsafe_allow_html=True)
+
+    # F6: Weekend lift
+    st.markdown('<p class="sec-head" style="margin-top:1rem;">Finding 6 — Rainbow Beach shows minimal weekend lift</p>',
+                unsafe_allow_html=True)
+    st.markdown('<p class="sec-sub">Weekend lift = how much more revenue a lot generates on Saturdays '
+                'and Sundays vs weekdays. MSI South shows +310% weekend lift. Rainbow Beach South: +6%.</p>',
+                unsafe_allow_html=True)
+
+    lift_data = pd.DataFrame([
+        dict(label="MSI South",       lift=310, color=TEAL),
+        dict(label="North Ave Beach", lift=140, color=BLUE),
+        dict(label="Waveland",        lift=131, color=BLUE),
+        dict(label="MSI East",        lift=100, color=TEAL),
+        dict(label="55th/S.Shore Dr", lift=88,  color=AMBER),
+        dict(label="Oakwood Beach",   lift=74,  color=AMBER),
+        dict(label="Wilson",          lift=35,  color=BLUE),
+        dict(label="Rainbow N",       lift=28,  color=RED),
+        dict(label="Foster",          lift=25,  color=BLUE),
+        dict(label="Rainbow S",       lift=6,   color=RED),
+    ]).sort_values("lift", ascending=True)
+
+    fig_lift = go.Figure()
+    fig_lift.add_trace(go.Bar(
+        x=lift_data["lift"], y=lift_data["label"], orientation="h",
+        marker_color=lift_data["color"].tolist(),
+        text=[f"+{v:.0f}%" for v in lift_data["lift"]],
+        textposition="outside", textfont=dict(size=10),
+        hovertemplate="<b>%{y}</b><br>Weekend lift: +%{x:.0f}%<extra></extra>",
+    ))
+    fig_defaults(fig_lift, height=300)
+    fig_lift.update_layout(
+        xaxis=dict(title=dict(text="Weekend revenue premium vs weekday avg (%)"), ticksuffix="%"),
+        margin=dict(l=10, r=60, t=10, b=10),
+    )
+    st.plotly_chart(fig_lift, width="stretch")
+
+    # F7: Revenue efficiency index
+    st.markdown('<p class="sec-head" style="margin-top:1rem;">Finding 7 — Revenue generated per 100 observed visits</p>',
+                unsafe_allow_html=True)
+    st.markdown('<p class="sec-sub">Efficiency metric: post-Metropolis revenue divided by total observed '
+                'visits (paid + grace exits) × 100. Captures how much revenue the system '
+                'extracts per visit regardless of absolute traffic volume.</p>',
+                unsafe_allow_html=True)
+
+    eff_data = pd.DataFrame([
+        dict(label="North Ave Beach",  eff=1356.72, color=BLUE),
+        dict(label="Wilson",           eff=489.34,  color=BLUE),
+        dict(label="55th/S.Shore Dr",  eff=518.48,  color=AMBER),
+        dict(label="MSI East",         eff=885.03,  color=TEAL),
+        dict(label="MSI South",        eff=464.00,  color=TEAL),
+        dict(label="Waveland",         eff=373.71,  color=BLUE),
+        dict(label="Foster",           eff=240.33,  color=BLUE),
+        dict(label="Oakwood Beach",    eff=227.83,  color=AMBER),
+        dict(label="Rainbow S",        eff=88.18,   color=RED),
+        dict(label="Rainbow N",        eff=73.21,   color=RED),
+    ]).sort_values("eff", ascending=True)
+
+    fig_eff = go.Figure()
+    fig_eff.add_trace(go.Bar(
+        x=eff_data["eff"], y=eff_data["label"], orientation="h",
+        marker_color=eff_data["color"].tolist(),
+        text=[f"${v:,.0f}" for v in eff_data["eff"]],
+        textposition="outside", textfont=dict(size=10),
+        hovertemplate="<b>%{y}</b><br>$%{x:,.0f} per 100 visits<extra></extra>",
+    ))
+    fig_defaults(fig_eff, height=300)
+    fig_eff.update_layout(
+        xaxis=dict(title=dict(text="Revenue per 100 observed visits ($)"), tickprefix="$"),
+        margin=dict(l=10, r=80, t=10, b=10),
+    )
+    st.plotly_chart(fig_eff, width="stretch")
+    st.markdown("""
+    <div class="callout callout-red">
+      North Avenue Beach generates $1,357 per 100 observed visits. Rainbow Beach North
+      generates $73 — an 18.5:1 efficiency gap. Even accounting for lower traffic volume,
+      the system extracts far less revenue per observed visit at Rainbow Beach than at
+      any other lot.
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Relative performance scorecard
+    st.markdown('<p class="sec-head" style="margin-top:1rem;">Relative performance scorecard — within this 10-lot system only</p>',
+                unsafe_allow_html=True)
+    st.markdown('<p class="sec-sub">Composite score: revenue/day percentile (40%) + '
+                'revenue/transaction percentile (30%) − grace-exit percentile (30%). '
+                'Scores reflect relative ranking within this dataset only — a high score '
+                'means best in this system, not objectively strong performance.</p>',
+                unsafe_allow_html=True)
+
+    import numpy as np
+    sc_raw = pd.DataFrame([
         dict(label="MSI East",        rev_day=1534, rev_txn=21.37, grace=58.6),
-        dict(label="MSI South",       rev_day=598,  rev_txn=7.35,  grace=37.6),
         dict(label="North Ave Beach", rev_day=582,  rev_txn=17.30, grace=21.8),
+        dict(label="MSI South",       rev_day=598,  rev_txn=7.35,  grace=37.6),
         dict(label="Waveland",        rev_day=247,  rev_txn=7.13,  grace=47.6),
         dict(label="Oakwood Beach",   rev_day=199,  rev_txn=5.19,  grace=56.5),
         dict(label="Wilson",          rev_day=178,  rev_txn=7.06,  grace=30.7),
@@ -1482,188 +1505,69 @@ with tabs[6]:
         dict(label="Foster",          rev_day=26,   rev_txn=6.26,  grace=61.9),
         dict(label="Rainbow N",       rev_day=27,   rev_txn=5.46,  grace=86.6),
         dict(label="Rainbow S",       rev_day=16,   rev_txn=5.10,  grace=82.7),
-    ]
-    sc_df = pd.DataFrame(scorecard_raw)
+    ])
+    def pct_rank(s): return s.rank(pct=True)*100
+    sc_raw["score"] = (pct_rank(sc_raw["rev_day"])*0.40 +
+                       pct_rank(sc_raw["rev_txn"])*0.30 +
+                       pct_rank(sc_raw["grace"].max()-sc_raw["grace"])*0.30).round(1)
+    sc_raw = sc_raw.sort_values("score", ascending=False).reset_index(drop=True)
+    sc_raw["rank"] = range(1, len(sc_raw)+1)
+    sc_raw["stars"] = sc_raw["score"].apply(lambda s: "★"*int(s/100*5)+"☆"*(5-int(s/100*5)))
+    sc_raw["tier"] = sc_raw["score"].apply(lambda s:
+        "High-performing" if s >= 70 else "Above average" if s >= 50 else
+        "Below average" if s >= 30 else "High friction / low revenue")
 
-    import numpy as np
-    def pct_rank(series):
-        return series.rank(pct=True) * 100
-
-    sc_df['rev_day_pct']  = pct_rank(sc_df['rev_day'])
-    sc_df['rev_txn_pct']  = pct_rank(sc_df['rev_txn'])
-    sc_df['grace_pct_inv']= pct_rank(sc_df['grace'].max() - sc_df['grace'])  # invert: lower grace = better
-    sc_df['score'] = (sc_df['rev_day_pct']*0.40 + sc_df['rev_txn_pct']*0.30 + sc_df['grace_pct_inv']*0.30).round(1)
-    sc_df = sc_df.sort_values('score', ascending=False).reset_index(drop=True)
-    sc_df['rank'] = range(1, len(sc_df)+1)
-
-    def stars(score):
-        s = score/100*5
-        full = int(s)
-        return "★" * full + "☆" * (5 - full)
-
-    sc_df['stars'] = sc_df['score'].apply(stars)
-    sc_df['classification'] = sc_df.apply(lambda r: (
-        "High-performing" if r['score'] >= 70 else
-        "Above average" if r['score'] >= 50 else
-        "Below average" if r['score'] >= 30 else
-        "High friction / low revenue"
-    ), axis=1)
-
-    disp_sc = sc_df[['rank','label','score','stars','classification','rev_day','rev_txn','grace']].copy()
-    disp_sc.columns = ['Rank','Location','Score (0-100)','Rating','Classification',
-                        'Rev/Day ($)','Rev/Transaction ($)','Grace Exit %']
-    disp_sc['Rev/Day ($)'] = disp_sc['Rev/Day ($)'].apply(lambda v: f"${v:,.0f}")
-    disp_sc['Rev/Transaction ($)'] = disp_sc['Rev/Transaction ($)'].apply(lambda v: f"${v:.2f}")
-    disp_sc['Grace Exit %'] = disp_sc['Grace Exit %'].apply(lambda v: f"{v:.1f}%")
+    disp_sc = sc_raw[["rank","label","score","stars","tier","rev_day","rev_txn","grace"]].copy()
+    disp_sc.columns = ["Rank","Location","Score (0-100)","Rating","Tier",
+                        "Rev/Day ($)","Rev/Transaction ($)","Grace Exit %"]
+    disp_sc["Rev/Day ($)"] = disp_sc["Rev/Day ($)"].apply(lambda v: f"${v:,.0f}")
+    disp_sc["Rev/Transaction ($)"] = disp_sc["Rev/Transaction ($)"].apply(lambda v: f"${v:.2f}")
+    disp_sc["Grace Exit %"] = disp_sc["Grace Exit %"].apply(lambda v: f"{v:.1f}%")
     st.dataframe(disp_sc, use_container_width=True, hide_index=True)
 
-    # ── 3. Pareto / revenue concentration ─────────────────────────────────────
-    st.markdown('<p class="sec-head" style="margin-top:1rem;">Revenue concentration — Pareto analysis</p>',
+    # Records still needed
+    st.markdown('<p class="sec-head" style="margin-top:1rem;">Records still needed to evaluate the Metropolis system</p>',
                 unsafe_allow_html=True)
-    st.markdown('<p class="sec-sub">Post-Metropolis revenue by lot, cumulative. '
-                'The top 3 lots account for 78.7% of all system revenue.</p>',
-                unsafe_allow_html=True)
-
-    pareto_data = pd.DataFrame([
-        dict(label="MSI East",        rev=184103),
-        dict(label="North Ave Beach", rev=95418),
-        dict(label="MSI South",       rev=71749),
-        dict(label="Waveland",        rev=33111),
-        dict(label="Oakwood Beach",   rev=27807),
-        dict(label="Wilson",          rev=21345),
-        dict(label="55th/S.Shore Dr", rev=5667),
-        dict(label="Foster",          rev=2747),
-        dict(label="Rainbow N",       rev=2692),
-        dict(label="Rainbow S",       rev=1627),
-    ]).sort_values('rev', ascending=False).reset_index(drop=True)
-    total_rev = pareto_data['rev'].sum()
-    pareto_data['cum_pct'] = pareto_data['rev'].cumsum() / total_rev * 100
-    pareto_data['rev_pct'] = pareto_data['rev'] / total_rev * 100
-    lot_colors_p = [TEAL if 'MSI' in l else BLUE if l in ['North Ave Beach','Waveland','Wilson','Foster']
-                    else RED if 'Rainbow' in l else AMBER for l in pareto_data['label']]
-
-    fig_pareto = go.Figure()
-    fig_pareto.add_trace(go.Bar(
-        x=pareto_data['label'], y=pareto_data['rev_pct'],
-        marker_color=lot_colors_p,
-        name="% of total revenue",
-        text=[f"{v:.1f}%" for v in pareto_data['rev_pct']],
-        textposition='outside', textfont=dict(size=9),
-        hovertemplate="<b>%{x}</b><br>%{y:.1f}% of system revenue<extra></extra>",
-        yaxis='y',
-    ))
-    fig_pareto.add_trace(go.Scatter(
-        x=pareto_data['label'], y=pareto_data['cum_pct'],
-        mode='lines+markers',
-        line=dict(color=BLUE, width=2),
-        marker=dict(size=6, color=BLUE),
-        name="Cumulative %",
-        hovertemplate="<b>%{x}</b><br>Cumulative: %{y:.1f}%<extra></extra>",
-        yaxis='y2',
-    ))
-    fig_pareto.add_hline(y=80, line_dash="dash", line_color=GREY, line_width=1, yref='y2',
-                         annotation_text="80%", annotation_position="right",
-                         annotation_font=dict(size=9, color=GREY))
-    fig_defaults(fig_pareto, height=340)
-    fig_pareto.update_layout(
-        yaxis=dict(title=dict(text="Share of total revenue (%)"), ticksuffix="%"),
-        yaxis2=dict(title=dict(text="Cumulative share (%)"), overlaying='y',
-                    side='right', ticksuffix="%", range=[0, 105]),
-        legend=dict(orientation='h', yanchor='bottom', y=1.02),
-        margin=dict(l=10, r=60, t=20, b=60),
-        barmode='group',
-    )
-    st.plotly_chart(fig_pareto, width='stretch')
-
     st.markdown("""
-    <div class="callout callout-red">
-      <b>Revenue concentration finding:</b> The top 3 lots (MSI East, North Avenue Beach,
-      MSI South) account for 78.7% of all post-Metropolis system revenue. The bottom 4 lots
-      — Foster, 55th/South Shore, Rainbow North, and Rainbow South — account for 2.9%
-      combined. Two of those four lots are at Rainbow Beach in the 7th Ward.
+    <div class="callout callout-blue">
+      The following records would allow determination of whether the observed patterns reflect
+      registration friction, enforcement practices, visitor behavior, or other operational factors.
+      None have been disclosed by CPkD to date.
     </div>
     """, unsafe_allow_html=True)
 
-    # ── 4. Weekday vs weekend ─────────────────────────────────────────────────
-    st.markdown('<p class="sec-head" style="margin-top:1rem;">Weekday vs weekend revenue — post-Metropolis</p>',
-                unsafe_allow_html=True)
-    st.markdown('<p class="sec-sub">Weekend lift (how much more revenue a lot generates on weekends vs weekdays) '
-                'varies dramatically by location. Rainbow Beach shows minimal weekend lift, '
-                'suggesting it is not functioning as a weekend destination park.</p>',
-                unsafe_allow_html=True)
+    rc1, rc2, rc3 = st.columns(3)
+    with rc1:
+        st.markdown("""<div class="finding"><p class="finding-num">Registration and payment</p>
+        <p class="finding-body">Registration starts vs completions · Failed or abandoned
+        registrations · Declined payment transactions · Average registration completion time ·
+        Number of repeat vs one-time registrants per lot</p></div>""", unsafe_allow_html=True)
+    with rc2:
+        st.markdown("""<div class="finding"><p class="finding-num">Access and equity</p>
+        <p class="finding-body">ADA accessibility review · Language-access assessment ·
+        Cash or non-smartphone payment alternatives · Customer service complaints by location ·
+        Enforcement data and citation rates by lot</p></div>""", unsafe_allow_html=True)
+    with rc3:
+        st.markdown("""<div class="finding"><p class="finding-num">Operations and visits</p>
+        <p class="finding-body">Average dwell time for grace exits · Visitor surveys or exit
+        interviews · Revenue allocation by lot · Repeat visitor rates · Equity impact assessment ·
+        Pre-implementation community engagement records</p></div>""", unsafe_allow_html=True)
 
-    wkday_data = pd.DataFrame([
-        dict(label="MSI East",        wkday=1188, wkend=2375),
-        dict(label="MSI South",       wkday=317,  wkend=1299),
-        dict(label="North Ave Beach", wkday=416,  wkend=999),
-        dict(label="Waveland",        wkday=179,  wkend=414),
-        dict(label="Oakwood Beach",   wkday=163,  wkend=284),
-        dict(label="Wilson",          wkday=161,  wkend=217),
-        dict(label="55th/S.Shore Dr", wkday=32,   wkend=60),
-        dict(label="Foster",          wkday=24,   wkend=30),
-        dict(label="Rainbow N",       wkday=25,   wkend=32),
-        dict(label="Rainbow S",       wkday=16,   wkend=17),
-    ]).sort_values('wkend', ascending=True)
-    wkday_data['lift'] = (wkday_data['wkend'] - wkday_data['wkday']) / wkday_data['wkday'] * 100
-
-    fig_wk = go.Figure()
-    fig_wk.add_trace(go.Bar(
-        name="Weekday avg", x=wkday_data['wkday'], y=wkday_data['label'],
-        orientation='h', marker_color=GREY, opacity=0.7,
-        hovertemplate="<b>%{y}</b><br>Weekday: $%{x:,.0f}<extra></extra>",
-    ))
-    fig_wk.add_trace(go.Bar(
-        name="Weekend avg", x=wkday_data['wkend'], y=wkday_data['label'],
-        orientation='h', marker_color=BLUE, opacity=0.85,
-        hovertemplate="<b>%{y}</b><br>Weekend: $%{x:,.0f}<br>Lift: %{customdata:.0f}%<extra></extra>",
-        customdata=wkday_data['lift'],
-    ))
-    fig_defaults(fig_wk, height=340)
-    fig_wk.update_layout(
-        barmode='overlay',
-        xaxis=dict(title=dict(text="Average daily revenue ($)"), tickprefix="$"),
-        legend=dict(orientation='h', yanchor='bottom', y=1.02),
-        margin=dict(l=10, r=10, t=20, b=10),
-    )
-    st.plotly_chart(fig_wk, width='stretch')
-
-    # ── 5. Seasonality ────────────────────────────────────────────────────────
-    st.markdown('<p class="sec-head" style="margin-top:1rem;">Rainbow Beach monthly revenue since Metropolis go-live</p>',
-                unsafe_allow_html=True)
-    st.markdown('<p class="sec-sub">Rainbow Beach North post-go-live (January 28, 2026 onward). '
-                'Spring months show some growth but absolute revenue remains minimal.</p>',
-                unsafe_allow_html=True)
-
-    rb_monthly = pd.DataFrame([
-        dict(month="Feb 2026", rev=307.51),
-        dict(month="Mar 2026", rev=994.65),
-        dict(month="Apr 2026", rev=954.01),
-        dict(month="May 2026", rev=416.86),  # partial month through May 7
-    ])
-    fig_sea = go.Figure()
-    fig_sea.add_trace(go.Bar(
-        x=rb_monthly['month'], y=rb_monthly['rev'],
-        marker_color=[RED, RED, RED, AMBER],
-        text=[f"${v:,.0f}" for v in rb_monthly['rev']],
-        textposition='outside', textfont=dict(size=11),
-        hovertemplate="<b>%{x}</b><br>$%{y:,.0f}<extra></extra>",
-    ))
-    fig_defaults(fig_sea, height=260)
-    fig_sea.update_layout(
-        yaxis=dict(title=dict(text="Monthly revenue ($)"), tickprefix="$"),
-        margin=dict(l=10, r=10, t=10, b=10),
-        annotations=[dict(
-            x=3, y=450, text="May 2026 partial (data through May 7)",
-            showarrow=False, font=dict(size=9, color=GREY)
-        )]
-    )
-    st.plotly_chart(fig_sea, width='stretch')
-
+    # Conclusion
     st.markdown("""
+    <div class="callout callout-amber" style="margin-top:1rem;">
+      <b>Conclusion based on currently available records:</b> The Metropolis system shows
+      materially different outcomes across locations. Rainbow Beach combines unusually high
+      short-stay exit activity (86.6% grace rate, 6.46 grace exits per paid transaction)
+      with extremely low revenue generation ($73 per 100 observed visits, $27/day average).
+      The available data cannot determine whether this reflects registration friction, visitor
+      behavior, enforcement practices, or other operational factors. Resolving those questions
+      requires records that CPkD has not yet disclosed. The pattern is consistent with — but
+      does not prove — that the system functions as an access barrier at Rainbow Beach rather
+      than a revenue tool.
+    </div>
     <p class="src">All analyses use post-Metropolis-go-live data from CPkD FOIA R-6663.
-    Performance scores are relative rankings within this 10-lot system only and should not
-    be compared to other parking systems. Quadrant medians: $188/day revenue, 52.1% grace rate.
-    Seasonality data covers Rainbow Beach North only (January 28 to May 7, 2026).
+    Performance scores are relative within this 10-lot system only.
     Analysis: Ana Marija Soković, PhD, MBA.</p>
     """, unsafe_allow_html=True)
 
