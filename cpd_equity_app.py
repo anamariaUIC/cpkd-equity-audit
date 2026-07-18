@@ -316,7 +316,7 @@ tabs = st.tabs([
     "📋 Most Disinvested",
     "🅿️ Parking Gates",
     "📊 Parking Gates Findings",
-    "⏱️ Before & After Metropolis",
+    "⏱️ Before & After Parking Gates",
     "📝 Key Findings",
 ])
 
@@ -1083,28 +1083,28 @@ with tabs[5]:
       <div class="kpi kpi-red">
         <p class="kpi-val">-72.5%</p>
         <p class="kpi-lbl">Foster Beach revenue year-over-year</p>
-        <p class="kpi-note">Same calendar window post-Metropolis vs prior year. Transactions -70.8%.</p>
+        <p class="kpi-note">Same calendar window post-parking-gate vs prior year. Transactions -70.8%.</p>
       </div>
       <div class="kpi kpi-amber">
         <p class="kpi-val">0.8% / 1.0%</p>
         <p class="kpi-lbl">Rainbow Beach revenue share</p>
-        <p class="kpi-note">Full dataset: $38,485 of $5.09M · Post-Metropolis only: $4,319 of $446K</p>
+        <p class="kpi-note">Full dataset: $38,485 of $5.09M · Post-parking-gate only: $4,319 of $446K</p>
       </div>
       <div class="kpi kpi-blue">
         <p class="kpi-val">78.7%</p>
         <p class="kpi-lbl">Revenue share — top 3 lots</p>
-        <p class="kpi-note">MSI East, North Avenue Beach, MSI South post-Metropolis</p>
+        <p class="kpi-note">MSI East, North Avenue Beach, MSI South post-parking-gate</p>
       </div>
     </div>
     """, unsafe_allow_html=True)
 
     # Revenue table
-    st.markdown('<p class="sec-head" style="margin-top:0.5rem;">Revenue by lot: full dataset vs post-Metropolis go-live</p>',
+    st.markdown('<p class="sec-head" style="margin-top:0.5rem;">Revenue by lot: full dataset vs post-parking-gate go-live</p>',
                 unsafe_allow_html=True)
     st.markdown("""
     <div class="callout callout-blue">
-      Full-dataset figures (June 2024 to May 2026) combine prior voluntary system and Metropolis.
-      Post-Metropolis figures show only the Metropolis period. CPkD states parking revenue supports
+      Full-dataset figures (June 2024 to May 2026) combine prior voluntary system and the parking gate system.
+      Post-parking-gate figures show only the parking gate period. CPkD states parking revenue supports
       districtwide programs but has not provided location-level allocation records.
     </div>
     """, unsafe_allow_html=True)
@@ -1140,7 +1140,7 @@ with tabs[5]:
     disp_rt['vehicles'] = disp_rt['vehicles'].apply(lambda v: f"{v:,.0f}")
     disp_rt = disp_rt.rename(columns={
         "lot":"Location","area":"Area","golive":"Go-Live",
-        "full_rev":"Full Dataset Revenue","post_rev":"Post-Metropolis Revenue",
+        "full_rev":"Full Dataset Revenue","post_rev":"Post-parking-gate Revenue",
         "post_day":"Post-Metro $/Day","grace_pct":"Grace Exit %","vehicles":"Total Vehicles"
     })
     st.dataframe(disp_rt, use_container_width=True, hide_index=True)
@@ -1149,7 +1149,7 @@ with tabs[5]:
     <div class="callout callout-blue" style="margin-top:0.75rem;">
       <b>Note on observed visits:</b> "Observed visits" = paid transactions + recorded 15-minute
       grace-period exits. This may not capture every vehicle movement or transaction category
-      recorded by Metropolis. CPkD has not confirmed these are exhaustive categories.
+      recorded by the parking gate system. CPkD has not confirmed these are exhaustive categories.
     </div>
     <p class="src">Source: CPkD FOIA R-6663, filed by Ana Marija Soković.
     Data period: June 30, 2024 to May 7, 2026.</p>
@@ -1162,11 +1162,11 @@ with tabs[6]:
 
     st.markdown("""
     <div class="callout callout-blue">
-      <b>Research question:</b> How did the Metropolis parking system perform across CPkD lots
+      <b>Research question:</b> How did the parking gate system perform across CPkD lots
       after implementation, and do outcomes differ systematically by location or community context?
       <br><br>
       This tab presents findings in sequence — each with what the data show, what they may
-      indicate, and what remains unknown. All analyses use post-Metropolis-go-live data only.
+      indicate, and what remains unknown. All analyses use post-parking-gate-go-live data only.
     </div>
     """, unsafe_allow_html=True)
 
@@ -1223,7 +1223,7 @@ with tabs[6]:
         customer service complaints by location.</p></div>""", unsafe_allow_html=True)
 
     # F2: Revenue outcomes
-    st.markdown('<p class="sec-head" style="margin-top:1rem;">Finding 2 — Financial outcomes after Metropolis go-live vary sharply by location</p>',
+    st.markdown('<p class="sec-head" style="margin-top:1rem;">Finding 2 — Financial outcomes after parking gate go-live vary sharply by location</p>',
                 unsafe_allow_html=True)
 
     yoy_data = pd.DataFrame([
@@ -1251,7 +1251,7 @@ with tabs[6]:
         xaxis=dict(title=dict(text="Year-over-year revenue change (%)"), ticksuffix="%"),
         margin=dict(l=10, r=70, t=10, b=10),
     )
-    st.markdown('<p class="sec-sub">Year-over-year: same calendar window post-Metropolis vs prior year. '
+    st.markdown('<p class="sec-sub">Year-over-year: same calendar window post-parking-gate vs prior year. '
                 'Rainbow Beach excluded — prior voluntary system had near-zero recorded revenue.</p>',
                 unsafe_allow_html=True)
     st.plotly_chart(fig_yoy, width="stretch")
@@ -1283,7 +1283,7 @@ with tabs[6]:
     f3c1, f3c2, f3c3 = st.columns(3)
     with f3c1:
         st.markdown("""<div class="finding"><p class="finding-num">What the data show</p>
-        <p class="finding-body">Metropolis requires: QR code scan, phone number confirmation,
+        <p class="finding-body">The parking gate registration system requires: QR code scan, phone number confirmation,
         vehicle information, and payment details. CPkD calls this "easy sign-up." No cash
         alternative or non-smartphone pathway is described in the Fact Sheet.</p></div>""",
         unsafe_allow_html=True)
@@ -1305,7 +1305,7 @@ with tabs[6]:
     # F4: Quadrant — CENTERPIECE
     st.markdown('<p class="sec-head" style="margin-top:1rem;">Finding 4 — Performance clusters: revenue vs grace-exit rate</p>',
                 unsafe_allow_html=True)
-    st.markdown('<p class="sec-sub">Each lot plotted by post-Metropolis average revenue/day (Y) '
+    st.markdown('<p class="sec-sub">Each lot plotted by post-parking-gate average revenue/day (Y) '
                 'and grace-exit rate (X). Quadrant boundaries at system medians ($188/day, 52.1% grace). '
                 'Rainbow Beach is the clearest outlier: lowest revenue, highest grace rate.</p>',
                 unsafe_allow_html=True)
@@ -1350,7 +1350,7 @@ with tabs[6]:
     fig_defaults(fig_quad, height=460)
     fig_quad.update_layout(
         xaxis=dict(title=dict(text="Grace-exit rate (% of observed visits)"), ticksuffix="%", range=[0,100]),
-        yaxis=dict(title=dict(text="Post-Metropolis avg revenue/day ($)"), tickprefix="$"),
+        yaxis=dict(title=dict(text="Post-parking-gate avg revenue/day ($)"), tickprefix="$"),
         margin=dict(l=10, r=10, t=10, b=10),
     )
     st.plotly_chart(fig_quad, width="stretch")
@@ -1400,7 +1400,7 @@ with tabs[6]:
     st.markdown("""
     <div class="callout callout-red">
       The bottom 4 lots — Foster, 55th/South Shore, Rainbow North, and Rainbow South —
-      account for 2.9% of post-Metropolis system revenue combined. Two of those four are
+      account for 2.9% of post-parking-gate system revenue combined. Two of those four are
       at Rainbow Beach in the 7th Ward. The system was installed uniformly but generates
       revenue highly unevenly.
     </div>
@@ -1444,7 +1444,7 @@ with tabs[6]:
     # F7: Revenue efficiency index
     st.markdown('<p class="sec-head" style="margin-top:1rem;">Finding 7 — Revenue generated per 100 observed visits</p>',
                 unsafe_allow_html=True)
-    st.markdown('<p class="sec-sub">Efficiency metric: post-Metropolis revenue divided by total observed '
+    st.markdown('<p class="sec-sub">Efficiency metric: post-parking-gate revenue divided by total observed '
                 'visits (paid + grace exits) × 100. Captures how much revenue the system '
                 'extracts per visit regardless of absolute traffic volume.</p>',
                 unsafe_allow_html=True)
@@ -1527,7 +1527,7 @@ with tabs[6]:
     st.dataframe(disp_sc, use_container_width=True, hide_index=True)
 
     # Records still needed
-    st.markdown('<p class="sec-head" style="margin-top:1rem;">Records still needed to evaluate the Metropolis system</p>',
+    st.markdown('<p class="sec-head" style="margin-top:1rem;">Records still needed to evaluate the parking gate system</p>',
                 unsafe_allow_html=True)
     st.markdown("""
     <div class="callout callout-blue">
@@ -1557,7 +1557,7 @@ with tabs[6]:
     # Conclusion
     st.markdown("""
     <div class="callout callout-amber" style="margin-top:1rem;">
-      <b>Conclusion based on currently available records:</b> The Metropolis system shows
+      <b>Conclusion based on currently available records:</b> The parking gate system shows
       materially different outcomes across locations. Rainbow Beach combines unusually high
       short-stay exit activity (86.6% grace rate, 6.46 grace exits per paid transaction)
       with extremely low revenue generation ($73 per 100 observed visits, $27/day average).
@@ -1567,7 +1567,7 @@ with tabs[6]:
       does not prove — that the system functions as an access barrier at Rainbow Beach rather
       than a revenue tool.
     </div>
-    <p class="src">All analyses use post-Metropolis-go-live data from CPkD FOIA R-6663.
+    <p class="src">All analyses use post-parking-gate-go-live data from CPkD FOIA R-6663.
     Performance scores are relative within this 10-lot system only.
     Analysis: Ana Marija Soković, PhD, MBA.</p>
     """, unsafe_allow_html=True)
@@ -1580,13 +1580,13 @@ with tabs[7]:
 
     st.markdown("""
     <div class="callout callout-blue">
-      <b>Research question:</b> How did paid parking activity change following implementation
-      of the Metropolis parking system across CPkD parking lots, and were those changes
+      <b>Research question:</b> How did paid parking activity change following installation
+      of the parking gate system across CPkD parking lots, and were those changes
       consistent across locations?
       <br><br>
       <b>Methodology:</b> For each lot, average daily paid transactions and revenue were calculated
-      for the pre-Metropolis period (matched equivalent duration immediately before go-live)
-      and the post-Metropolis period (go-live through May 7, 2026). Equivalent calendar-window
+      for the pre-parking-gate period (matched equivalent duration immediately before go-live)
+      and the post-parking-gate period (go-live through May 7, 2026). Equivalent calendar-window
       comparisons minimize seasonal effects. Unlike revenue, which can change due to pricing or
       visitor behavior, the number of paid transactions provides a more direct measure of how
       many vehicles actually paid to park.
@@ -1598,7 +1598,7 @@ with tabs[7]:
       <div class="kpi kpi-red">
         <p class="kpi-val">-84.2%</p>
         <p class="kpi-lbl">North Ave Beach paid transactions</p>
-        <p class="kpi-note">211/day before Metropolis → 33/day after. CPkD said Metropolis would improve compliance.</p>
+        <p class="kpi-note">211/day before parking gates → 33/day after. CPkD said parking gates would improve compliance.</p>
       </div>
       <div class="kpi kpi-red">
         <p class="kpi-val">-83.7%</p>
@@ -1613,13 +1613,13 @@ with tabs[7]:
       <div class="kpi kpi-amber">
         <p class="kpi-val">7 of 10</p>
         <p class="kpi-lbl">Lots where revenue/transaction declined</p>
-        <p class="kpi-note">Average ticket fell at most lots after Metropolis activation.</p>
+        <p class="kpi-note">Average ticket fell at most lots after parking gates activation.</p>
       </div>
     </div>
     """, unsafe_allow_html=True)
 
     # Finding 1: Paid transaction change
-    st.markdown('<p class="sec-head" style="margin-top:0.5rem;">Finding 1 — Change in average daily paid transactions after Metropolis</p>',
+    st.markdown('<p class="sec-head" style="margin-top:0.5rem;">Finding 1 — Change in average daily paid transactions after parking gates</p>',
                 unsafe_allow_html=True)
     st.markdown("""
     <div class="callout callout-amber">
@@ -1628,7 +1628,7 @@ with tabs[7]:
       voluntary system (0.3 and 0.1 transactions/day respectively). In absolute terms, Rainbow
       Beach went from essentially no recorded paid parking to 4.9 and 3.2 paid transactions/day —
       still the lowest in the system. The percentage change is technically accurate but misleading
-      as a measure of Metropolis impact.
+      as a measure of parking gate impact.
     </div>
     """, unsafe_allow_html=True)
 
@@ -1648,7 +1648,7 @@ with tabs[7]:
     t1c, t2c = st.columns([2, 1])
     with t1c:
         st.markdown('<p class="sec-sub">% change in avg daily paid transactions '
-                    '(pre vs post-Metropolis equivalent period). Rainbow Beach excluded '
+                    '(pre vs post-parking-gate equivalent period). Rainbow Beach excluded '
                     '— near-zero baseline makes % change misleading.</p>',
                     unsafe_allow_html=True)
         fig_txn = go.Figure()
@@ -1668,7 +1668,7 @@ with tabs[7]:
         st.plotly_chart(fig_txn, width="stretch")
 
     with t2c:
-        st.markdown('<p class="sec-sub">Absolute daily averages before and after Metropolis</p>',
+        st.markdown('<p class="sec-sub">Absolute daily averages before and after parking gate installation</p>',
                     unsafe_allow_html=True)
         abs_data = pd.DataFrame([
             dict(label="North Ave Beach",  pre=211.2, post=33.4),
@@ -1705,7 +1705,7 @@ with tabs[7]:
     # Finding 2: Revenue change
     st.markdown('<p class="sec-head" style="margin-top:1rem;">Finding 2 — Change in average daily revenue mirrors transaction decline</p>',
                 unsafe_allow_html=True)
-    st.markdown('<p class="sec-sub">Revenue declined at most lots following Metropolis go-live, '
+    st.markdown('<p class="sec-sub">Revenue declined at most lots following parking gate go-live, '
                 'consistent with the transaction declines in Finding 1. Where revenue declined '
                 'proportionally more than transactions, the average ticket size also fell.</p>',
                 unsafe_allow_html=True)
@@ -1754,7 +1754,7 @@ with tabs[7]:
     # Finding 3: Revenue per transaction
     st.markdown('<p class="sec-head" style="margin-top:1rem;">Finding 3 — Revenue per transaction declined at most lots</p>',
                 unsafe_allow_html=True)
-    st.markdown('<p class="sec-sub">Average ticket size before and after Metropolis. '
+    st.markdown('<p class="sec-sub">Average ticket size before and after parking gate installation. '
                 'A decline suggests either pricing changes, shorter stays, or a shift in visitor '
                 'type. Only MSI East maintained a high average ticket ($21.37 after).</p>',
                 unsafe_allow_html=True)
@@ -1774,12 +1774,12 @@ with tabs[7]:
 
     fig_rpt = go.Figure()
     fig_rpt.add_trace(go.Bar(
-        name="Before Metropolis", x=rpt_data["pre_rpt"], y=rpt_data["label"],
+        name="Before parking gates", x=rpt_data["pre_rpt"], y=rpt_data["label"],
         orientation="h", marker_color=GREY, opacity=0.7,
         hovertemplate="<b>%{y}</b><br>Before: $%{x:.2f}<extra></extra>",
     ))
     fig_rpt.add_trace(go.Bar(
-        name="After Metropolis", x=rpt_data["post_rpt"], y=rpt_data["label"],
+        name="After parking gates", x=rpt_data["post_rpt"], y=rpt_data["label"],
         orientation="h", marker_color=BLUE, opacity=0.85,
         hovertemplate="<b>%{y}</b><br>After: $%{x:.2f}<extra></extra>",
     ))
@@ -1836,7 +1836,7 @@ with tabs[7]:
     st.dataframe(disp_ba, use_container_width=True, hide_index=True)
     st.markdown('<p class="src">† Rainbow Beach near-zero base: prior voluntary system recorded '
                 '0.3 and 0.1 paid transactions/day. Percentage change is technically accurate '
-                'but misleading as a measure of Metropolis impact.</p>', unsafe_allow_html=True)
+                'but misleading as a measure of parking gate impact.</p>', unsafe_allow_html=True)
 
     # What we can and cannot conclude
     cc1, cc2 = st.columns(2)
@@ -1845,10 +1845,10 @@ with tabs[7]:
         <div class="finding" style="margin-top:1rem;">
           <p class="finding-num">What this analysis can conclude</p>
           <p class="finding-body">Paid parking activity declined substantially at 5 of 8 comparable
-          lots after Metropolis go-live — including North Avenue Beach (-84.2%) and 55th/South Shore
+          lots after parking gate go-live — including North Avenue Beach (-84.2%) and 55th/South Shore
           (-83.7%). Two museum-oriented lots grew substantially. Revenue per transaction declined at
           7 of 10 lots. The system produced highly uneven outcomes across locations. CPkD deployed
-          Metropolis to improve "low compliance with voluntary payment systems" — at most community
+          parking gates to improve "low compliance with voluntary payment systems" — at most community
           lots, paid transactions fell rather than rose.</p>
         </div>
         """, unsafe_allow_html=True)
@@ -1881,11 +1881,11 @@ with tabs[7]:
       <br><br>
       Together, these records would allow researchers to distinguish between changes in
       paid parking behavior and changes in actual park visitation — providing a more
-      complete evaluation of the Metropolis system.
+      complete evaluation of the parking gate system.
     </div>
     <p class="src">Data: CPkD FOIA R-6663 (June 30, 2024 to May 7, 2026).
     Pre/post periods matched by equivalent duration immediately before and after each lot's
-    Metropolis go-live date. Analysis: Ana Marija Soković, PhD, MBA.</p>
+    parking gate go-live date. Analysis: Ana Marija Soković, PhD, MBA.</p>
     """, unsafe_allow_html=True)
 
 
